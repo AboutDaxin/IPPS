@@ -213,8 +213,8 @@ class GP:
             # complete_data = dict(zip(current_best.draw_key, current_best.draw_value))
             # Plot.plt_gantt(complete_data)
             # 输出最优Individual的适应度值和heuristic格式
-            print('best fitness: {}\nheuristic(Min): {}'.
-                  format(current_best.fitness, current_best.root.string()))
+            print('best fitness: {}\n(Min)heuristic-routing: {}\n(Min)heuristic-sequencing: {}'.
+                  format(current_best.fitness, current_best.root.left.string(), current_best.root.right.string()))
             # 输出目标函数值
             print('total process time: {}\ntotal due time: {}'.
                   format(current_best.total_process_time, current_best.total_due_time))
@@ -228,8 +228,8 @@ class GP:
         # 去bests列表中的最大值
         best = max(bests)
         # 输出最优值的适应度和根字符
-        print('best fitness: {}\nheuristic(Min): {}'.
-              format(best.fitness, best.root.string()))
+        print('best fitness: {}\n(Min)heuristic-routing: {}\n(Min)heuristic-sequencing: {}'.
+              format(best.fitness, best.root.left.string(), best.root.right.string()))
         # 输出目标函数值
         print('total process time: {}\ntotal due time: {}'.
               format(best.total_process_time, best.total_due_time))

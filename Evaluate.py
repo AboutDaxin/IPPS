@@ -46,7 +46,7 @@ def evaluate(individual, problems_origin):
                     # 基于该task遍历所有station，释放一个job至对应station的job序列
                     for station in stations:
                         # 如果该task的最前道序可以使用该station
-                        if task.process[0] == station.capacity:
+                        if task.process[0] in station.capacity:
                             # 生成备选station列表
                             stations_temp.append(station)
                             # 评估确定该station的优先级
@@ -57,7 +57,7 @@ def evaluate(individual, problems_origin):
                                 # 遍历station中所有job并分别计算优先值
                                 for job in station.queue:
                                     # 临时优先值为所有遍历完job的优先值总和
-                                    priority_temp += individual.root.interpret(job, station, time)
+                                    priority_temp += individual.root.left.interpret(job, station, time)
                                 # 得到该station的当前优先值
                                 station.priority = priority_temp
                             # 如果该station序列中没有任务，则优先值为0（最高级别）
@@ -80,7 +80,7 @@ def evaluate(individual, problems_origin):
                     # 对该station的job序列执行遍历，重排
                     for job in station.queue:
                         # 计算该job的优先级数值
-                        job.priority = individual.root.interpret(job, station, time)
+                        job.priority = individual.root.right.interpret(job, station, time)
                     # 随机排列该station的job序列
                     shuffle(station.queue)
                     # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
@@ -136,7 +136,7 @@ def evaluate(individual, problems_origin):
         # 添加个体对本问题的调度方案
         individual.scheme = jobsorts
         # 添加个体对本问题的适应度值
-        individual.fitnesses.append(-missed_deadlines - process_time - individual.tree_complexity())
+        individual.fitnesses.append(-missed_deadlines - process_time - 2*individual.tree_complexity())
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time

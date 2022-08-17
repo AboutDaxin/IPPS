@@ -29,8 +29,8 @@ def plt_gantt(complete_data):
         # 画标注
         plt.text(v[0] + 0.1, k[2] + 0.15, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
                  fontdict=fontdict_task)
-        plt.text(v[0] + 0.1, k[2] - 0.15, "Start:\n " + str(v[0]), fontdict=fontdict_time)
-        plt.text(v[0] + 0.1, k[2] - 0.35, "End:\n " + str(v[1]), fontdict=fontdict_time)
+        plt.text(v[0] + 0.1, k[2] - 0.13, "Start:\n " + str(v[0]), fontdict=fontdict_time)
+        plt.text(v[0] + 0.1, k[2] - 0.36, "End:\n " + str(v[1]), fontdict=fontdict_time)
 
     # 生成y轴label
     ylabels = []

@@ -21,7 +21,7 @@ class Task:
 
 # 定义工位类
 class Station:
-    def __init__(self, num=0, capacity=0):
+    def __init__(self, num=0, capacity=None):
         self.num = num
         self.capacity = capacity
         self.queue = []

@@ -1,3 +1,4 @@
+import copy
 from random import choice, randint
 from copy import deepcopy
 from Operations import *  # import operation constants (bastardized Sum-Type)
@@ -40,8 +41,10 @@ class Node:
             self.op = choice(LEAVES)
         # 深度参数不是0时，op为OPSUM（OPERATORS并LEAVES）中的一个随机项
         else:
-            if randint(0, 1) < 0.8:
+            # 保证深度>1的情况下，有0.3的概率在节点选择操作算子
+            if depth_limit == 5 or randint(0, 1) < 0.3:
                 self.op = choice(OPERATORS)
+            # 有0.7的概率选择叶节点
             else:
                 self.op = choice(LEAVES)
         # 如果op选中的是OPERATORS中的项，则对左右节点进行递归，limit减1，
@@ -78,7 +81,7 @@ class Node:
     # 总结：返还Node的随机节点被node替换后的新Node）
     def choose_node(self, graft=False, node=None):
         # 定义一个choose_r函数（输入一个初始化辅助树列表，一个节点实例，一个初始化索引）
-        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以深度遍历方式定位，根节点为1）
+        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
         def choose_r(tree_array1, node1, i):
             # 如果节点实例的左节点非空且不是叶节点执行以下操作
             if node1.left is not None and node1.op not in LEAVES:
@@ -96,7 +99,7 @@ class Node:
             # 返还该树列表
             return tree_array1
 
-        # 初始化树列表为[1]
+        # 初始化一个树列表
         tree_array = [1]
         # 对当前节点执行choose_r，生成辅助列表tree_array
         tree_array = choose_r(tree_array, self, 1)
@@ -193,10 +196,10 @@ class Node:
         elif self.op == RELEASE:
             return job.task.release
         # 阶段
-        elif self.op == PERIOD:
-            return job.task.period if job.task.period != 0 else float('Inf')
+        elif self.op == N_P_T:
+            return job.task.exec_time[1] if len(job.task.exec_time) > 1 else 0
         # 执行时间
-        elif self.op == PRCS_T:
+        elif self.op == P_T:
             return job.task.exec_time[0]
         # 单项任务的交货期
         elif self.op == DEADLINE:
@@ -253,10 +256,10 @@ class Node:
             return 'BLK_TOT'
         elif self.op == RELEASE:
             return 'TASK_RELEASE'
-        elif self.op == PERIOD:
-            return 'TASK_PERIOD'
-        elif self.op == PRCS_T:
-            return 'TASK_EXEC'
+        elif self.op == N_P_T:
+            return 'NEXT_PROCESS_TIME'
+        elif self.op == P_T:
+            return 'PROCESS_TIME'
         elif self.op == DEADLINE:
             return 'TASK_DEADLINE'
         elif self.op == PLUS:
@@ -278,7 +281,7 @@ class Node:
         elif self.op == J_DEADLINE:
             return 'JOB_DEADLINE'
         elif self.op == J_RELEASE:
-            return 'JOB_DEADLINE'
+            return 'JOB_RELEASE'
         elif self.op == NOT_PERIODIC:
             return 'PERIODICITY'
         else:
