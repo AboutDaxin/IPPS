@@ -186,9 +186,6 @@ class Node:
         # 如果节点op是个常数，返还它的值
         if self.op == CONST:
             return self.val
-        # 阻塞开始时间
-        elif self.op == BLK_ST:
-            return job.task.blocking_start
         # 阻塞持续时间
         elif self.op == BLK_TOT:
             return job.task.blocking_duration
@@ -250,8 +247,6 @@ class Node:
     def string(self):
         if self.op == CONST:
             return repr(self.val)
-        elif self.op == BLK_ST:
-            return 'BLK_ST'
         elif self.op == BLK_TOT:
             return 'BLK_TOT'
         elif self.op == RELEASE:

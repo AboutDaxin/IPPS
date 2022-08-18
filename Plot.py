@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plt_gantt(complete_data):
+def plt_gantt(best):
     # 文字格式初始化
     # 使用中文文字
     plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -22,15 +22,22 @@ def plt_gantt(complete_data):
     }
     color = ['blue', 'green', 'red', 'yellow', 'purple', 'cyan', 'gray']
 
+    # 提取数据
+    complete_data = dict(zip(best.draw_key, best.draw_value))
     # 绘图操作
     for k, v in complete_data.items():
-        # 画甘特图
+        # 画job甘特图
         plt.barh(y=k[2], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])
-        # 画标注
+        # 画job标注
         plt.text(v[0] + 0.1, k[2] + 0.15, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
                  fontdict=fontdict_task)
         plt.text(v[0] + 0.1, k[2] - 0.13, "Start:\n " + str(v[0]), fontdict=fontdict_time)
         plt.text(v[0] + 0.1, k[2] - 0.36, "End:\n " + str(v[1]), fontdict=fontdict_time)
+
+        # 画transtime甘特图
+        plt.barh(y=k[2], width=v[3], left=v[0]-v[3], edgecolor="black", color='black', alpha=0.1)
+        # 画transtime标注
+        plt.text(v[0]-v[3] + 0.1, k[2], "Set-time:\n " + str(v[3]) if v[3] != 0 else '', fontdict=fontdict_time)
 
     # 生成y轴label
     ylabels = []

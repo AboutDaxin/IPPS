@@ -1,7 +1,7 @@
 # 定义任务类
 class Task:
     # 初始化方法，定义任务层的一些属性，初始化为0
-    def __init__(self, num=0, process=None, period=0, release=0, deadline=0, exec_time=None, blk_st=0, blk_dur=0):
+    def __init__(self, num=0, process=None, period=0, release=0, deadline=0, exec_time=None, blk_dur=0):
         self.num = num
         self.process = process
         self.process_num = [i+1 for i in range(len(process))]
@@ -9,7 +9,6 @@ class Task:
         self.release = release
         self.deadline = deadline
         self.exec_time = exec_time
-        self.blocking_start = blk_st
         self.blocking_duration = blk_dur
         self.priority = None
         self.need_popped = True
@@ -21,9 +20,13 @@ class Task:
 
 # 定义工位类
 class Station:
-    def __init__(self, num=0, capacity=None):
+    def __init__(self, num=0, capacity=None, set_time=1):
         self.num = num
         self.capacity = capacity
+        self.current_capacity = 0
+        self.set_time = set_time
+        self.current_trans_time = 0
+        self.have_trans = False
         self.queue = []
         self.priority = None
         self.have_popped = False
@@ -47,7 +50,6 @@ class Job:
         # job交货期是任务原定交货期
         self.deadline = task.deadline if task.deadline != 0 else 0
         # job堵塞
-        self.blocking_start = task.blocking_start + self.release
         self.blocking_duration = task.blocking_duration
         self.priority = None
         self.has_run = False

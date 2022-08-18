@@ -1,3 +1,4 @@
+import random
 from random import shuffle
 import copy
 from Modeling import Job
@@ -10,6 +11,7 @@ def evaluate(individual, problems_origin):
     individual.scheme = None
     # 初始化每个Individual的fitnesses列表
     individual.fitnesses = []
+    # 复制源问题
     problems = copy.deepcopy(problems_origin)
     # 用于存储绘图用字典的key和value
     draw_key = []
@@ -30,6 +32,8 @@ def evaluate(individual, problems_origin):
         process_time = 0
         # 初始化辅助变量（拖期变量）
         missed_deadlines = 0
+        # 总转换时间变量
+        total_transtime = 0
         # 初始化总作业序列列表
         stations = [station for station in problem.stations]
 
@@ -60,9 +64,9 @@ def evaluate(individual, problems_origin):
                                     priority_temp += individual.root.left.interpret(job, station, time)
                                 # 得到该station的当前优先值
                                 station.priority = priority_temp
-                            # 如果该station序列中没有任务，则优先值为0（最高级别）
+                            # 如果该station序列中没有任务，则优先值为随机数
                             else:
-                                station.priority = 0
+                                station.priority = random.random()
                     # 确定被选中的station（优先值最小为最高级别）
                     station_best = min(stations_temp)
                     # 在job序列对应的station中加入一个Job
@@ -85,20 +89,44 @@ def evaluate(individual, problems_origin):
                     shuffle(station.queue)
                     # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
                     station.queue.sort()
+                    # # 对station进行能力变更
+                    if station.current_capacity == 0:
+                        # 初始情况
+                        station.current_capacity = station.queue[0].task.process[0] if station.queue else 0
+                        station.have_trans = True
+                        station.current_trans_time = station.set_time
+                        total_transtime += station.set_time
+                    elif station.current_capacity == station.queue[0].task.process[0] if station.queue else 0:
+                        # 不需要转变
+                        station.have_trans = False
+                        station.current_trans_time = 0
+                    else:
+                        # 需要转变
+                        station.current_capacity = station.queue[0].task.process[0] if station.queue else 0
+                        station.have_trans = True
+                        station.current_trans_time = station.set_time
+                        total_transtime += station.set_time
                     # 排序状态变为已排完，不需要重排
                     station.have_popped = True
 
             # 对每个station的job执行一系列操作
             # 按每个station分别进行判断
             for station in stations:
-                # 如果本job序列还存在job则执行
+                # 如果该station还存在job则执行
                 if len(station.queue) > 0:
                     # 对job列表中第一个job判断。当前时间大于job堵塞开始时间，并且job持续堵塞时
-                    if time > station.queue[0].blocking_start and station.queue[0].blocking_duration > 0:
+                    if station.queue[0].blocking_duration > 0:
                         # 堵塞持续时间-1
                         station.queue[0].blocking_duration -= 1
-                    # 序列中第一个job执行时间-1
-                    station.queue[0].exec_time -= 1
+                    # station正在发生转变
+                    if station.have_trans and 0 < station.current_trans_time <= station.set_time:
+                        # 转换消耗时间赋值
+                        station.current_trans_time -= 1
+                        station.have_trans = True
+                    # station已经完成转变
+                    else:
+                        # 序列中第一个job执行时间-1
+                        station.queue[0].exec_time -= 1
                     # 总工时+1
                     process_time += 1
                     # 状态改为“正在运行”
@@ -108,9 +136,10 @@ def evaluate(individual, problems_origin):
                     if station.queue[0].exec_time <= 0:
                         # 逐步生成draw_key中的元组(任务序号、工序序号、工作站序号)
                         draw_key.append((station.queue[0].num, station.queue[0].task.process_num[0], station.num))
-                        # 逐步生成draw_value中的元组
-                        draw_value.append((time+1 - station.queue[0].task.exec_time[0],
-                                           time+1, station.queue[0].task.exec_time[0]))
+                        # 逐步生成draw_value中的元组（开始时间、结束时间、持续时间、转换时间）
+                        draw_value.append((time + 1 - station.queue[0].task.exec_time[0],
+                                           time + 1, station.queue[0].task.exec_time[0],
+                                           station.set_time if station.have_trans else 0))
                         # 删除该task的当前序工艺类型
                         station.queue[0].task.process.pop(0)
                         station.queue[0].task.process_num.pop(0)
@@ -136,7 +165,8 @@ def evaluate(individual, problems_origin):
         # 添加个体对本问题的调度方案
         individual.scheme = jobsorts
         # 添加个体对本问题的适应度值
-        individual.fitnesses.append(-missed_deadlines - process_time - 2*individual.tree_complexity())
+        individual.fitnesses.append(
+            -missed_deadlines - process_time - 2 * individual.tree_complexity() - total_transtime)
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time

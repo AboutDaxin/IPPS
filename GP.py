@@ -248,6 +248,6 @@ class GP:
         plt.xlabel('Evaluations')
         plt.ylabel('Fitness')
         plt.show()
-        # 输出最优甘特图
-        complete_data = dict(zip(best.draw_key, best.draw_value))
-        Plot.plt_gantt(complete_data)
+
+        # 输出最优方案的甘特图
+        Plot.plt_gantt(best)
