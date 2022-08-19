@@ -209,15 +209,13 @@ class GP:
             current_best = max(self.population)
             # # 输出本轮最优排序方案
             # print('scheme: {}'.format(scheme_bests[run]))
-            # # 输出甘特图
-            # complete_data = dict(zip(current_best.draw_key, current_best.draw_value))
-            # Plot.plt_gantt(complete_data)
             # 输出最优Individual的适应度值和heuristic格式
             print('best fitness: {}\n(Min)heuristic-routing: {}\n(Min)heuristic-sequencing: {}'.
                   format(current_best.fitness, current_best.root.left.string(), current_best.root.right.string()))
             # 输出目标函数值
-            print('total process time: {}\ntotal due time: {}'.
-                  format(current_best.total_process_time, current_best.total_due_time))
+            print('total process time: {}\ntotal due time: {}\ntotal set time: {}\nmakespan: {}'.
+                  format(current_best.total_process_time, current_best.total_due_time,
+                         current_best.total_transtime, current_best.makespan))
             # 输出当前最佳的stats值
             print('stats: {}'.format(current_best.stats))
             # 列表bests中添加本轮的最优值
@@ -231,8 +229,8 @@ class GP:
         print('best fitness: {}\n(Min)heuristic-routing: {}\n(Min)heuristic-sequencing: {}'.
               format(best.fitness, best.root.left.string(), best.root.right.string()))
         # 输出目标函数值
-        print('total process time: {}\ntotal due time: {}'.
-              format(best.total_process_time, best.total_due_time))
+        print('total process time: {}\ntotal due time: {}\ntotal set time: {}\nmakespan: {}'.
+              format(best.total_process_time, best.total_due_time, best.total_transtime, best.makespan))
         # 输出最优值的stats
         print('stats: {}'.format(best.stats))
 

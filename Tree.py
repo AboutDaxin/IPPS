@@ -297,10 +297,12 @@ class Individual:
         # 用于存储各项目标函数值
         self.total_process_time = 0
         self.total_due_time = 0
+        self.makespan = 0
         # 用于展示一些数据
         self.stats = []
         # 用于存储排产方案的辅助列表
         self.draw_key = []
+        self.draw_value = []
         # 个体的root是一个Node类实体
         self.root = Node()
         self.size = 0
