@@ -38,7 +38,6 @@ def evaluate(individual, problems_origin):
         have_finished = False
         makespan = 0
         prcs_time_last = 0
-        prcs_time_now = 0
         # 初始化总作业序列列表
         stations = [station for station in problem.stations]
 

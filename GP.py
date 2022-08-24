@@ -27,7 +27,7 @@ class GP:
         # 类属性：定义实例的种群(population)为一个列表
         self.population = []
 
-        # 生成半个种群
+        # grow方法生成半个种群
         # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
         for _ in range(floor(population_size/2)):
             # 实例化个体，使用Tree模块的Individual类
@@ -37,7 +37,7 @@ class GP:
             # 在种群列表中增加这个个体
             self.population.append(individual)
 
-        # 生成剩下半个种群，并结合起来
+        # full方法生成剩下半个种群，并结合起来
         # 设置一个用于生成种群的循环，为种群规模的一半，ceil表示向上取整
         for _ in range(ceil(population_size/2)):
             # 实例化个体，使用Tree模块的Individual类
@@ -48,7 +48,7 @@ class GP:
             self.population.append(individual)
 
         # 设置此实例的一些初始化变量
-        # “父”，“子”为空列表，父，子种群规模为预设的1000和20，变异率为预设的0.05
+        # “父”，“子”为空列表，父，子种群规模为预设的1000和20，变异率0.05，辅助率0.1，交叉率0.85
         # 评估次数初始值为0，简化参数为预设的0.5
         self.parents = []
         self.population_size = population_size
@@ -149,12 +149,10 @@ class GP:
         bests = []
         # 代数：最大评估次数2000减种群规模1000，除以子代规模20，结果向上取整加2，为52（保证与generation变量的匹配性）。
         generations = ceil((MAX_EVALUATIONS - self.population_size) / self.children_size) + 2
-        # 生成了一个含52个空列表的列表，用于存储最优fitness
+        # 生成了一个含52个空列表的列表，用于存储进化过程的数据
         data_best = [[] for _ in range(generations)]
         # 同上
         data_avg = [[] for _ in range(generations)]
-        # 用于存储所有最优scheme
-        scheme_bests = []
 
         # 执行RUN次循环
         for run in range(RUNS):
@@ -176,7 +174,7 @@ class GP:
             # 先设置一个新变量
             generation = 1
             # 判断not_finished方法的bool值，若评估次数evaluations<=2000则继续执行
-            # 注：每一次evaluations值会加20 ，初始为1000。因此跳出时，evaluations值为2020，而generation此时正好为52
+            # 注：每一次evaluations值会加20 ，初始化种群后为1000。因此跳出时，evaluations值为2020，而generation此时正好为52
             while self.not_finished():
                 # 执行父代选择方法
                 self.parentSelection()
@@ -188,6 +186,8 @@ class GP:
                 self.reintroduction()
                 # 执行生存选择方法
                 self.survivalSelection()
+
+                # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的fitness，生成列表fitness_data
                 fitness_data = [i.fitness for i in self.population]
                 # 在data_best的第generation（2-52）个列表中添加最大的适应度值
@@ -197,20 +197,13 @@ class GP:
                 # 执行上述操作后，代数generation加1。跳出时正好为52，填满data列表
                 generation += 1
 
-            # 用于存储最优适应度值的排序方案
-            for i in self.population:
-                if i.fitness == max(fitness_data):
-                    scheme_bests.append(i.scheme)
-
             # 本轮运行完成，输出优化信息
             # 输出本次运行次数（占位符）
             print('==== RUN {} ===='.format(run))
             # 设置当前最佳为population中的最优Individual（富比较）
             current_best = max(self.population)
-            # # 输出本轮最优排序方案
-            # print('scheme: {}'.format(scheme_bests[run]))
             # 输出最优Individual的适应度值和heuristic格式
-            print('best fitness: {}\n(Min)heuristic-routing: {}\n(Min)heuristic-sequencing: {}'.
+            print('best fitness: {}\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
                   format(current_best.fitness, current_best.root.left.string(), current_best.root.right.string()))
             # 输出目标函数值
             print('total process time: {}\ntotal due time: {}\ntotal set time: {}\nmakespan: {}'.
@@ -226,7 +219,7 @@ class GP:
         # 去bests列表中的最大值
         best = max(bests)
         # 输出最优值的适应度和根字符
-        print('best fitness: {}\n(Min)heuristic-routing: {}\n(Min)heuristic-sequencing: {}'.
+        print('best fitness: {}\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
               format(best.fitness, best.root.left.string(), best.root.right.string()))
         # 输出目标函数值
         print('total process time: {}\ntotal due time: {}\ntotal set time: {}\nmakespan: {}'.
@@ -234,18 +227,7 @@ class GP:
         # 输出最优值的stats
         print('stats: {}'.format(best.stats))
 
-        # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
-        # 此处将data_avg中的每一个列表取平均值，生成一个新列表(还是共52个元素)
-        data_avg = [i for i in map(mean, data_avg)]
-        # 同上
-        data_best = [i for i in map(mean, data_best)]
-        # 生成画图x轴，从1000到2040（不含），间隔20。实际为1000-2020，共51段
-        x = np.arange(self.population_size, self.population_size + self.children_size * generations, self.children_size)
-        # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
-        plt.plot(x, data_avg, x, data_best)
-        plt.xlabel('Evaluations')
-        plt.ylabel('Fitness')
-        plt.show()
-
+        # 输出进化过程图
+        Plot.plt_evolve(self, generations, data_avg, data_best)
         # 输出最优方案的甘特图
         Plot.plt_gantt(best)

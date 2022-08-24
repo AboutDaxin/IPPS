@@ -1,4 +1,21 @@
 import matplotlib.pyplot as plt
+from statistics import mean
+import numpy as np
+
+
+def plt_evolve(GP, generations, data_avg, data_best):
+    # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
+    # 此处将data_avg中的每一个列表取平均值，生成一个新列表(还是共52个元素)
+    data_avg = [i for i in map(mean, data_avg)]
+    # 同上
+    data_best = [i for i in map(mean, data_best)]
+    # 生成画图x轴，从1000到2040（不含），间隔20。实际为1000-2020，共51段
+    x = np.arange(GP.population_size, GP.population_size + GP.children_size * generations, GP.children_size)
+    # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
+    plt.figure(1)
+    plt.plot(x, data_avg, x, data_best)
+    plt.xlabel('Evaluations')
+    plt.ylabel('Fitness')
 
 
 def plt_gantt(best):
@@ -25,6 +42,7 @@ def plt_gantt(best):
     # 提取数据
     complete_data = dict(zip(best.draw_key, best.draw_value))
     # 绘图操作
+    plt.figure(2, (26, 12))
     for k, v in complete_data.items():
         # 画job甘特图
         plt.barh(y=k[2], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])

@@ -1,12 +1,11 @@
-import copy
-from random import choice, randint
+from random import choice, random
 from copy import deepcopy
 from Operations import *  # import operation constants (bastardized Sum-Type)
 
 
 # 定义Node类，包含该节点及其子节点的一系列属性和方法
 class Node:
-    # 定义初始化属性和方法，left、right也为节点类，val为0，op的CONST在Operations模块中定义为0
+    # 定义初始化属性和方法，left、right也为节点类，val为0
     def __init__(self, left=None, right=None, val=0, op=CONST):
         self.left = left
         self.right = right
@@ -41,10 +40,10 @@ class Node:
             self.op = choice(LEAVES)
         # 深度参数不是0时，op为OPSUM（OPERATORS并LEAVES）中的一个随机项
         else:
-            # 保证深度>1的情况下，有0.3的概率在节点选择操作算子
-            if depth_limit == 5 or randint(0, 1) < 0.3:
+            # 保证深度>1的情况下，有0.5的概率在节点选择操作算子
+            if depth_limit == 5 or round(random(), 3) < 0.5:
                 self.op = choice(OPERATORS)
-            # 有0.7的概率选择叶节点
+            # 有0.5的概率选择叶节点
             else:
                 self.op = choice(LEAVES)
         # 如果op选中的是OPERATORS中的项，则对左右节点进行递归，limit减1，
@@ -53,9 +52,9 @@ class Node:
             self.left.grow(depth_limit - 1)
             self.right = Node()
             self.right.grow(depth_limit - 1)
-        # 如果op是个常系数（在LEAVES中），则节点的val值为一个0-255（包含端点）的整数
+        # 如果op是个常系数（在LEAVES中），则节点的val值为一个01随机数（保留3位小数）
         elif self.op == CONST:
-            self.val = randint(0, 1)
+            self.val = round(random(), 3)
         # 如果选中的不是OPERATORS，也不是LEAVES中的CONST，就结束生成
 
     # 实例化方法——full生成法
@@ -73,9 +72,9 @@ class Node:
             # 右节点同上
             self.right = Node()
             self.right.full(depth_limit - 1)
-        # 如果节点的op是一个常系数（LEAVES中），则节点的val值为一个0-255（包含端点）的整数
+        # 如果节点的op是一个常系数（LEAVES中），则节点的val值为一个01随机数（保留3位小数）
         if self.op == CONST:
-            self.val = randint(0, 1)
+            self.val = round(random(), 3)
 
     # 实例化方法——选择节点
     # 总结：返还Node的随机节点被node替换后的新Node）
@@ -187,19 +186,22 @@ class Node:
         if self.op == CONST:
             return self.val
         # 阻塞持续时间
-        elif self.op == BLK_TOT:
-            return job.task.blocking_duration
+        elif self.op == WIQ:
+            t = 0
+            for i in station.queue:
+                t += i.exec_time
+            return t
         # 释放时间
-        elif self.op == RELEASE:
+        elif self.op == rJ:
             return job.task.release
         # 阶段
-        elif self.op == N_P_T:
+        elif self.op == NPT:
             return job.task.exec_time[1] if len(job.task.exec_time) > 1 else 0
         # 执行时间
-        elif self.op == P_T:
+        elif self.op == PT:
             return job.task.exec_time[0]
         # 单项任务的交货期
-        elif self.op == DEADLINE:
+        elif self.op == DD:
             return job.task.deadline if job.task.deadline != 0 else float('Inf')
         # 加法，对左右节点进行递归并相加
         elif self.op == PLUS:
@@ -233,12 +235,9 @@ class Node:
         # 作业的交货期
         elif self.op == J_DEADLINE:
             return job.deadline if job.deadline != 0 else float('Inf')
-        # 作业的释放时间
-        elif self.op == J_RELEASE:
-            return job.release
         # 是否阶段性，返还1,2,3
-        elif self.op == NOT_PERIODIC:
-            return 0 if job.task.period != 0 else 1 if job.task.deadline != 0 else 2
+        elif self.op == NIQ:
+            return len(station.queue)
         else:
             print('HELP')
 
@@ -247,16 +246,16 @@ class Node:
     def string(self):
         if self.op == CONST:
             return repr(self.val)
-        elif self.op == BLK_TOT:
-            return 'BLK_TOT'
-        elif self.op == RELEASE:
-            return 'TASK_RELEASE'
-        elif self.op == N_P_T:
-            return 'NEXT_PROCESS_TIME'
-        elif self.op == P_T:
-            return 'PROCESS_TIME'
-        elif self.op == DEADLINE:
-            return 'TASK_DEADLINE'
+        elif self.op == WIQ:
+            return 'WIQ'
+        elif self.op == rJ:
+            return 'rJ'
+        elif self.op == NPT:
+            return 'NPT'
+        elif self.op == PT:
+            return 'PT'
+        elif self.op == DD:
+            return 'DD'
         elif self.op == PLUS:
             return '(' + self.left.string() + ' + ' + self.right.string() + ')'
         elif self.op == MINUS:
@@ -272,13 +271,11 @@ class Node:
         elif self.op == MIN:
             return 'MIN(' + self.left.string() + ', ' + self.right.string() + ')'
         elif self.op == CURRENT_TIME:
-            return 'TIME'
+            return 'TIS'
         elif self.op == J_DEADLINE:
             return 'JOB_DEADLINE'
-        elif self.op == J_RELEASE:
-            return 'JOB_RELEASE'
-        elif self.op == NOT_PERIODIC:
-            return 'PERIODICITY'
+        elif self.op == NIQ:
+            return 'NIQ'
         else:
             print('HELP')
 
