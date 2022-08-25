@@ -2,8 +2,6 @@ from random import sample, random, randrange
 from copy import deepcopy
 from statistics import mean
 from math import floor, ceil
-import numpy as np
-import matplotlib.pyplot as plt
 import Evaluate
 from Tree import Individual
 import Plot
@@ -206,11 +204,10 @@ class GP:
             print('best fitness: {}\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
                   format(current_best.fitness, current_best.root.left.string(), current_best.root.right.string()))
             # 输出目标函数值
-            print('total process time: {}\ntotal due time: {}\ntotal set time: {}\nmakespan: {}'.
-                  format(current_best.total_process_time, current_best.total_due_time,
-                         current_best.total_transtime, current_best.makespan))
-            # 输出当前最佳的stats值
-            print('stats: {}'.format(current_best.stats))
+            print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
+                  format(current_best.total_process_time, current_best.total_due_time, current_best.makespan))
+            # 输出stats值
+            print('stats:{{{}, total set time: {}}}'.format(current_best.stats, current_best.total_transtime))
             # 列表bests中添加本轮的最优值
             bests.append(current_best)
 
@@ -222,10 +219,10 @@ class GP:
         print('best fitness: {}\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
               format(best.fitness, best.root.left.string(), best.root.right.string()))
         # 输出目标函数值
-        print('total process time: {}\ntotal due time: {}\ntotal set time: {}\nmakespan: {}'.
-              format(best.total_process_time, best.total_due_time, best.total_transtime, best.makespan))
+        print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
+              format(best.total_process_time, best.total_due_time, best.makespan))
         # 输出最优值的stats
-        print('stats: {}'.format(best.stats))
+        print('stats: {{{}, total set time: {}}}'.format(best.stats, best.total_transtime))
 
         # 输出进化过程图
         Plot.plt_evolve(self, generations, data_avg, data_best)

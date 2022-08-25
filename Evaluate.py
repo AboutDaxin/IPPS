@@ -120,10 +120,6 @@ def evaluate(individual, problems_origin):
                 for station in stations:
                     # 如果该station还存在job则执行
                     if len(station.queue) > 0:
-                        # 对job列表中第一个job判断。当前时间大于job堵塞开始时间，并且job持续堵塞时
-                        if station.queue[0].blocking_duration > 0:
-                            # 堵塞持续时间-1
-                            station.queue[0].blocking_duration -= 1
                         # station正在发生转变
                         if station.have_trans and 0 < station.current_trans_time <= station.set_time:
                             # 转换消耗时间赋值

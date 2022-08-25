@@ -29,13 +29,13 @@ def plt_gantt(best):
         "style": "oblique",
         "weight": "bold",
         "color": "black",
-        "size": 10
+        "size": 8
     }
     fontdict_time = {
         "family": "Microsoft YaHei",
         "style": "oblique",
         "color": "black",
-        "size": 10
+        "size": 8
     }
     color = ['blue', 'green', 'red', 'yellow', 'purple', 'cyan', 'gray']
 
