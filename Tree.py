@@ -1,6 +1,6 @@
 from random import choice, random
 from copy import deepcopy
-from Operations import *  # import operation constants (bastardized Sum-Type)
+from Operations import *
 
 
 # 定义Node类，包含该节点及其子节点的一系列属性和方法

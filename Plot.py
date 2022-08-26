@@ -29,13 +29,13 @@ def plt_gantt(best):
         "style": "oblique",
         "weight": "bold",
         "color": "black",
-        "size": 8
+        "size": 6
     }
     fontdict_time = {
         "family": "Microsoft YaHei",
         "style": "oblique",
         "color": "black",
-        "size": 8
+        "size": 6
     }
     color = ['blue', 'green', 'red', 'yellow', 'purple', 'cyan', 'gray']
 
@@ -47,10 +47,10 @@ def plt_gantt(best):
         # 画job甘特图
         plt.barh(y=k[2], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])
         # 画job标注
-        plt.text(v[0] + 0.1, k[2] + 0.15, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
+        plt.text(v[0] + 0.1, k[2]-0.14, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
                  fontdict=fontdict_task)
-        plt.text(v[0] + 0.1, k[2] - 0.13, "Start:\n " + str(v[0]), fontdict=fontdict_time)
-        plt.text(v[0] + 0.1, k[2] - 0.36, "End:\n " + str(v[1]), fontdict=fontdict_time)
+        plt.text(v[0] + 0.4, k[2], "Start:\n " + str(v[0]), fontdict=fontdict_time)
+        plt.text(v[0] + 0.4, k[2] - 0.35, "End:\n " + str(v[1]), fontdict=fontdict_time)
 
         # 画transtime甘特图
         plt.barh(y=k[2], width=v[3], left=v[0]-v[3], edgecolor="black", color='black', alpha=0.1)
