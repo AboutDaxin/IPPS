@@ -7,8 +7,6 @@ from statistics import mean
 
 # 实例化方法——适应度评估（Individual类的evaluate）（核心）
 def evaluate(individual, problems_origin):
-    # 针对每个个体创建一个列表，用于存储针对多个问题的调度方案
-    individual.scheme = None
     # 初始化每个Individual的fitnesses列表
     individual.fitnesses = []
     # 复制源问题
@@ -24,8 +22,6 @@ def evaluate(individual, problems_origin):
         # 初始化每个Individual的各项目标函数
         individual.total_process_time = 0
         individual.total_due_time = 0
-        # 用于存储task的顺序（包含stations数量的列表， 每个列表有time个元素）
-        jobsorts = [[[] for _ in range(hyper_period)] for _ in range(len(problem.stations))]
         # 用于查看实时fitness的辅助变量
         fitness_vals = []
         # 初始化辅助变量（工时变量）
@@ -157,7 +153,7 @@ def evaluate(individual, problems_origin):
                         # 对当前station的job序列进行遍历，计算拖期
                         for job in station.queue:
                             # 如果遍历出有个job，已经超期，且还没执行完毕
-                            if job.deadline != 0 and job.deadline < time and job.exec_time > 0:
+                            if job.task.deadline != 0 and job.task.deadline < time and job.exec_time > 0:
                                 # 如果是非周期任务则零星拖期参数+1
                                 missed_deadlines += 1
                 # 判断是否执行完毕
@@ -168,11 +164,6 @@ def evaluate(individual, problems_origin):
                 else:
                     prcs_time_last = prcs_time_now
 
-                # 调试用
-                fitness_vals.append(missed_deadlines)
-
-        # 添加个体对本问题的调度方案
-        individual.scheme = jobsorts
         # 添加个体对本问题的适应度值
         individual.fitnesses.append(
             -missed_deadlines - process_time - 2 * individual.tree_complexity() - makespan - total_transtime)
@@ -184,9 +175,6 @@ def evaluate(individual, problems_origin):
         individual.draw_value = draw_value
         individual.makespan = makespan
         individual.total_transtime = total_transtime
-
-        # # 个体统计
-        # individual.stats.append()
 
     # 个体适应度值取列表平均数（目前只有一种）
     individual.fitness = mean(individual.fitnesses)

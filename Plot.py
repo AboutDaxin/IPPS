@@ -49,8 +49,8 @@ def plt_gantt(best):
         # 画job标注
         plt.text(v[0] + 0.1, k[2]-0.14, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
                  fontdict=fontdict_task)
-        plt.text(v[0] + 0.4, k[2], "Start:\n " + str(v[0]), fontdict=fontdict_time)
-        plt.text(v[0] + 0.4, k[2] - 0.35, "End:\n " + str(v[1]), fontdict=fontdict_time)
+        plt.text(v[0] + 0.5, k[2], "Start:\n " + str(v[0]), fontdict=fontdict_time)
+        plt.text(v[0] + 0.5, k[2] - 0.35, "End:\n " + str(v[1]), fontdict=fontdict_time)
 
         # 画transtime甘特图
         plt.barh(y=k[2], width=v[3], left=v[0]-v[3], edgecolor="black", color='black', alpha=0.1)
