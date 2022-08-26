@@ -45,8 +45,6 @@ class Job:
         self.exec_time = task.exec_time[0] if len(task.exec_time) != 0 else 0
         # job释放时间是当前时间
         self.release = time
-        # job交货期是任务原定交货期
-        self.deadline = task.deadline if task.deadline != 0 else 0
         self.priority = None
         self.has_run = False
 

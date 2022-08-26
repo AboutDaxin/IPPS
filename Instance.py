@@ -18,6 +18,6 @@ def Instance():
     for s in Input_outside.STATION:
         station_list.append(Station(s[0], s[1], s[2]))
     # 将该实例加入problems列表（第三个参数为限定时间）
-    problems.append(Problem(task_list, station_list, 24))
+    problems.append(Problem(task_list, station_list, 100))
     # 执行该问题
     gp.run(problems)

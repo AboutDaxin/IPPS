@@ -132,40 +132,18 @@ class Node:
 
         # 如果graft为true则执行交叉
         if graft:
-            # 设置一个参数，判断是否是叶节点
-            spam = False
             # 如果随机选中的节点是根节点
             if random_node == 1:
                 # 对实例使用参数中输入的节点进行代替
                 self = deepcopy(node)
             # 随机选中的节点不是根节点时
             else:
-                # # 从这个地方返回出来的current_node是一个node对象，但是对于current_node本身而言，它自己只是一个指针，指向实际存储node对象的物理地址
-                # # 这种写法，是使current_node这个指针重新偏向，指向常量1。这种，就是内存指针上的修改
-                # # current_node = 1
-                # if parent_list[len(parent_list) - 1] % 2 == 0:
-                #     # 这种写法，是使current_node这个指针指向的对象的left属性发生物理层面的修改
-                #     current_node.left = node
-                # else:
-                #     current_node.right = node
-                # 如果所选节点为叶节点
-                if current_node.op in LEAVES:
-                    print('PANIC!!!!!')
-                    print('OP:{}'.format(current_node.op))
-                    spam = True
                 # 如果所选节点属于左节点
                 if random_node % 2 == 0:
-                    # 如果是叶节点则执行输出
-                    if spam:
-                        print('CURRENT:{}'.format(current_node))
-                        print('LEFT:{}'.format(current_node.left))
                     # 将输入节点移植到current_node的左节点
                     current_node.left = deepcopy(node)
                 # 如果所选节点是右节点，同上
                 else:
-                    if spam:
-                        print('CURRENT:{}'.format(current_node))
-                        print('RIGHT:{}'.format(current_node.right))
                     current_node.right = deepcopy(node)
         # 返还所选节点
             return self
@@ -230,12 +208,12 @@ class Node:
             return min(self.left.interpret(job, station, current_time),
                        self.right.interpret(job, station, current_time))
         # 返还当前时间（输入的参数）
-        elif self.op == CURRENT_TIME:
+        elif self.op == TIS:
             return current_time
-        # 作业的交货期
-        elif self.op == J_DEADLINE:
-            return job.deadline if job.deadline != 0 else float('Inf')
-        # 是否阶段性，返还1,2,3
+        # 剩余工序数量
+        elif self.op == NOR:
+            return len(job.task.process)
+        # station剩余job数量
         elif self.op == NIQ:
             return len(station.queue)
         else:
@@ -270,10 +248,10 @@ class Node:
             return 'MAX(' + self.left.string() + ', ' + self.right.string() + ')'
         elif self.op == MIN:
             return 'MIN(' + self.left.string() + ', ' + self.right.string() + ')'
-        elif self.op == CURRENT_TIME:
+        elif self.op == TIS:
             return 'TIS'
-        elif self.op == J_DEADLINE:
-            return 'JOB_DEADLINE'
+        elif self.op == NOR:
+            return 'NOR'
         elif self.op == NIQ:
             return 'NIQ'
         else:
