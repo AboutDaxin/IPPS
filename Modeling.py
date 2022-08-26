@@ -18,7 +18,7 @@ class Task:
 
 # 定义工位类
 class Station:
-    def __init__(self, num=0, capacity=None, set_time=1):
+    def __init__(self, num=0, capacity=None, set_time=0):
         self.num = num
         self.capacity = capacity
         self.current_capacity = 0
