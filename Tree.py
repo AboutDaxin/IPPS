@@ -263,7 +263,7 @@ class Individual:
     # 初始化方法，输入一个简化系数
     def __init__(self, parsimony=0.5):
         # 定义一系列参数（适应度，状态，根，规模，简化参数）
-        self._size = None
+        self.size = None
         self._use_nonstatic = None
         self.scheme = None
         # 用于存储适应度值
@@ -280,7 +280,6 @@ class Individual:
         self.draw_value = []
         # 个体的root是一个Node类实体
         self.root = Node()
-        self.size = 0
         self.parsimony = parsimony
 
     # 富比较方法，比较实例的大小时比较其fitness
@@ -302,9 +301,9 @@ class Individual:
 
     # 实例化方法——个体复杂度
     def tree_complexity(self):
-        # _size为根节点的规模
-        self._size = self.root.size()
+        # _size为根节点的规模（节点数量）
+        self.size = self.root.size()
         # 判断个体是否为非静态（有非静态就返还True）
         self._use_nonstatic = self.root.uses_nonstatic()
         # 返还复杂度值（非静态个体系数取2，静态取1，应该用于判断适应度值）
-        return 1 - 1 / (self.root.size() * self.parsimony * (2 if self.root.uses_nonstatic() else 1))
+        return 1 - 1 / (self.size * (2 if self.root.uses_nonstatic() else 1))

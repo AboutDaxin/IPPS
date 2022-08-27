@@ -164,7 +164,7 @@ def evaluate(individual, problems_origin):
 
         # 添加个体对本问题的适应度值
         individual.fitnesses.append(
-            -missed_deadlines - process_time - 2 * individual.tree_complexity() - makespan - total_transtime)
+            -missed_deadlines - process_time - makespan - 2 * individual.tree_complexity())
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time

@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="v1.0.2&#10;更改为外部数据输入">
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="v1.0.3&#10;更改为外部数据输入&#10;增加更多terminal set">
+      <change beforePath="$PROJECT_DIR$/.idea/GPHH for Matrix Shop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GPHH for Matrix Shop.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Instance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/Modeling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/Operations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ternimal sets.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Ternimal sets.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tree.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,6 +35,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -47,15 +45,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/PCTemp/GPHH for Matrix Shop",
-    "settings.editor.selected.configurable": "http.proxy"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/PCTemp/GPHH for Matrix Shop&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.main">
     <configuration name="Evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="GPHH for Matrix Shop" />
@@ -240,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661494698900</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="v1.0.3&#10;更改为外部数据输入&#10;增加更多terminal set">
+      <created>1661508319750</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1661508319750</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -272,17 +277,15 @@
     <MESSAGE value="v1.1" />
     <MESSAGE value="v1.0.1" />
     <MESSAGE value="v1.0.2&#10;更改为外部数据输入" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.0.2&#10;更改为外部数据输入" />
+    <MESSAGE value="v1.0.2&#10;更改为外部数据输入&#10;增加更多terminal set" />
+    <MESSAGE value="v1.0.3&#10;更改为外部数据输入&#10;增加更多terminal set" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.0.3&#10;更改为外部数据输入&#10;增加更多terminal set" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Tree.py</url>
-          <line>214</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self._size" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
