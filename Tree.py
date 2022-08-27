@@ -216,6 +216,12 @@ class Node:
         # station剩余job数量
         elif self.op == NIQ:
             return len(station.queue)
+        # task剩余的工时
+        elif self.op == WR:
+            _sum = 0
+            for ele in job.task.exec_time:
+                _sum += ele
+            return _sum
         else:
             print('HELP')
 
@@ -254,6 +260,8 @@ class Node:
             return 'NOR'
         elif self.op == NIQ:
             return 'NIQ'
+        elif self.op == WR:
+            return 'WR'
         else:
             print('HELP')
 
