@@ -5,6 +5,7 @@ from math import floor, ceil
 import Evaluate
 from Tree import Individual
 import Plot
+import time
 
 
 # 设置一个常数K，用于后边锦标赛法选择子代
@@ -14,16 +15,22 @@ MAX_EVALUATIONS = 2000
 # 最小步长
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 3
+RUNS = 5
 
 
 # 定义GP类
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模1000，子规模20，变异率0.05，复制率0.1，简化参数0.5
-    def __init__(self, population_size=1000, children_size=20, mutation=0.05, duplication=0.1, parsimony=0.5):
+    def __init__(self, number, population_size=1000, children_size=20, mutation=0.05, duplication=0.1, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
+        self.number = number
         self.population = []
+        # 传参用
+        self.generations = None
+        self.data_avg = None
+        self.data_best = None
+        self.time_cost = None
 
         # grow方法生成半个种群
         # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
@@ -128,11 +135,12 @@ class GP:
         self.population = new_pop
 
     # 定义实例化方法——问题的适应度评估(GP类)
-    def evaluate(self, problems):
+    def evaluate(self, problems, whether_complexity):
+        whether_complexity = whether_complexity
         # 对子代中的个体进行遍历
         for individual in self.children:
             # 对每个个体执行核心evaluate(Individual类)方法
-            Evaluate.evaluate(individual, problems)
+            Evaluate.evaluate(individual, problems, whether_complexity)
             # 执行一次循环，评估次数参数+1
             self.evaluations += 1
 
@@ -142,7 +150,9 @@ class GP:
         return self.evaluations <= MAX_EVALUATIONS
 
     # 定义实例化方法——运行
-    def run(self, problems):
+    def run(self, problems, whether_complexity):
+        # 记录代码运行时间
+        start_time = time.process_time()
         # 设置bests为一个空列表，用于存储最优结果
         bests = []
         # 代数：最大评估次数2000减种群规模1000，除以子代规模20，结果向上取整加2，为52（保证与generation变量的匹配性）。
@@ -155,18 +165,18 @@ class GP:
         # 执行RUN次循环
         for run in range(RUNS):
             # 执行初始化操作
-            self.__init__()
+            self.__init__(number=self.number)
             # 初次评估，因为evaluate方法是针对children属性执行的，所以将population暂时转移了一下
             self.children = self.population
             # 执行适应度评估（GP类）
-            self.evaluate(problems)
+            self.evaluate(problems, whether_complexity)
             self.population = self.children
             # 列表生成式，遍历population中每个元素的fitness（Tree模块中生成），生成列表fitness_data
-            fitness_data = [i.fitness for i in self.population]
+            objective_data = [i.fitness for i in self.population]
             # 在data_best的第一个列表中添加最大的适应度值
-            data_best[0].append(max(fitness_data))
+            data_best[0].append(max(objective_data))
             # 在data_avg的第一个列表中添加平均适应度值
-            data_avg[0].append(mean(fitness_data))
+            data_avg[0].append(mean(objective_data))
 
             # 正式执行进化操作
             # 先设置一个新变量
@@ -179,7 +189,7 @@ class GP:
                 # 执行子代生成方法
                 self.childGeneration()
                 # 更新适应度评估（GP类，此方法执行一次，evaluations值会+20）
-                self.evaluate(problems)
+                self.evaluate(problems, whether_complexity)
                 # 执行再引入方法
                 self.reintroduction()
                 # 执行生存选择方法
@@ -187,11 +197,11 @@ class GP:
 
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的fitness，生成列表fitness_data
-                fitness_data = [i.fitness for i in self.population]
+                objective_data = [i.objective for i in self.population]
                 # 在data_best的第generation（2-52）个列表中添加最大的适应度值
-                data_best[generation].append(max(fitness_data))
+                data_best[generation].append(max(objective_data))
                 # 在data_avg的第generation（2-52）个列表中添加平均适应度值
-                data_avg[generation].append(mean(fitness_data))
+                data_avg[generation].append(mean(objective_data))
                 # 执行上述操作后，代数generation加1。跳出时正好为52，填满data列表
                 generation += 1
 
@@ -200,9 +210,11 @@ class GP:
             print('==== RUN {} ===='.format(run))
             # 设置当前最佳为population中的最优Individual（富比较）
             current_best = max(self.population)
-            # 输出最优Individual的适应度值和heuristic格式
-            print('best fitness: {}\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
-                  format(current_best.fitness, current_best.root.left.string(), current_best.root.right.string()))
+            # 输出最优Individual的适应度值和heuristic格式等信息
+            print('best fitness: {}\nbest objective: {}'
+                  '\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
+                  format(current_best.fitness, current_best.objective,
+                         current_best.root.left.string(), current_best.root.right.string()))
             # 输出目标函数值
             print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
                   format(current_best.total_process_time, current_best.total_due_time, current_best.makespan))
@@ -211,20 +223,30 @@ class GP:
             # 列表bests中添加本轮的最优值
             bests.append(current_best)
 
+        # 记录代码运行时间
+        end_time = time.process_time()
         # 结束上述所有轮运行，提示执行全局优化
         print('==== GLOBAL OPTIMUM ====')
-        # 去bests列表中的最大值
+        # 取bests列表中的最大值
         best = max(bests)
         # 输出最优值的适应度和根字符
-        print('best fitness: {}\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
-              format(best.fitness, best.root.left.string(), best.root.right.string()))
+        print('best fitness: {}\nbest objective: {}'
+              '\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
+              format(best.fitness, best.objective,
+                     best.root.left.string(), best.root.right.string()))
         # 输出目标函数值
         print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
               format(best.total_process_time, best.total_due_time, best.makespan))
         # 输出最优值的stats
-        print('stats: {{{}, total set time: {}}}'.format(best.stats, best.total_transtime))
+        print('stats: {{{}, total set time: {}, time cost: {}}}'.
+              format(best.stats, best.total_transtime, round(end_time-start_time, 5)))
 
-        # 输出进化过程图
-        Plot.plt_evolve(self, generations, data_avg, data_best)
+        # 传参用
+        self.generations = generations
+        self.data_avg = data_avg
+        self.data_best = data_best
+        self.time_cost = round(end_time-start_time, 5)
+        # # 输出进化过程图
+        # Plot.plt_evolve(self, generations, data_avg, data_best)
         # 输出最优方案的甘特图
-        Plot.plt_gantt(best)
+        Plot.plt_gantt(best, self.number)

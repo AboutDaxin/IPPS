@@ -277,6 +277,9 @@ class Individual:
         # 用于存储适应度值
         self.fitness = 0
         self.fitnesses = []
+        # 用于存储目标值
+        self.objective = 0
+        self.objectives = []
         # 用于存储各项目标函数值
         self.total_process_time = 0
         self.total_due_time = 0
@@ -313,5 +316,7 @@ class Individual:
         self.size = self.root.size()
         # 判断个体是否为非静态（有非静态就返还True）
         self._use_nonstatic = self.root.uses_nonstatic()
+        # 复杂度计算公式
+        complexity = 1 - 1 / (self.size * (2 if self.root.uses_nonstatic() else 1))
         # 返还复杂度值（非静态个体系数取2，静态取1，应该用于判断适应度值）
-        return 1 - 1 / (self.size * (2 if self.root.uses_nonstatic() else 1))
+        return complexity

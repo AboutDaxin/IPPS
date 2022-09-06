@@ -12,13 +12,13 @@ def plt_evolve(GP, generations, data_avg, data_best):
     # 生成画图x轴，从1000到2040（不含），间隔20。实际为1000-2020，共51段
     x = np.arange(GP.population_size, GP.population_size + GP.children_size * generations, GP.children_size)
     # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
-    plt.figure(1)
+    plt.figure(2)
     plt.plot(x, data_avg, x, data_best)
     plt.xlabel('Evaluations')
     plt.ylabel('Fitness')
 
 
-def plt_gantt(best):
+def plt_gantt(best, number):
     # 文字格式初始化
     # 使用中文文字
     plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -42,7 +42,7 @@ def plt_gantt(best):
     # 提取数据
     complete_data = dict(zip(best.draw_key, best.draw_value))
     # 绘图操作
-    plt.figure(2, (26, 12))
+    plt.figure(number, (26, 12))
     for k, v in complete_data.items():
         # 画job甘特图
         plt.barh(y=k[2], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])
@@ -63,11 +63,46 @@ def plt_gantt(best):
     for i in complete_data:
         m.append(i[2])
     for i in range(max(m)):
-        ylabels.append("制造单元" + str(i + 1))
+        ylabels.append("Station" + str(i + 1))
 
     plt.yticks(range(1, max(m)+1), ylabels, rotation=45)
-    plt.title("排产方案-甘特图")
-    plt.xlabel("加工时间 /h")
-    plt.ylabel("工作站")
+    if number == 0:
+        plt.title("Scheme-gantt-enable")
+    else:
+        plt.title("Scheme-gantt-disable")
+    plt.xlabel("process_time /h")
+    plt.ylabel("stations")
+
+
+def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, data_avg1, data_best1):
+    plt.figure(3)
+    # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
+    # 此处将data_avg中的每一个列表取平均值，生成一个新列表(还是共52个元素)
+    data_avg0 = [i for i in map(mean, data_avg0)]
+    # 同上
+    data_best0 = [i for i in map(mean, data_best0)]
+    # 生成画图x轴，从1000到2040（不含），间隔20。实际为1000-2020，共51段
+    x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
+    # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
+    plt.plot(x0, data_avg0, label='Enable_average')
+    plt.plot(x0, data_best0, label='Enable_best')
+
+    data_avg1 = [i for i in map(mean, data_avg1)]
+    data_best1 = [i for i in map(mean, data_best1)]
+    x1 = np.arange(GP1.population_size, GP1.population_size + GP1.children_size * generations1, GP1.children_size)
+    plt.plot(x1, data_avg1, label='Disable_average')
+    plt.plot(x1, data_best1, label='Disable_best')
+    plt.legend()
+    plt.xlabel('Evaluations')
+    plt.ylabel('Fitness')
+
+
+def plt_process_time(time0, time1):
+    plt.figure(4)
+    plt.bar(1, time0, width=0.3, facecolor='red', edgecolor='white')
+    plt.bar(2, time1, width=0.3, facecolor='blue', edgecolor='white')
+    plt.text(1, time0+0.05, '%.5f' % time0, ha='center', va='bottom')
+    plt.text(2, time1+0.05, '%.5f' % time1, ha='center', va='bottom')
+    plt.xticks([1, 2], ['Enable', 'Disable'])
 
     plt.show()

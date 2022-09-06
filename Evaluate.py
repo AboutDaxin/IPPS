@@ -6,14 +6,13 @@ from statistics import mean
 
 
 # 实例化方法——适应度评估（Individual类的evaluate）（核心）
-def evaluate(individual, problems_origin):
-    # 初始化每个Individual的fitnesses列表
-    individual.fitnesses = []
+def evaluate(individual, problems_origin, weather_complexity):
     # 复制源问题
     problems = copy.deepcopy(problems_origin)
     # 用于存储绘图用字典的key和value
     draw_key = []
     draw_value = []
+    weather_complexity = weather_complexity
 
     # 遍历problems中的每一项元素，执行评估（目前只有1个problem）
     for problem in problems:
@@ -164,7 +163,10 @@ def evaluate(individual, problems_origin):
 
         # 添加个体对本问题的适应度值
         individual.fitnesses.append(
-            -missed_deadlines - process_time - makespan - 2 * individual.tree_complexity())
+            -missed_deadlines - process_time - makespan
+            - (2 * individual.tree_complexity() if weather_complexity == 0 else 0))
+        # 添加个体对本问题的优化目标值（不考虑复杂度函数影响）
+        individual.objectives.append(-missed_deadlines - process_time - makespan)
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time
@@ -174,5 +176,7 @@ def evaluate(individual, problems_origin):
         individual.makespan = makespan
         individual.total_transtime = total_transtime
 
-    # 个体适应度值取列表平均数（目前只有一种）
+    # 个体适应度值取列表平均数（目前只有一个）
     individual.fitness = mean(individual.fitnesses)
+    # 个体目标函数值列表平均数（目前只有一个）
+    individual.objective = mean(individual.objectives)
