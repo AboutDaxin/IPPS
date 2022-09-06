@@ -12,10 +12,10 @@ import time
 K_CONST = 10
 # 最大个体评估次数
 MAX_EVALUATIONS = 2000
-# 最小步长
+# 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 5
+RUNS = 10
 
 
 # 定义GP类

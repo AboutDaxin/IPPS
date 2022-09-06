@@ -57,6 +57,8 @@ def plt_gantt(best, number):
         # 画transtime标注
         plt.text(v[0]-v[3] + 0.1, k[2], "Set-time:\n " + str(v[3]) if v[3] != 0 else '', fontdict=fontdict_time)
 
+    # 生成x轴刻度
+    plt.xticks(range(best.makespan+2))
     # 生成y轴label
     ylabels = []
     m = []
@@ -81,7 +83,7 @@ def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, dat
     data_avg0 = [i for i in map(mean, data_avg0)]
     # 同上
     data_best0 = [i for i in map(mean, data_best0)]
-    # 生成画图x轴，从1000到2040（不含），间隔20。实际为1000-2020，共51段
+    # 生成画图x轴
     x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
     # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
     plt.plot(x0, data_avg0, label='Enable_average')
@@ -94,7 +96,7 @@ def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, dat
     plt.plot(x1, data_best1, label='Disable_best')
     plt.legend()
     plt.xlabel('Evaluations')
-    plt.ylabel('Fitness')
+    plt.ylabel('Objectives')
 
 
 def plt_process_time(time0, time1):

@@ -12,7 +12,7 @@ def Instance():
     output_data_avg = []
     output_data_best = []
     output_time_cost = []
-    # 执行两次，对比复杂度
+    # 执行两次，对比复杂度函数影响
     for n in range(2):
         # 是否考虑复杂度参数
         whether_complexity = n
