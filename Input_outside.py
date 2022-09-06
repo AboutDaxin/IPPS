@@ -1,8 +1,11 @@
 import pandas as pd
 import os
 
+# 文件名
+filename = os.getcwd() + r'\input1.xlsx'
+
 # 读取excel的task
-data_task = pd.read_excel(os.getcwd() + r'\input.xlsx', sheet_name=0)
+data_task = pd.read_excel(filename, sheet_name=0)
 # 用于存储格式化后的总数据
 format_datas = []
 # 进行格式化
@@ -27,7 +30,7 @@ for i in range(data_task.shape[0]):
 TASK = format_datas
 
 # 读取excel的station
-data_station = pd.read_excel(os.getcwd() + r'\input.xlsx', sheet_name=1)
+data_station = pd.read_excel(filename, sheet_name=1)
 # 用于存储格式化后的总数据
 format_datas = []
 # 进行格式化

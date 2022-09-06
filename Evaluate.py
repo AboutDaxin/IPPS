@@ -68,7 +68,7 @@ def evaluate(individual, problems_origin, whether_complexity):
                                 else:
                                     station.priority = random.random()
                         # 确定被选中的station（优先值最小为最高级别）
-                        station_best = min(stations_temp)
+                        station_best = min(stations_temp) if stations_temp else print("no!")
                         # 在job序列对应的station中加入一个Job
                         station_best.queue.append(Job(task, station_best, time))
                         # 该station排序状态改为“需要重排”
