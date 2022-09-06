@@ -8,9 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Input.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Input.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Instance.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tree.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +32,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="9c7725f6610ac9dbcc0e2b39ce0b88aa0c1e9a1e" />
+        <entry key="$PROJECT_DIR$" value="018a3c7dc216db1d400f24fe645fe49183e867ec" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -165,9 +165,9 @@
       <list>
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Tree" />
-        <item itemvalue="Python.Evaluate" />
         <item itemvalue="Python.Input_outside (1)" />
         <item itemvalue="Python.Input_outside" />
+        <item itemvalue="Python.Evaluate" />
       </list>
     </recent_temporary>
   </component>
@@ -267,7 +267,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="github/based_heuristic_evaluate" />
+                        <option value="v1.0.0" />
                       </list>
                     </value>
                   </entry>
@@ -289,5 +289,13 @@
     <MESSAGE value="v1.0.3&#10;更改为外部数据输入&#10;增加更多terminal set" />
     <MESSAGE value="v1.0.4&#10;优化了树复杂度计算函数" />
     <option name="LAST_COMMIT_MESSAGE" value="v1.0.4&#10;优化了树复杂度计算函数" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="max(objective_data)" language="Python" />
+        <watch expression="objective_data" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

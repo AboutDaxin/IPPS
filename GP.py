@@ -10,7 +10,7 @@ import time
 
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 10
-# 最大评估次数
+# 最大个体评估次数
 MAX_EVALUATIONS = 2000
 # 最小步长
 MIN_DELTA = 0.001
@@ -20,8 +20,8 @@ RUNS = 5
 
 # 定义GP类
 class GP:
-    # 初始化方法：在GP类进行实例化时执行。参数为：种群规模1000，子规模20，变异率0.05，复制率0.1，简化参数0.5
-    def __init__(self, number, population_size=1000, children_size=20, mutation=0.05, duplication=0.1, parsimony=0.5):
+    # 初始化方法：在GP类进行实例化时执行。参数为：种群规模，子代规模，变异率0.05，复制率0.1，简化参数0.5
+    def __init__(self, number, population_size=500, children_size=30, mutation=0.05, duplication=0.1, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -53,7 +53,7 @@ class GP:
             self.population.append(individual)
 
         # 设置此实例的一些初始化变量
-        # “父”，“子”为空列表，父，子种群规模为预设的1000和20，变异率0.05，辅助率0.1，交叉率0.85
+        # “父”，“子”为空列表，父，变异率0.05，辅助率0.1，交叉率0.85
         # 评估次数初始值为0，简化参数为预设的0.5
         self.parents = []
         self.population_size = population_size
@@ -146,7 +146,7 @@ class GP:
 
     # 定义实例化方法——未结束
     def not_finished(self):
-        # 返还评估次数小于等于最大评估次数2000的布尔值
+        # 返还评估次数小于等于最大评估次数的布尔值
         return self.evaluations <= MAX_EVALUATIONS
 
     # 定义实例化方法——运行
@@ -155,9 +155,9 @@ class GP:
         start_time = time.process_time()
         # 设置bests为一个空列表，用于存储最优结果
         bests = []
-        # 代数：最大评估次数2000减种群规模1000，除以子代规模20，结果向上取整加2，为52（保证与generation变量的匹配性）。
+        # 代数：最大评估次数减种群初始规模，除以子代规模，结果向上取整加2，设结果为x（保证与generation变量的匹配性）。
         generations = ceil((MAX_EVALUATIONS - self.population_size) / self.children_size) + 2
-        # 生成了一个含52个空列表的列表，用于存储进化过程的数据
+        # 生成了一个含x个空列表的列表，用于存储进化过程的数据
         data_best = [[] for _ in range(generations)]
         # 同上
         data_avg = [[] for _ in range(generations)]

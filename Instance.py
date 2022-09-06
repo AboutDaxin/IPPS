@@ -10,13 +10,13 @@ def Instance():
     output_gp = []
     output_generations = []
     output_data_avg = []
-    output_best = []
+    output_data_best = []
     output_time_cost = []
     # 执行两次，对比复杂度
     for n in range(2):
         # 是否考虑复杂度参数
         whether_complexity = n
-        # 实例化一个gp
+        # 实例化一个gp，n为第几次运行
         gp = GP(number=n)
         # 创建一个存储实例问题的列表
         problems = []
@@ -36,12 +36,12 @@ def Instance():
         output_gp.append(gp)
         output_generations.append(gp.generations)
         output_data_avg.append(gp.data_avg)
-        output_best.append(gp.data_best)
+        output_data_best.append(gp.data_best)
         output_time_cost.append(gp.time_cost)
 
     # 绘图对比收敛速度
-    Plot.plt_compare(output_gp[0], output_generations[0], output_data_avg[0], output_best[0],
-                     output_gp[1], output_generations[1], output_data_avg[1], output_best[1])
+    Plot.plt_compare(output_gp[0], output_generations[0], output_data_avg[0], output_data_best[0],
+                     output_gp[1], output_generations[1], output_data_avg[1], output_data_best[1])
 
     # 绘图对比计算时间
     Plot.plt_process_time(output_time_cost[0], output_time_cost[1])

@@ -77,7 +77,7 @@ def plt_gantt(best, number):
 def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, data_avg1, data_best1):
     plt.figure(3)
     # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
-    # 此处将data_avg中的每一个列表取平均值，生成一个新列表(还是共52个元素)
+    # 此处将data_avg中的每一个列表取平均值(run次)，生成一个新列表(还是共52个元素)
     data_avg0 = [i for i in map(mean, data_avg0)]
     # 同上
     data_best0 = [i for i in map(mean, data_best0)]
