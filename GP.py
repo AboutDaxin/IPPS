@@ -11,7 +11,7 @@ import time
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 10
 # 最大个体评估次数
-MAX_EVALUATIONS = 2000
+MAX_EVALUATIONS = 3000
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
@@ -21,7 +21,7 @@ RUNS = 10
 # 定义GP类
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模，子代规模，变异率0.05，复制率0.1，简化参数0.5
-    def __init__(self, number, population_size=500, children_size=30, mutation=0.05, duplication=0.1, parsimony=0.5):
+    def __init__(self, number, population_size=500, children_size=50, mutation=0.05, duplication=0.1, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
