@@ -4,17 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="修改部分参数；绘图坐标修正；文字勘误">
-      <change afterPath="$PROJECT_DIR$/Input00.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Input01.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Input02.xlsx" afterDir="false" />
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="v1.1.0&#10;设置了3组时间数据；GP参数修改&#10;objective值有bug，待修复">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input1.xlsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Input_outside.py" beforeDir="false" afterPath="$PROJECT_DIR$/Input_outside.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +30,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="018a3c7dc216db1d400f24fe645fe49183e867ec" />
+        <entry key="$PROJECT_DIR$" value="v1.0.0" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -278,7 +272,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662459630863</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="v1.1.0&#10;设置了3组时间数据；GP参数修改&#10;objective值有bug，待修复">
+      <created>1662545737051</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1662545737051</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -292,7 +293,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="v1.0.0" />
+                        <option value="v1.1" />
                       </list>
                     </value>
                   </entry>
@@ -316,7 +317,8 @@
     <MESSAGE value="GP参数优化；复杂度函数权重修改；勘误" />
     <MESSAGE value="修改部分参数；绘图坐标修正；文字勘误；增加了一问题模型" />
     <MESSAGE value="修改部分参数；绘图坐标修正；文字勘误；增加一问题模型" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改部分参数；绘图坐标修正；文字勘误；增加一问题模型" />
+    <MESSAGE value="v1.1.0&#10;设置了3组时间数据；GP参数修改&#10;objective值有bug，待修复" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.1.0&#10;设置了3组时间数据；GP参数修改&#10;objective值有bug，待修复" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

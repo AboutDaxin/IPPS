@@ -15,13 +15,13 @@ MAX_EVALUATIONS = 3000
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 10
+RUNS = 5
 
 
 # 定义GP类
 class GP:
-    # 初始化方法：在GP类进行实例化时执行。参数为：种群规模，子代规模，变异率0.05，复制率0.1，简化参数0.5
-    def __init__(self, number, population_size=500, children_size=50, mutation=0.05, duplication=0.1, parsimony=0.5):
+    # 初始化方法：在GP类进行实例化时执行。参数为：种群规模，子代规模，变异率0.1，复制率为0.05，简化参数0.5
+    def __init__(self, number, population_size=500, children_size=100, mutation=0.15, duplication=0.05, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -53,7 +53,7 @@ class GP:
             self.population.append(individual)
 
         # 设置此实例的一些初始化变量
-        # “父”，“子”为空列表，父，变异率0.05，辅助率0.1，交叉率0.85
+        # “父”，“子”为空列表
         # 评估次数初始值为0，简化参数为预设的0.5
         self.parents = []
         self.population_size = population_size
@@ -69,7 +69,7 @@ class GP:
         # K-tournament法（锦标赛选择）
         # 设置实例的parents方法为一个空列表
         self.parents = []
-        # 执行一个筛选父代的循环，次数为要产生的子代的规模20
+        # 执行一个筛选父代的循环，次数为要产生的子代的规模为**
         for _ in range(self.children_size):
             # 在parents列表中增加个体
             # 使用了random模块的sample方法，K_CONST是片段长度，前边设置为常数10
@@ -81,7 +81,7 @@ class GP:
     def childGeneration(self):
         # 设置实例的children属性为一个空列表
         self.children = []
-        # 执行一个生成子代的循环，次数为要产生的子代的规模20，用于逐个判断是否要进行变异
+        # 执行一个生成子代的循环，次数为要产生的子代的规模**，用于逐个判断是否要进行变异
         for i in range(self.children_size):
             temprandom = random()
             # 变异：生成一个随机数，小于变异概率0.05就执行下列变异操作
@@ -99,7 +99,7 @@ class GP:
                 # 在children列表里添加该个体
                 self.children.append(parent_copy)
             # 执行复制操作
-            elif self.mutation <= temprandom < self.duplication:
+            elif self.mutation <= temprandom < self.duplication + self.mutation:
                 parent_copy = deepcopy(self.parents[i])
                 self.children.append(parent_copy)
             # 执行交叉操作
@@ -113,7 +113,7 @@ class GP:
 
     # 定义实例化方法——再引入
     def reintroduction(self):
-        # 在原有的population后添加生成的子代，共1000+20个
+        # 在原有的population后添加生成的子代，共500+50个
         self.population += self.children
         # 清空子代列表
         self.children = []
@@ -123,7 +123,7 @@ class GP:
         # 使用K-tournament方法进行筛选
         # 定义一个空列表new_pop，过渡用
         new_pop = []
-        # 循环执行的次数为种群规模，初始化定义为1000
+        # 循环执行的次数为种群规模，初始化定义为**
         for _ in range(self.population_size):
             # 锦标赛选择法，选取一个片段，取出最大值
             chosen = max(sample(self.population, K_CONST))

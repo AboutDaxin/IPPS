@@ -164,11 +164,11 @@ def evaluate(individual, problems_origin, whether_complexity):
 
         # 添加个体对本问题的适应度值
         individual.fitnesses.append(
-            -missed_deadlines - process_time - makespan
-            - ((missed_deadlines + process_time + makespan) * 0.02 * individual.tree_complexity()
+            (-missed_deadlines - process_time - makespan)/3
+            - ((missed_deadlines + process_time + makespan)/3 * 0.02 * individual.tree_complexity()
                if whether_complexity == 0 else 0))
         # 添加个体对本问题的优化目标值（不考虑复杂度函数影响）
-        individual.objectives.append(-missed_deadlines - process_time - makespan)
+        individual.objectives.append((-missed_deadlines - process_time - makespan)/3)
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time
