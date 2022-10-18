@@ -14,7 +14,7 @@ def Instance():
     output_time_cost = []
     # 执行两次，对比复杂度函数影响
     for n in range(2):
-        # 是否考虑复杂度参数
+        # 是否考虑复杂度参数(是0考虑，是1不考虑)
         whether_complexity = n
         # 实例化一个gp，n为第几次运行
         gp = GP(number=n)
@@ -45,5 +45,8 @@ def Instance():
 
     # 绘图对比计算时间
     Plot.plt_process_time(output_time_cost[0], output_time_cost[1])
+
+    # 绘图10次独立运行的优化目标提琴图
+    Plot.plt_violin(output_data_avg[0][-1], output_data_best[0][-1], output_data_avg[1][-1], output_data_best[1][-1])
 
 

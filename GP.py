@@ -15,7 +15,7 @@ MAX_EVALUATIONS = 3000
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 5
+RUNS = 10
 
 
 # 定义GP类

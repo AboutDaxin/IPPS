@@ -80,14 +80,16 @@ def plt_gantt(best, number):
     plt.ylabel("stations")
 
 
-# 生成目标值比较图
+# 生成目标比较图
 def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, data_avg1, data_best1):
     plt.figure('comparison_objective')
     # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
     # 此处将data_avg中的每一个列表取平均值(run次)，生成一个新列表(还是共52个元素)
     data_avg0 = [i for i in map(mean, data_avg0)]
-    # 同上
     data_best0 = [i for i in map(mean, data_best0)]
+    # 取相反数，绘图用
+    data_avg0 = [-i for i in data_avg0]
+    data_best0 = [-i for i in data_best0]
     # 生成画图x轴
     x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
     # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
@@ -96,6 +98,9 @@ def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, dat
 
     data_avg1 = [i for i in map(mean, data_avg1)]
     data_best1 = [i for i in map(mean, data_best1)]
+    # 取相反数，绘图用
+    data_avg1 = [-i for i in data_avg1]
+    data_best1 = [-i for i in data_best1]
     x1 = np.arange(GP1.population_size, GP1.population_size + GP1.children_size * generations1, GP1.children_size)
     plt.plot(x1, data_avg1, label='Disable_average')
     plt.plot(x1, data_best1, label='Disable_best')
@@ -112,5 +117,22 @@ def plt_process_time(time0, time1):
     plt.text(1, time0+0.05, '%.5f' % time0, ha='center', va='bottom')
     plt.text(2, time1+0.05, '%.5f' % time1, ha='center', va='bottom')
     plt.xticks([1, 2], ['Enable', 'Disable'])
+
+
+# 生成提琴图
+def plt_violin(data_avg0, data_best0, data_avg1, data_best1):
+    plt.figure('violin_objective')
+    # 取相反数，绘图用
+    data_avg0 = [-i for i in data_avg0]
+    data_best0 = [-i for i in data_best0]
+    data_avg1 = [-i for i in data_avg1]
+    data_best1 = [-i for i in data_best1]
+    # 绘图
+    plt.subplot(2, 1, 1)
+    plt.violinplot([data_avg0,  data_avg1], showmeans=True, showmedians=True)
+    plt.xticks([1, 2], ['Enable_avg', 'Disable_avg'])
+    plt.subplot(2, 1, 2)
+    plt.violinplot([data_best0, data_best1], showmeans=True, showmedians=True)
+    plt.xticks([1, 2], ['Enable_best', 'Disable_best'])
 
     plt.show()
