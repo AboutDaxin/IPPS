@@ -6,7 +6,7 @@ import Plot
 
 
 def Instance():
-    # 用于存储每次运行的关键数据
+    # 用于存储两次对比运行的关键数据
     output_gp = []
     output_generations = []
     output_data_avg = []
@@ -29,7 +29,7 @@ def Instance():
         for s in Input_outside.STATION:
             station_list.append(Station(s[0], s[1], s[2]))
         # 将该实例加入problems列表（第三个参数为限定时间）
-        problems.append(Problem(task_list, station_list, 100))
+        problems.append(Problem(task_list, station_list, 200))
         # 执行该问题
         gp.run(problems, whether_complexity)
         # 存储绘图用数据

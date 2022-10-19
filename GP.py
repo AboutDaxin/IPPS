@@ -10,7 +10,7 @@ import time
 
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 10
-# 最大个体评估次数
+# 最大个体评估次数（共26代，3100个个体，不包含初代500个）
 MAX_EVALUATIONS = 3000
 # 最小步长(弃用)
 MIN_DELTA = 0.001
@@ -20,7 +20,7 @@ RUNS = 10
 
 # 定义GP类
 class GP:
-    # 初始化方法：在GP类进行实例化时执行。参数为：种群规模，子代规模，变异率0.1，复制率为0.05，简化参数0.5
+    # 初始化方法：在GP类进行实例化时执行。参数为：种群规模500，子代规模100，变异率0.1，复制率为0.05，简化参数0.5
     def __init__(self, number, population_size=500, children_size=100, mutation=0.15, duplication=0.05, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
@@ -198,9 +198,9 @@ class GP:
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的fitness，生成列表fitness_data
                 objective_data = [i.objective for i in self.population]
-                # 在data_best的第generation（2-52）个列表中添加最大的适应度值
+                # 在data_best的第generation（2-**）个列表中添加最大的适应度值
                 data_best[generation].append(max(objective_data))
-                # 在data_avg的第generation（2-52）个列表中添加平均适应度值
+                # 在data_avg的第generation（2-**）个列表中添加平均适应度值
                 data_avg[generation].append(mean(objective_data))
                 # 执行上述操作后，代数generation加1。跳出时正好为52，填满data列表
                 generation += 1
@@ -210,11 +210,12 @@ class GP:
             print('==== RUN {} ===='.format(run))
             # 设置当前最佳为population中的最优Individual（富比较）
             current_best = max(self.population)
-            # 输出最优Individual的适应度值和heuristic格式等信息
-            print('best fitness: {}\nbest objective: {}'
+            # 输出最优及平均Individual的适应度值和heuristic格式等信息
+            print('best fitness: {}\nbest objective: {}\nmean objective: {}'
                   '\n(Min-based)heuristic-routing: {}\n(Min-based)heuristic-sequencing: {}'.
-                  format(current_best.fitness, current_best.objective,
+                  format(current_best.fitness, current_best.objective, data_avg[generation-1],
                          current_best.root.left.string(), current_best.root.right.string()))
+
             # 输出目标函数值
             print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
                   format(current_best.total_process_time, current_best.total_due_time, current_best.makespan))
