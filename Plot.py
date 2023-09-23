@@ -43,7 +43,7 @@ def plt_gantt(best, number):
     complete_data = dict(zip(best.draw_key, best.draw_value))
     # 绘图操作
     if number == 0:
-        plt.figure('gantt_enable', (26, 12))
+        plt.figure('Gantt GP_S', (26, 12))
     elif number == 1:
         plt.figure('gantt_disable', (26, 12))
     for k, v in complete_data.items():

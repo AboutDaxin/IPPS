@@ -13,11 +13,9 @@ def Instance():
     output_data_best = []
     output_time_cost = []
     # 执行两次，对比复杂度函数影响
-    for n in range(2):
+    for n in range(1):
         # 是否考虑复杂度参数(是0考虑，是1不考虑)
         whether_complexity = n
-        # 实例化一个gp，n为第几次运行
-        gp = GP(number=n)
         # 创建一个存储实例问题的列表
         problems = []
         # 实例化一个任务
@@ -30,6 +28,8 @@ def Instance():
             station_list.append(Station(s[0], s[1], s[2]))
         # 将该实例加入problems列表（第三个参数为限定时间）
         problems.append(Problem(task_list, station_list, 200))
+        # 实例化一个gp，n为第几次运行
+        gp = GP(number=n)
         # 执行该问题
         gp.run(problems, whether_complexity)
         # 存储绘图用数据
@@ -48,5 +48,3 @@ def Instance():
 
     # 绘图10次独立运行的优化目标提琴图
     Plot.plt_violin(output_data_avg[0][-1], output_data_best[0][-1], output_data_avg[1][-1], output_data_best[1][-1])
-
-

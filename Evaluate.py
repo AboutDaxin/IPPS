@@ -12,8 +12,6 @@ def evaluate(individual, problems_origin, whether_complexity):
     # 用于存储画gantt图用字典的key和value
     draw_key = []
     draw_value = []
-    # 是否考虑复杂度函数
-    whether_complexity = whether_complexity
 
     # 遍历problems中的每一项元素，执行评估（目前只有1个problem）
     for problem in problems:
