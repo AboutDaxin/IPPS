@@ -42,13 +42,13 @@ def evaluate(individual, problems_origin, whether_complexity):
                 # 遍历所有task，用于给每个station的job序列加入新Job
                 for task in problem.tasks:
                     # 到达一个判定点（task已到释放时间，还有未执行的工序，任务刚弹出需要重排）
-                    if task.release <= time and task.exec_time != [] and task.need_popped is True:
+                    if task.release <= time and task.process_time != [] and task.need_popped is True:
                         # 初始化一个备选station临时存放点
                         stations_temp = []
                         # 基于该task遍历所有station，释放一个job至对应station的job序列
                         for station in stations:
                             # 如果该task的最前道序可以使用该station
-                            if task.process[0] in station.capacity:
+                            if task.process_path[0] in station.capacity:
                                 # 生成备选station列表
                                 stations_temp.append(station)
                                 # 评估确定该station的优先级
@@ -90,17 +90,17 @@ def evaluate(individual, problems_origin, whether_complexity):
                         # # 对station进行能力变更
                         if station.current_capacity == 0:
                             # 初始情况
-                            station.current_capacity = station.queue[0].task.process[0] if station.queue else 0
+                            station.current_capacity = station.queue[0].task.process_path[0] if station.queue else 0
                             station.have_trans = True
                             station.current_trans_time = station.set_time
                             total_transtime += station.set_time
-                        elif station.current_capacity == station.queue[0].task.process[0] if station.queue else 0:
+                        elif station.current_capacity == station.queue[0].task.process_path[0] if station.queue else 0:
                             # 不需要转变
                             station.have_trans = False
                             station.current_trans_time = 0
                         else:
                             # 需要转变
-                            station.current_capacity = station.queue[0].task.process[0] if station.queue else 0
+                            station.current_capacity = station.queue[0].task.process_path[0] if station.queue else 0
                             station.have_trans = True
                             station.current_trans_time = station.set_time
                             total_transtime += station.set_time
@@ -120,25 +120,25 @@ def evaluate(individual, problems_origin, whether_complexity):
                         # station已经完成转变
                         else:
                             # 序列中第一个job执行时间-1
-                            station.queue[0].exec_time -= 1
+                            station.queue[0].process_time -= 1
                         # 总工时+1
                         process_time += 1
                         # 状态改为“正在运行”
                         station.queue[0].has_run = True
 
                         # 如果当前job执行完毕
-                        if station.queue[0].exec_time <= 0:
+                        if station.queue[0].process_time <= 0:
                             # 逐步生成draw_key中的元组(任务序号、工序序号、工作站序号)
-                            draw_key.append((station.queue[0].num, station.queue[0].task.process_num[0], station.num))
+                            draw_key.append((station.queue[0].task_index, station.queue[0].task.process_num[0], station.task_index))
                             # 逐步生成draw_value中的元组（开始时间、结束时间、持续时间、转换时间）
-                            draw_value.append((time + 1 - station.queue[0].task.exec_time[0],
-                                               time + 1, station.queue[0].task.exec_time[0],
+                            draw_value.append((time + 1 - station.queue[0].task.process_time[0],
+                                               time + 1, station.queue[0].task.process_time[0],
                                                station.set_time if station.have_trans else 0))
                             # 删除该task的当前序工艺类型
-                            station.queue[0].task.process.pop(0)
+                            station.queue[0].task.process_path.pop(0)
                             station.queue[0].task.process_num.pop(0)
                             # 删除该task的当前序执行时间
-                            station.queue[0].task.exec_time.pop(0)
+                            station.queue[0].task.process_time.pop(0)
                             # 该task状态变为刚弹出
                             station.queue[0].task.need_popped = True
                             # 状态改为未排完，需要重排
@@ -149,7 +149,7 @@ def evaluate(individual, problems_origin, whether_complexity):
                         # 对当前station的job序列进行遍历，计算拖期
                         for job in station.queue:
                             # 如果遍历出有个job，已经超期，且还没执行完毕
-                            if job.task.deadline != 0 and job.task.deadline < time and job.exec_time > 0:
+                            if job.task.deadline != 0 and job.task.deadline < time and job.process_time > 0:
                                 # 如果是非周期任务则零星拖期参数+1
                                 missed_deadlines += 1
                 # 判断是否执行完毕

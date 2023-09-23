@@ -167,17 +167,17 @@ class Node:
         elif self.op == WIQ:
             t = 0
             for i in station.queue:
-                t += i.exec_time
+                t += i.process_time
             return t
         # 释放时间
         elif self.op == rJ:
             return job.task.release
         # 阶段
         elif self.op == NPT:
-            return job.task.exec_time[1] if len(job.task.exec_time) > 1 else 0
+            return job.task.process_time[1] if len(job.task.process_time) > 1 else 0
         # 执行时间
         elif self.op == PT:
-            return job.task.exec_time[0]
+            return job.task.process_time[0]
         # 单项任务的交货期
         elif self.op == DD:
             return job.task.deadline if job.task.deadline != 0 else float('Inf')
@@ -212,14 +212,14 @@ class Node:
             return current_time
         # 剩余工序数量
         elif self.op == NOR:
-            return len(job.task.process)
+            return len(job.task.process_path)
         # station剩余job数量
         elif self.op == NIQ:
             return len(station.queue)
         # task剩余的工时
         elif self.op == WR:
             _sum = 0
-            for ele in job.task.exec_time:
+            for ele in job.task.process_time:
                 _sum += ele
             return _sum
         else:

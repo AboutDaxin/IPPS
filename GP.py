@@ -217,7 +217,7 @@ class GP:
                          current_best.root.left.string(), current_best.root.right.string()))
 
             # 输出目标函数值
-            print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
+            print('total process_path time: {}\ntotal due time: {}\nmakespan: {}'.
                   format(current_best.total_process_time, current_best.total_due_time, current_best.makespan))
             # 输出stats值
             print('stats:{{{}, total set time: {}}}'.format(current_best.stats, current_best.total_transtime))
@@ -236,7 +236,7 @@ class GP:
               format(best.fitness, best.objective,
                      best.root.left.string(), best.root.right.string()))
         # 输出目标函数值
-        print('total process time: {}\ntotal due time: {}\nmakespan: {}'.
+        print('total process_path time: {}\ntotal due time: {}\nmakespan: {}'.
               format(best.total_process_time, best.total_due_time, best.makespan))
         # 输出最优值的stats
         print('stats: {{{}, total set time: {}, time cost: {}}}'.

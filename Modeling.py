@@ -1,14 +1,21 @@
 # 定义任务类
 class Task:
-    # 初始化方法，定义任务层的一些属性，初始化为0
-    def __init__(self, num=0, process=None, exec_time=None, release=0, deadline=0, weight=1):
-        self.num = num
-        self.process = process
-        self.process_num = [i+1 for i in range(len(process))]
+    # 初始化方法，定义任务层的一些属性
+    # 任务索引，工序串索引，串内工艺路径，对应工时，前序约束工序串索引，是否刚性线，到达时间，交货期，权重
+    def __init__(self, task_index=0, process_string_index=0, process_path=None,
+                 process_time=None, pre_process_constraint=0, whether_rigid=0, release=0, deadline=0, weight=0):
+        # 固有属性
+        self.task_index = task_index
+        self.process_string_index = process_string_index
+        self.process_path = process_path
+        self.process_time = process_time
+        self.pre_process_constraint = pre_process_constraint
+        self.whether_rigid = whether_rigid
         self.release = release
         self.deadline = deadline
         self.weight = weight
-        self.exec_time = exec_time
+        # 衍生属性
+        self.process_num = [i + 1 for i in range(len(process_path))]
         self.priority = None
         self.need_popped = True
 
@@ -41,9 +48,9 @@ class Job:
     def __init__(self, task: Task, station: Station, time):
         self.task = task
         self.station = station
-        self.num = task.num
+        self.num = task.task_index
         # job剩余执行时间
-        self.exec_time = task.exec_time[0] if len(task.exec_time) != 0 else 0
+        self.exec_time = task.process_time[0] if len(task.process_time) != 0 else 0
         # job释放时间是当前时间
         self.release = time
         self.priority = None

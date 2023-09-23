@@ -21,7 +21,7 @@ def Instance():
         # 实例化一个任务
         task_list = []
         for t in Input_outside.TASK:
-            task_list.append(Task(t[0], t[1], t[2], t[3], t[4]))
+            task_list.append(Task(t[0], t[1], t[2], t[3], t[4], t[5]))
         # 实例化一个车间
         station_list = []
         for s in Input_outside.STATION:

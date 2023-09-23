@@ -2,8 +2,8 @@
 # 静态参数
 CONST = 0  # 随机化常数（0-1）
 rJ = 3  # job释放时间（release of job）
-NPT = 4  # job下道序的执行时间（next process time）
-PT = 5  # job当前序的执行时间（process time）
+NPT = 4  # job下道序的执行时间（next process_path time）
+PT = 5  # job当前序的执行时间（process_path time）
 DD = 6  # job的交货期（due date）
 # W = 17  # job权重（weight）
 
