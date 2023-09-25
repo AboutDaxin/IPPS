@@ -1,19 +1,18 @@
-import random
-from random import shuffle
 import copy
 from Modeling import Job
-from statistics import mean
 
 
 # 实例化方法——适应度评估（Individual类的evaluate）（核心）
-def evaluate(individual, problems_origin, whether_complexity):
+def evaluate(individual, problems_origin, test_index):
     # 复制源问题
     problems = copy.deepcopy(problems_origin)
     # 用于存储画gantt图用字典的key和value
     draw_key = []
     draw_value = []
+    # 是否考虑复杂度函数
+    test_index = test_index
 
-    # 遍历problems中的每一项元素，执行评估（目前只有1个problem）
+    # 遍历problems中的每一项元素（目前只有1个problem）
     for problem in problems:
         # hyper_period属性传参
         hyper_period = problem.hyper_period
@@ -32,6 +31,11 @@ def evaluate(individual, problems_origin, whether_complexity):
         prcs_time_last = 0
         # 初始化总作业序列列表
         stations = [station for station in problem.stations]
+        # 计算最大释放时间
+        task_release = []
+        for i in problem.tasks:
+            task_release.append(i.release)
+        release_max = max(task_release)
 
         # 遍历每个时刻，执行过程仿真
         for time in range(hyper_period + 1):
@@ -48,7 +52,7 @@ def evaluate(individual, problems_origin, whether_complexity):
                         # 基于该task遍历所有station，释放一个job至对应station的job序列
                         for station in stations:
                             # 如果该task的最前道序可以使用该station
-                            if task.process_path[0] in station.capacity:
+                            if task.process_path[0] in station.capability:
                                 # 生成备选station列表
                                 stations_temp.append(station)
                                 # 评估确定该station的优先级
@@ -64,7 +68,7 @@ def evaluate(individual, problems_origin, whether_complexity):
                                     station.priority = priority_temp
                                 # 如果该station序列中没有任务，则优先值为随机数
                                 else:
-                                    station.priority = random.random()
+                                    station.priority = 0
                         # 确定被选中的station（优先值最小为最高级别）
                         station_best = min(stations_temp) if stations_temp else print("no!")
                         # 在job序列对应的station中加入一个Job
@@ -83,27 +87,25 @@ def evaluate(individual, problems_origin, whether_complexity):
                         for job in station.queue:
                             # 计算该job的优先级数值
                             job.priority = individual.root.right.interpret(job, station, time)
-                        # 随机排列该station的job序列
-                        shuffle(station.queue)
                         # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
                         station.queue.sort()
                         # # 对station进行能力变更
-                        if station.current_capacity == 0:
+                        if station.current_capability == 0:
                             # 初始情况
-                            station.current_capacity = station.queue[0].task.process_path[0] if station.queue else 0
+                            station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
                             station.have_trans = True
-                            station.current_trans_time = station.set_time
-                            total_transtime += station.set_time
-                        elif station.current_capacity == station.queue[0].task.process_path[0] if station.queue else 0:
+                            station.current_trans_time = station.configuration_time
+                            total_transtime += station.configuration_time
+                        elif station.current_capability == station.queue[0].task.process_path[0] if station.queue else 0:
                             # 不需要转变
                             station.have_trans = False
                             station.current_trans_time = 0
                         else:
                             # 需要转变
-                            station.current_capacity = station.queue[0].task.process_path[0] if station.queue else 0
+                            station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
                             station.have_trans = True
-                            station.current_trans_time = station.set_time
-                            total_transtime += station.set_time
+                            station.current_trans_time = station.configuration_time
+                            total_transtime += station.configuration_time
                         # 排序状态变为已排完，不需要重排
                         station.have_popped = True
 
@@ -113,7 +115,7 @@ def evaluate(individual, problems_origin, whether_complexity):
                     # 如果该station还存在job则执行
                     if len(station.queue) > 0:
                         # station正在发生转变
-                        if station.have_trans and 0 < station.current_trans_time <= station.set_time:
+                        if station.have_trans and 0 < station.current_trans_time <= station.configuration_time:
                             # 转换消耗时间赋值
                             station.current_trans_time -= 1
                             station.have_trans = True
@@ -129,11 +131,11 @@ def evaluate(individual, problems_origin, whether_complexity):
                         # 如果当前job执行完毕
                         if station.queue[0].process_time <= 0:
                             # 逐步生成draw_key中的元组(任务序号、工序序号、工作站序号)
-                            draw_key.append((station.queue[0].task_index, station.queue[0].task.process_num[0], station.task_index))
+                            draw_key.append((station.queue[0].task_index, station.queue[0].task.process_num[0], station.station_index))
                             # 逐步生成draw_value中的元组（开始时间、结束时间、持续时间、转换时间）
                             draw_value.append((time + 1 - station.queue[0].task.process_time[0],
                                                time + 1, station.queue[0].task.process_time[0],
-                                               station.set_time if station.have_trans else 0))
+                                               station.configuration_time if station.have_trans else 0))
                             # 删除该task的当前序工艺类型
                             station.queue[0].task.process_path.pop(0)
                             station.queue[0].task.process_num.pop(0)
@@ -154,19 +156,21 @@ def evaluate(individual, problems_origin, whether_complexity):
                                 missed_deadlines += 1
                 # 判断是否执行完毕
                 prcs_time_now = process_time
-                if prcs_time_last == prcs_time_now:
+                if prcs_time_last == prcs_time_now and time > release_max:
                     makespan = time
                     have_finished = True
                 else:
                     prcs_time_last = prcs_time_now
 
         # 添加个体对本问题的适应度值
-        individual.fitnesses.append(
-            (-missed_deadlines - process_time - makespan)/3
-            - ((missed_deadlines + process_time + makespan)/3 * 0.02 * individual.tree_complexity()
-               if whether_complexity == 0 else 0))
+        obj = (-missed_deadlines - process_time - makespan)/3
+        if test_index == 1 or test_index == 3:
+            ftns = obj + obj * 0.2 * individual.tree_complexity()
+        else:
+            ftns = obj + 0 * individual.tree_complexity()
+        individual.fitnesses.append(ftns)
         # 添加个体对本问题的优化目标值（不考虑复杂度函数影响）
-        individual.objectives.append((-missed_deadlines - process_time - makespan)/3)
+        individual.objectives.append(obj)
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time
@@ -176,7 +180,7 @@ def evaluate(individual, problems_origin, whether_complexity):
         individual.makespan = makespan
         individual.total_transtime = total_transtime
 
-    # 个体适应度值取列表平均数（目前只有一个）
-    individual.fitness = mean(individual.fitnesses)
-    # 个体目标函数值列表平均数（目前只有一个）
-    individual.objective = mean(individual.objectives)
+    # 取最新个体适应度值
+    individual.fitness = individual.fitnesses[-1]
+    # 取最新个体目标函数值
+    individual.objective = individual.objectives[-1]

@@ -41,9 +41,9 @@ class Node:
         # 深度参数不是0时，op为OPSUM（OPERATORS并LEAVES）中的一个随机项
         else:
             # 保证深度>1的情况下，有0.5的概率在节点选择操作算子
-            if depth_limit == 5 or round(random(), 3) < 0.5:
+            if depth_limit == 4 or round(random(), 3) < 0.8:
                 self.op = choice(OPERATORS)
-            # 有0.5的概率选择叶节点
+            # 有概率选择叶节点
             else:
                 self.op = choice(LEAVES)
         # 如果op选中的是OPERATORS中的项，则对左右节点进行递归，limit减1，
@@ -75,6 +75,81 @@ class Node:
         # 如果节点的op是一个常系数（LEAVES中），则节点的val值为一个01随机数（保留3位小数）
         if self.op == CONST:
             self.val = round(random(), 3)
+
+    # 实例化方法——生成解码索引
+    def decoding_index(self):
+        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
+        def choose_r(tree_array1, node1, i):
+            # 如果节点实例的左节点非空且不是叶节点执行以下操作
+            if node1.left is not None and node1.op not in LEAVES:
+                # 下一个索引翻倍
+                next_idx = 2 * i
+                # 在当前辅助树列表中添加该索引
+                tree_array1.append(next_idx)
+                # 对当前实例左节点进行递归
+                tree_array1 = choose_r(tree_array1, node1.left, next_idx)
+            # 同上（除根节点外，左节点索引为偶数，右节点为奇数）
+            if node1.right is not None and node1.op not in LEAVES:
+                next_idx = (2 * i) + 1
+                tree_array1.append(next_idx)
+                tree_array1 = choose_r(tree_array1, node1.right, next_idx)
+            # 返还该树列表
+            return tree_array1
+        # 初始化一个树列表
+        tree_array = [1]
+        # 对当前节点执行choose_r，生成辅助列表tree_array
+        tree_array = choose_r(tree_array, self, 1)
+        return tree_array
+
+    # 实例化方法——生成解码算子
+    def decoding_operation(self):
+        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
+        def choose_r(tree_array1, node1, i):
+            # 如果节点实例的左节点非空且不是叶节点执行以下操作
+            if node1.left is not None and node1.op not in LEAVES:
+                # 下一个索引翻倍
+                next_idx = 2 * i
+                # 在当前辅助树列表中添加该索引
+                tree_array1.append(node1.left.op)
+                # 对当前实例左节点进行递归
+                tree_array1 = choose_r(tree_array1, node1.left, next_idx)
+            # 同上（除根节点外，左节点索引为偶数，右节点为奇数）
+            if node1.right is not None and node1.op not in LEAVES:
+                next_idx = (2 * i) + 1
+                tree_array1.append(node1.right.op)
+                tree_array1 = choose_r(tree_array1, node1.right, next_idx)
+            # 返还该树列表
+            return tree_array1
+        # 初始化一个树列表
+        tree_array = [self.op]
+        # 对当前节点执行choose_r，生成辅助列表tree_array
+        tree_array = choose_r(tree_array, self, 1)
+        return tree_array
+
+    # 实例化方法——生成解码node值
+    def decoding_val(self):
+        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
+        def choose_r(tree_array1, node1, i):
+            # 如果节点实例的左节点非空且不是叶节点执行以下操作
+            if node1.left is not None and node1.op not in LEAVES:
+                # 下一个索引翻倍
+                next_idx = 2 * i
+                # 在当前辅助树列表中添加该索引
+                tree_array1.append(node1.left.val)
+                # 对当前实例左节点进行递归
+                tree_array1 = choose_r(tree_array1, node1.left, next_idx)
+            # 同上（除根节点外，左节点索引为偶数，右节点为奇数）
+            if node1.right is not None and node1.op not in LEAVES:
+                next_idx = (2 * i) + 1
+                tree_array1.append(node1.right.val)
+                tree_array1 = choose_r(tree_array1, node1.right, next_idx)
+            # 返还该树列表
+            return tree_array1
+        # 初始化一个树列表
+        tree_array = [self.val]
+        # 对当前节点执行choose_r，生成辅助列表tree_array
+        tree_array = choose_r(tree_array, self, 1)
+        return tree_array
 
     # 实例化方法——选择节点
     # 总结：返还Node的随机节点被node替换后的新Node）
@@ -308,6 +383,14 @@ class Individual:
     # 实例化方法——调用Node类的重组方法
     def recombine(self, other):
         self.root.recombine(other.root)
+        return self
+
+    def left_recombine(self, other):
+        self.root.left.recombine(other.root.left)
+        return self
+
+    def right_recombine(self, other):
+        self.root.right.recombine(other.root.right)
         return self
 
     # 实例化方法——个体复杂度

@@ -3,7 +3,7 @@ class Task:
     # 初始化方法，定义任务层的一些属性
     # 任务索引，工序串索引，串内工艺路径，对应工时，前序约束工序串索引，是否刚性线，到达时间，交货期，权重
     def __init__(self, task_index=0, process_string_index=0, process_path=None,
-                 process_time=None, pre_process_constraint=0, whether_rigid=0, release=0, deadline=0, weight=0):
+                 process_time=None, pre_process_constraint=None, whether_rigid=0, release=0, deadline=0, weight=0):
         # 固有属性
         self.task_index = task_index
         self.process_string_index = process_string_index
@@ -26,11 +26,11 @@ class Task:
 
 # 定义工位类
 class Station:
-    def __init__(self, num=0, capacity=None, set_time=0):
-        self.num = num
-        self.capacity = capacity
-        self.current_capacity = 0
-        self.set_time = set_time
+    def __init__(self, station_index=0, capability=None, configuration_time=0):
+        self.station_index = station_index
+        self.capability = capability
+        self.current_capability = 0
+        self.configuration_time = configuration_time
         self.current_trans_time = 0
         self.have_trans = False
         self.queue = []
@@ -44,13 +44,13 @@ class Station:
 
 # 定义作业类（一个task在station执行时作为一个job）
 class Job:
-    # 初始化方法，定义作业层的一些属性（：Task为声明task的类型，有没有无所谓）
+    # 初始化方法，定义作业层的一些属性（Task为声明task的类型）
     def __init__(self, task: Task, station: Station, time):
         self.task = task
         self.station = station
-        self.num = task.task_index
+        self.task_index = task.task_index
         # job剩余执行时间
-        self.exec_time = task.process_time[0] if len(task.process_time) != 0 else 0
+        self.process_time = task.process_time[0] if len(task.process_time) != 0 else 0
         # job释放时间是当前时间
         self.release = time
         self.priority = None
