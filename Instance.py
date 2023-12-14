@@ -12,10 +12,11 @@ def Instance():
     output_data_avg = []
     output_data_best = []
     output_time_cost = []
+    test_number = 2
     # 执行两次，对比复杂度函数影响
-    for n in range(2):
+    for n in range(test_number):
         # 是否考虑复杂度参数(是0考虑，是1不考虑)
-        whether_complexity = n
+        test_index = n
         # 创建一个存储实例问题的列表
         problems = []
         # 实例化一个任务
@@ -31,7 +32,7 @@ def Instance():
         # 实例化一个gp，n为第几次运行
         gp = GP(number=n)
         # 执行该问题
-        gp.run(problems, whether_complexity)
+        gp.run(problems, test_index)
         # 存储绘图用数据
         output_gp.append(gp)
         output_generations.append(gp.generations)
@@ -40,11 +41,10 @@ def Instance():
         output_time_cost.append(gp.time_cost)
 
     # 绘图对比收敛速度
-    Plot.plt_compare(output_gp[0], output_generations[0], output_data_avg[0], output_data_best[0],
-                     output_gp[1], output_generations[1], output_data_avg[1], output_data_best[1])
+    Plot.plt_compare(test_number, output_gp, output_generations, output_data_avg, output_data_best)
 
     # 绘图对比计算时间
-    Plot.plt_process_time(output_time_cost[0], output_time_cost[1])
+    Plot.plt_process_time(test_number, output_time_cost)
 
     # 绘图10次独立运行的优化目标提琴图
-    Plot.plt_violin(output_data_avg[0][-1], output_data_best[0][-1], output_data_avg[1][-1], output_data_best[1][-1])
+    Plot.plt_violin(test_number, output_data_avg, output_data_best)

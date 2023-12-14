@@ -81,58 +81,67 @@ def plt_gantt(best, number):
 
 
 # 生成目标比较图
-def plt_compare(GP0, generations0, data_avg0, data_best0, GP1, generations1, data_avg1, data_best1):
-    plt.figure('comparison_objective')
-    # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
-    # 此处将data_avg中的每一个列表取平均值(run次)，生成一个新列表(还是共52个元素)
-    data_avg0 = [i for i in map(mean, data_avg0)]
-    data_best0 = [i for i in map(mean, data_best0)]
-    # 取相反数，绘图用
-    data_avg0 = [-i for i in data_avg0]
-    data_best0 = [-i for i in data_best0]
-    # 生成画图x轴
-    x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
-    # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
-    plt.plot(x0, data_avg0, label='Enable_average')
-    plt.plot(x0, data_best0, label='Enable_best')
-
-    data_avg1 = [i for i in map(mean, data_avg1)]
-    data_best1 = [i for i in map(mean, data_best1)]
-    # 取相反数，绘图用
-    data_avg1 = [-i for i in data_avg1]
-    data_best1 = [-i for i in data_best1]
-    x1 = np.arange(GP1.population_size, GP1.population_size + GP1.children_size * generations1, GP1.children_size)
-    plt.plot(x1, data_avg1, label='Disable_average')
-    plt.plot(x1, data_best1, label='Disable_best')
-    plt.legend()
-    plt.xlabel('Evaluations')
-    plt.ylabel('Objectives')
+def plt_compare(test_number, GP, generations, data_avg, data_best):
+    plt.figure('Comparison_Objective')
+    for n in range(test_number):
+        GP0 = GP[n]
+        generations0 = generations[n]
+        data_avg0 = data_avg[n]
+        data_best0 = data_best[n]
+        # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
+        # 此处将data_avg中的每一个列表取平均值(run次)，生成一个新列表
+        data_avg0 = [i for i in map(mean, data_avg0)]
+        data_best0 = [i for i in map(mean, data_best0)]
+        # 取相反数，绘图用
+        data_avg0 = [-i for i in data_avg0]
+        data_best0 = [-i for i in data_best0]
+        # 生成画图x轴
+        x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
+        # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
+        plt.plot(x0, data_avg0, label='Algorithm {0} Average'.format(n+1))
+        plt.plot(x0, data_best0, label='Algorithm {0} Best'.format(n+1))
+    plt.legend(fontsize=12)
+    plt.xlabel('Evaluations', fontsize=12)
+    plt.ylabel('Objectives', fontsize=12)
 
 
 # 生成运算时间比较图
-def plt_process_time(time0, time1):
+def plt_process_time(test_number, time):
     plt.figure('time_cost')
-    plt.bar(1, time0, width=0.3, facecolor='red', edgecolor='white')
-    plt.bar(2, time1, width=0.3, facecolor='blue', edgecolor='white')
-    plt.text(1, time0+0.05, '%.5f' % time0, ha='center', va='bottom')
-    plt.text(2, time1+0.05, '%.5f' % time1, ha='center', va='bottom')
-    plt.xticks([1, 2], ['Enable', 'Disable'])
+    for n in range(test_number):
+        time0 = time[n]
+        plt.bar(n+1, time0, width=0.3, edgecolor='white')
+        plt.text(n+1, time0+0.05, '%.5f' % time0, ha='center', va='bottom')
+        # x刻度赋值
+        key = [i+1 for i in range(test_number)]
+        value = ['Algorithm {0}'.format(i+1) for i in range(test_number)]
+        plt.xticks(key, value)
 
 
 # 生成提琴图
-def plt_violin(data_avg0, data_best0, data_avg1, data_best1):
+def plt_violin(test_number, data_avg, data_best):
     plt.figure('violin_objective')
-    # 取相反数，绘图用
-    data_avg0 = [-i for i in data_avg0]
-    data_best0 = [-i for i in data_best0]
-    data_avg1 = [-i for i in data_avg1]
-    data_best1 = [-i for i in data_best1]
+    data_avg_total = []
+    data_best_total = []
+    for n in range(test_number):
+        data_avg0 = data_avg[n][-1]
+        data_best0 = data_best[n][-1]
+        # 取相反数，绘图用
+        data_avg0 = [-i for i in data_avg0]
+        data_best0 = [-i for i in data_best0]
+        data_avg_total.append(data_avg0)
+        data_best_total.append(data_best0)
+
     # 绘图
     plt.subplot(2, 1, 1)
-    plt.violinplot([data_avg0,  data_avg1], showmeans=True, showmedians=True)
-    plt.xticks([1, 2], ['Enable_avg', 'Disable_avg'])
+    plt.violinplot(data_avg_total, showmeans=True, showmedians=True)
+    key = [i + 1 for i in range(test_number)]
+    value = ['Algorithm {0}'.format(i + 1) for i in range(test_number)]
+    plt.xticks(key, value)
     plt.subplot(2, 1, 2)
-    plt.violinplot([data_best0, data_best1], showmeans=True, showmedians=True)
-    plt.xticks([1, 2], ['Enable_best', 'Disable_best'])
+    plt.violinplot(data_best_total, showmeans=True, showmedians=True)
+    key = [i + 1 for i in range(test_number)]
+    value = ['Algorithm {0}'.format(i + 1) for i in range(test_number)]
+    plt.xticks(key, value)
 
     plt.show()
