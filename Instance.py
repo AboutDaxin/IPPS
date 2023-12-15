@@ -42,7 +42,8 @@ def Instance():
         output_time_cost.append(gp.time_cost)
 
     # 绘图对比收敛速度
-    Plot.plt_compare(test_number, output_gp, output_generations, output_data_avg, output_data_best)
+    Plot.plt_compare1(test_number, output_gp, output_generations, output_data_avg)
+    Plot.plt_compare2(test_number, output_gp, output_generations, output_data_best)
 
     # 绘图对比计算时间
     Plot.plt_process_time(test_number, output_time_cost)

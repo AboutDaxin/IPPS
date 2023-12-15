@@ -42,7 +42,7 @@ def plt_gantt(best, number):
     # 提取数据
     complete_data = dict(zip(best.draw_key, best.draw_value))
     # 绘图操作
-    for n in range(number):
+    for n in range(number+1):
         plt.figure('Algorithm {0} Gantt'.format(n), (26, 12))
         for k, v in complete_data.items():
             # 画job甘特图
@@ -79,24 +79,40 @@ def plt_gantt(best, number):
 
 
 # 生成目标比较图
-def plt_compare(test_number, GP, generations, data_avg, data_best):
+def plt_compare1(test_number, GP, generations, data_avg):
     plt.figure('Comparison_Objective')
     for n in range(test_number):
         GP0 = GP[n]
         generations0 = generations[n]
         data_avg0 = data_avg[n]
-        data_best0 = data_best[n]
         # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
         # 此处将data_avg中的每一个列表取平均值(run次)，生成一个新列表
         data_avg0 = [i for i in map(mean, data_avg0)]
-        data_best0 = [i for i in map(mean, data_best0)]
         # 取相反数，绘图用
         data_avg0 = [-i for i in data_avg0]
-        data_best0 = [-i for i in data_best0]
         # 生成画图x轴
         x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
         # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
         plt.plot(x0, data_avg0, label='Algorithm {0} Average'.format(n+1))
+    plt.legend(fontsize=12)
+    plt.xlabel('Evaluations', fontsize=12)
+    plt.ylabel('Objectives', fontsize=12)
+
+
+def plt_compare2(test_number, GP, generations, data_best):
+    plt.figure('Comparison_Objective')
+    for n in range(test_number):
+        GP0 = GP[n]
+        generations0 = generations[n]
+        data_best0 = data_best[n]
+        # map：映射，让data中的元素依次使用mean方法执行，返还值生成一个列表
+        # 此处将data_avg中的每一个列表取平均值(run次)，生成一个新列表
+        data_best0 = [i for i in map(mean, data_best0)]
+        # 取相反数，绘图用
+        data_best0 = [-i for i in data_best0]
+        # 生成画图x轴
+        x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
+        # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
         plt.plot(x0, data_best0, label='Algorithm {0} Best'.format(n+1))
     plt.legend(fontsize=12)
     plt.xlabel('Evaluations', fontsize=12)
