@@ -73,3 +73,8 @@ class Problem:
         self.tasks = tasks
         self.stations = stations
         self.hyper_period = hyper_period
+        self.pcstime = 0
+
+        for i in self.tasks:
+            for j in i.process_time:
+                self.pcstime += j

@@ -34,24 +34,24 @@ class Node:
 
     # 实例化方法——grow生成法
     # 总结：生成非完成结构树，只限制最大深度，叶节点为LEAVES参数，非叶节点为OPERATORS参数
-    def grow(self, depth_limit):
+    def grow(self, depth_limit, ori_dep_lim):
         # 如果此时的深度参数为0，则op为LEAVES中一个随机项
         if depth_limit == 0:
             self.op = choice(LEAVES)
         # 深度参数不是0时，op为OPSUM（OPERATORS并LEAVES）中的一个随机项
         else:
-            # 保证深度>1的情况下，有0.5的概率在节点选择操作算子
-            if depth_limit == 4 or round(random(), 3) < 0.8:
+            # 保证深度>1的情况下，有0.4的概率在节点选择操作算子
+            if depth_limit == ori_dep_lim or round(random(), 3) < 0.4:
                 self.op = choice(OPERATORS)
-            # 有概率选择叶节点
+            # 有0.6的概率选择叶节点
             else:
                 self.op = choice(LEAVES)
         # 如果op选中的是OPERATORS中的项，则对左右节点进行递归，limit减1，
         if self.op in OPERATORS:
             self.left = Node()
-            self.left.grow(depth_limit - 1)
+            self.left.grow(depth_limit - 1, ori_dep_lim)
             self.right = Node()
-            self.right.grow(depth_limit - 1)
+            self.right.grow(depth_limit - 1, ori_dep_lim)
         # 如果op是个常系数（在LEAVES中），则节点的val值为一个01随机数（保留3位小数）
         elif self.op == CONST:
             self.val = round(random(), 3)
@@ -374,7 +374,7 @@ class Individual:
 
     # 实例化方法——调用Node类的grow方法（在根节点执行grow）
     def grow(self, depth):
-        self.root.grow(depth)
+        self.root.grow(depth, depth)
 
     # 实例化方法——同上
     def full(self, depth):

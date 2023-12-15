@@ -12,9 +12,10 @@ def Instance():
     output_data_avg = []
     output_data_best = []
     output_time_cost = []
-    test_number = 2
+    test_number = 4
     # 执行两次，对比复杂度函数影响
     for n in range(test_number):
+        print('==== ALGORITHM {} ===='.format(n))
         # 是否考虑复杂度参数(是0考虑，是1不考虑)
         test_index = n
         # 创建一个存储实例问题的列表

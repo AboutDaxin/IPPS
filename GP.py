@@ -13,11 +13,11 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 30
+MAX_EVALUATIONS = 50
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 10
+RUNS = 2
 
 
 # 定义GP类
@@ -93,7 +93,7 @@ class GP:
                 # 实例化一个随机树，使用Tree模块的Individual类
                 random_tree = Individual(self.parsimony)
                 # 使用Tree模块的root.grow方法
-                random_tree.root.grow(2)
+                random_tree.root.grow(2, 2)
                 # 设置一个parent_copy，将parentSelection方法中生成好的self.parents的第i个个体取出
                 parent_copy = deepcopy(self.parents[i])
                 # 设置取出的个体的stats属性为一个空列表
@@ -151,12 +151,12 @@ class GP:
         self.population = new_pop
 
     # 定义实例化方法——问题的适应度评估(GP类)
-    def evaluate(self, problems, whether_complexity):
-        whether_complexity = whether_complexity
+    def evaluate(self, problems, test_index):
+        test_index = test_index
         # 对子代中的个体进行遍历
         for individual in self.children:
             # 对每个个体执行核心evaluate(Individual类)方法
-            Evaluate.evaluate(individual, problems, whether_complexity)
+            Evaluate.evaluate(individual, problems, test_index)
             # 执行一次循环，评估次数参数+1
             self.evaluations += 1
 
@@ -191,6 +191,18 @@ class GP:
             # 执行适应度评估（GP类）
             self.evaluate(problems, test_index)
             self.population = self.children
+            # 用于存储每代前10%个体
+            objective_portion_data = [[] for _ in range(generations)]
+
+            # 提取出10%的个体（100个），作全评估，为了作标准化的对比试验
+            # 设置一个临时列表，便于筛选
+            temp_population = deepcopy(self.population)
+            # 按大小均匀选出100个样例
+            temp_population.sort(reverse=True)
+            objective_portion_data[0] = temp_population[0:500:5]
+            for i in objective_portion_data[0]:
+                Evaluate.fullevaluate(i, problems, test_index)
+
             # 列表生成式，遍历population中每个元素的fitness（Tree模块中生成），生成目标值列表
             objective_data = [i.fitness for i in self.population]
             # 同上，生成复杂度列表
@@ -201,7 +213,7 @@ class GP:
             data_avg[0].append(mean(objective_data))
             # 同上
             data_time[0].append(0)
-            data_complexity[0].append(mean(complexity_data))
+            # data_complexity[0].append(mean(complexity_data))
 
             # 正式执行进化操作
             # 先设置一个新变量
@@ -224,6 +236,22 @@ class GP:
                 # 记录每代演化时间
                 time2 = time.process_time()
 
+                # 提取出10%的个体（100个），作全评估，为了作标准化的对比试验
+                # 设置一个临时列表，便于筛选
+                temp_population = deepcopy(self.population)
+                # # 选出此代中最好的100个个体
+                # for _ in range(100):
+                #     objective_portion_data[generation].append(max(temp_population))
+                #     temp_population.remove(max(temp_population))
+                # for i in objective_portion_data[generation]:
+                #     Evaluate.fullevaluate(i, problems)
+                # 按大小均匀选出100个样例
+                temp_population.sort(reverse=True)
+                objective_portion_data[generation] = temp_population[0:500:5]
+                for i in objective_portion_data[generation]:
+                    Evaluate.fullevaluate(i, problems, test_index)
+
+
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值
                 objective_data = [i.objective for i in self.population]
@@ -235,7 +263,7 @@ class GP:
                 # 记录每代演化时间
                 data_time[generation].append(time2 - time1)
                 # 记录每代平均复杂度
-                data_complexity[generation].append(mean(complexity_data))
+                # data_complexity[generation].append(mean(complexity_data))
                 # 执行上述操作后，代数generation加1。跳出时填满data列表
                 generation += 1
             end_time1 = time.process_time()
