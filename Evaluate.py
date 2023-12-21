@@ -9,7 +9,7 @@ def evaluate(individual, problems_origin, test_index):
     # 用于存储画gantt图用字典的key和value
     draw_key = []
     draw_value = []
-    # 是否使用代理辅助
+    # 第几个算法
     test_index = test_index
 
     # 遍历problems中的每一项元素，执行评估（目前只有1个problem）

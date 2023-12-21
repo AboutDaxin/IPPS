@@ -13,17 +13,17 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 100
+MAX_EVALUATIONS = 50
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 3
+RUNS = 1
 
 
 # 定义GP类
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模XX，子代规模XX，变异率，复制率
-    def __init__(self, number, population_size=50, children_size=10, mutation=0.15, duplication=0.05, parsimony=0.5):
+    def __init__(self, number, population_size=20, children_size=10, mutation=0.15, duplication=0.05, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -191,20 +191,20 @@ class GP:
             # 执行适应度评估（GP类）
             self.evaluate(problems, test_index)
             self.population = self.children
-            # 用于存储每代前10%个体
+            # 用于存储每代部分个体，只用于统计展示
             objective_portion_data = [[] for _ in range(generations)]
 
-            # 提取出10%的个体（100个），作全评估，为了作标准化的对比试验
+            # 提取出部分的个体，作全评估，为了作标准化的对比试验
             # 设置一个临时列表，便于筛选
             temp_population = deepcopy(self.population)
-            # 按大小均匀选出100个样例
+            # 按大小均匀选出XX个样例
             temp_population.sort(reverse=True)
             objective_portion_data[0] = temp_population[0:len(temp_population):5]
             for i in objective_portion_data[0]:
                 Evaluate.fullevaluate(i, problems, test_index)
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
-            objective_data = [i.objective for i in self.population]
+            objective_data = [i.objective for i in objective_portion_data[0]]
             # 同上，生成复杂度列表
             # complexity_data = [i.size for i in self.population]
             # 在data_best的第一个列表中添加最大的适应度值
@@ -353,7 +353,5 @@ class GP:
         self.data_time = data_time
         self.data_complexity = data_complexity
         self.time_cost = round((end_time-start_time)/RUNS, 4)
-        # # 输出进化过程图
-        # Plot.plt_evolve(self, generations, data_avg, data_best)
         # 输出最优方案的甘特图
         Plot.plt_gantt(best, self.number)

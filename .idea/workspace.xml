@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="有bug，代理辅助的甘特图不对">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="修复了一个bug，曾导致个体目标值为代理值">
       <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -160,9 +159,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.Tree" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.Instance" />
-        <item itemvalue="Python.Tree" />
         <item itemvalue="Python.Input_outside (1)" />
       </list>
     </recent_temporary>
@@ -347,7 +346,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702613065528</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="修复了一个bug，曾导致个体目标值为代理值">
+      <created>1703126155244</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1703126155244</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -361,7 +367,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/v1.1" />
+                        <option value="v1.1" />
                       </list>
                     </value>
                   </entry>
@@ -395,6 +401,7 @@
     <MESSAGE value="改plot" />
     <MESSAGE value="改成代理的那种" />
     <MESSAGE value="有bug，代理辅助的甘特图不对" />
-    <option name="LAST_COMMIT_MESSAGE" value="有bug，代理辅助的甘特图不对" />
+    <MESSAGE value="修复了一个bug，曾导致个体目标值为代理值" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了一个bug，曾导致个体目标值为代理值" />
   </component>
 </project>
