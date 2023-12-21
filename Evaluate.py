@@ -38,7 +38,7 @@ def evaluate(individual, problems_origin, test_index):
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
         if test_index == 0 or test_index == 1 or test_index == 4 or test_index == 5:
-            end_time = problem.pcstime
+            end_time = 99999
         elif test_index == 2 or test_index == 3 or test_index == 6 or test_index == 7:
             end_time = problem.pcstime * 0.4
 

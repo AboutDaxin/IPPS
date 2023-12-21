@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="修复了一个bug，曾导致个体目标值为代理值">
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="合并了部分evaluation的代码，但是全评估的合并就有bug，不知为何">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
@@ -362,7 +362,14 @@
       <option name="project" value="LOCAL" />
       <updated>1703126652696</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="合并了部分evaluation的代码，但是全评估的合并就有bug，不知为何">
+      <created>1703130037514</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1703130037514</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -411,6 +418,18 @@
     <MESSAGE value="改成代理的那种" />
     <MESSAGE value="有bug，代理辅助的甘特图不对" />
     <MESSAGE value="修复了一个bug，曾导致个体目标值为代理值" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复了一个bug，曾导致个体目标值为代理值" />
+    <MESSAGE value="合并了部分evaluation的代码，但是全评估的合并就有bug，不知为何" />
+    <option name="LAST_COMMIT_MESSAGE" value="合并了部分evaluation的代码，但是全评估的合并就有bug，不知为何" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Evaluate.py</url>
+          <line>184</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

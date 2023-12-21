@@ -202,7 +202,7 @@ class GP:
             objective_portion_data[0] = temp_population[0:len(temp_population):5]
             for i in objective_portion_data[0]:
                 # 执行全面评估
-                Evaluate.fullevaluate(i, problems, 0)
+                Evaluate.evaluate(i, problems, 0)
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
@@ -251,7 +251,7 @@ class GP:
                 objective_portion_data[generation] = temp_population[0:len(temp_population):5]
                 for i in objective_portion_data[generation]:
                     # 执行全面评估
-                    Evaluate.fullevaluate(i, problems, 0)
+                    Evaluate.evaluate(i, problems, 0)
 
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值
