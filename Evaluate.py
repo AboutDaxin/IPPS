@@ -50,7 +50,11 @@ def evaluate(individual, problems_origin, test_index):
             # 路由规则
             # 遍历所有task，用于给每个station的job序列加入新Job
             for task_group in problem.tasks_high_level:
-                for task in task_group:
+                # 先形成全部可执行的task列表
+                pass
+                available_tasks = task_group
+                # 之后，遍历所有可用task
+                for task in available_tasks:
                     # 到达一个判定点（task已到释放时间，还有未执行的工序，任务刚弹出需要重排）
                     if task.release <= true_time and task.process_time != [] and task.need_popped is True:
                         # 初始化一个备选station临时存放点
