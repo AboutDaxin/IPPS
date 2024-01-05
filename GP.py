@@ -17,7 +17,7 @@ MAX_EVALUATIONS = 100
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 5
+RUNS = 1
 
 
 # 定义GP类
@@ -313,7 +313,7 @@ class GP:
         df1 = pd.DataFrame({"Type": ['Index array', 'Operations array', 'Val', 'Routing heuristic', 'Sequencing heuristic'],
                            "Value": [decoding_array1, decoding_array2, decoding_array5, decoding_array3, decoding_array4]})
         df1 = df1.set_index("Type")
-        df1.to_excel(os.path.dirname(os.getcwd()) + '\\output_file\\heuristic.xlsx')
+        df1.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\heuristic.xlsx')
         # 生成调度表
         data_jobs = []
         for i in range(len(best.draw_value)):
@@ -328,7 +328,7 @@ class GP:
                             5: 'Process time', 6: 'Setup time'}, inplace=True)
         df2 = df2.sort_values(by='Job index', ascending=True)
         df2 = df2.set_index("Job index")
-        df2.to_excel(os.path.dirname(os.getcwd()) + '\\output_file\\schedule{0}.xlsx'.format(test_index))
+        df2.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\schedule{0}.xlsx'.format(test_index))
 
         # 输出最优值的适应度和根字符
         print('best fitness: {}\nbest objective: {}'

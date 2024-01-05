@@ -46,7 +46,10 @@ class Station:
 class Job:
     # 初始化方法，定义作业层的一些属性（Task为声明task的类型）
     def __init__(self, task: Task, station: Station, time):
+        # 注意，此处的task为未执行的全部任务，执行过的部分将被删除
         self.task = task
+        # 此处的task_group为该job所属的任务
+        self.task_group = 0
         self.station = station
         self.task_index = task.task_index
         # job剩余执行时间
@@ -68,9 +71,10 @@ class Job:
 
 # 定义问题类
 class Problem:
-    def __init__(self, tasks, stations, hyper_period=0):
+    def __init__(self, tasks, tasks_high_level, stations, hyper_period=0):
         # 实例化时时，tasks是个列表
         self.tasks = tasks
+        self.tasks_high_level = tasks_high_level
         self.stations = stations
         self.hyper_period = hyper_period
         self.pcstime = 0

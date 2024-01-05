@@ -49,39 +49,40 @@ def evaluate(individual, problems_origin, test_index):
         while not have_finished:
             # 路由规则
             # 遍历所有task，用于给每个station的job序列加入新Job
-            for task in problem.tasks:
-                # 到达一个判定点（task已到释放时间，还有未执行的工序，任务刚弹出需要重排）
-                if task.release <= true_time and task.process_time != [] and task.need_popped is True:
-                    # 初始化一个备选station临时存放点
-                    stations_temp = []
-                    # 基于该task遍历所有station，释放一个job至对应station的job序列
-                    for station in stations:
-                        # 如果该task的最前道序可以使用该station
-                        if task.process_path[0] in station.capability:
-                            # 生成备选station列表
-                            stations_temp.append(station)
-                            # 评估确定该station的优先级
-                            # 如果该station序列中存在job
-                            if station.queue:
-                                # 过渡优先值初始化
-                                priority_temp = 0
-                                # 遍历station中所有job并分别计算优先值
-                                for job in station.queue:
-                                    # 临时优先值为所有遍历完job的优先值总和
-                                    priority_temp += individual.root.left.interpret(job, station, true_time)
-                                # 得到该station的当前优先值
-                                station.priority = priority_temp
-                            # 如果该station序列中没有任务，则优先值跟num相关
-                            else:
-                                station.priority = station.station_index/100
-                    # 确定被选中的station（优先值最小为最高级别）
-                    station_best = min(stations_temp) if stations_temp else print("no!")
-                    # 在job序列对应的station中加入一个Job
-                    station_best.queue.append(Job(task, station_best, true_time))
-                    # 该station排序状态改为“需要重排”
-                    station_best.need_popped = False
-                    # 该task状态变为“不需要重排”
-                    task.need_popped = False
+            for task_group in problem.tasks_high_level:
+                for task in task_group:
+                    # 到达一个判定点（task已到释放时间，还有未执行的工序，任务刚弹出需要重排）
+                    if task.release <= true_time and task.process_time != [] and task.need_popped is True:
+                        # 初始化一个备选station临时存放点
+                        stations_temp = []
+                        # 基于该task遍历所有station，释放一个job至对应station的job序列
+                        for station in stations:
+                            # 如果该task的最前道序可以使用该station
+                            if task.process_path[0] in station.capability:
+                                # 生成备选station列表
+                                stations_temp.append(station)
+                                # 评估确定该station的优先级
+                                # 如果该station序列中存在job
+                                if station.queue:
+                                    # 过渡优先值初始化
+                                    priority_temp = 0
+                                    # 遍历station中所有job并分别计算优先值
+                                    for job in station.queue:
+                                        # 临时优先值为所有遍历完job的优先值总和
+                                        priority_temp += individual.root.left.interpret(job, station, true_time)
+                                    # 得到该station的当前优先值
+                                    station.priority = priority_temp
+                                # 如果该station序列中没有任务，则优先值跟num相关
+                                else:
+                                    station.priority = station.station_index/100
+                        # 确定被选中的station（优先值最小为最高级别）
+                        station_best = min(stations_temp) if stations_temp else print("no!")
+                        # 在job序列对应的station中加入一个Job
+                        station_best.queue.append(Job(task, station_best, true_time))
+                        # 该station排序状态改为“需要重排”
+                        station_best.need_popped = False
+                        # 该task状态变为“不需要重排”
+                        task.need_popped = False
 
             # 排序规则
             # 判断是否要执行重排

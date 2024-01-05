@@ -24,12 +24,22 @@ def Instance():
         task_list = []
         for t in Input_outside.TASK:
             task_list.append(Task(t[0], t[1], t[2], t[3], t[4], t[5], t[6], t[7], t[8]))
+        # 形成一个更高层级任务列表
+        max_index = task_list[-1].task_index
+        high_task_list = []
+        for j in range(max_index):
+            list_temp = []
+            for i in task_list:
+                if i.task_index == j+1:
+                    list_temp.append(i)
+            high_task_list.append(list_temp)
+
         # 实例化一个车间
         station_list = []
         for s in Input_outside.STATION:
             station_list.append(Station(s[0], s[1], s[2]))
         # 将该实例加入problems列表（第三个参数为限定时间）
-        problems.append(Problem(task_list, station_list, 99999))
+        problems.append(Problem(task_list, high_task_list, station_list, 99999))
         # 实例化一个gp，n为第几次运行
         gp = GP(number=n)
         # 执行该问题

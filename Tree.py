@@ -238,7 +238,7 @@ class Node:
         # 如果节点op是个常数，返还它的值
         if self.op == CONST:
             return self.val
-        # 阻塞持续时间
+        # station中job的总时间
         elif self.op == WIQ:
             t = 0
             for i in station.queue:
@@ -247,10 +247,10 @@ class Node:
         # 释放时间
         elif self.op == rJ:
             return job.task.release
-        # 阶段
+        # 本job下道序的执行时间
         elif self.op == NPT:
             return job.task.process_time[1] if len(job.task.process_time) > 1 else 0
-        # 执行时间
+        # 当前序的执行时间
         elif self.op == PT:
             return job.task.process_time[0]
         # 单项任务的交货期
@@ -297,6 +297,22 @@ class Node:
             for ele in job.task.process_time:
                 _sum += ele
             return _sum
+        # station的能力数量
+        elif self.op == NCC:
+            return len(station.capability)
+        # station当前能力是否符合该job
+        elif self.op == WRJ:
+            return 1 if job.task.process_path[0] == station.current_capability else 0
+        # station的转换时间
+        elif self.op == RT:
+            return station.configuration_time
+        # station的序列中，符合该station当前能力的operation数量
+        elif self.op == NOCR:
+            n = 0
+            for i in station.queue:
+                if i.task.process_path[0] == station.current_capability:
+                    n += 1
+            return n
         else:
             print('HELP')
 
@@ -337,6 +353,14 @@ class Node:
             return 'NIQ'
         elif self.op == WR:
             return 'WR'
+        elif self.op == NCC:
+            return 'NCC'
+        elif self.op == WRJ:
+            return 'WRJ'
+        elif self.op == RT:
+            return 'RT'
+        elif self.op == NOCR:
+            return 'NOCR'
         else:
             print('HELP')
 
