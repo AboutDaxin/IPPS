@@ -24,6 +24,14 @@ class Task:
         return self.priority < other.priority
 
 
+# 定义任务组类
+class Task_Group:
+    def __init__(self, list_temp, index):
+        self.tasks_group = list_temp
+        self.index = index + 1
+        self.finished_tasks = []
+
+
 # 定义工位类
 class Station:
     def __init__(self, station_index=0, capability=None, configuration_time=0):
@@ -71,14 +79,29 @@ class Job:
 
 # 定义问题类
 class Problem:
-    def __init__(self, tasks, tasks_high_level, stations, hyper_period=0):
+    def __init__(self, tasks, task_groups,stations, hyper_period=0):
         # 实例化时时，tasks是个列表
         self.tasks = tasks
-        self.tasks_high_level = tasks_high_level
+        self.task_groups = task_groups
         self.stations = stations
         self.hyper_period = hyper_period
+        # 计算总工时
         self.pcstime = 0
-
         for i in self.tasks:
             for j in i.process_time:
                 self.pcstime += j
+
+        # # 任务预处理，形成一个分层级的任务列表
+        # max_index = tasks[-1].task_index
+        # high_task_list = []
+        # for j in range(max_index):
+        #     list_temp = []
+        #     for i in tasks:
+        #         if i.task_index == j + 1:
+        #             list_temp.append(i)
+        #     # 存储已完成任务的列表
+        #     finished_job = []
+        #     list_temp.append(finished_job)
+        #     high_task_list.append(list_temp)
+        # self.tasks_high_level = high_task_list
+
