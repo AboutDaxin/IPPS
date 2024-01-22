@@ -14,6 +14,7 @@ class Task:
         self.release = release
         self.deadline = deadline
         self.weight = weight
+        self.task_string_index = None
         # 衍生属性
         self.process_num = [i + 1 for i in range(len(process_path))]
         self.priority = None
@@ -27,9 +28,9 @@ class Task:
 # 定义任务组类
 class Task_Group:
     def __init__(self, list_temp, index):
-        self.tasks_group = list_temp
+        self.tasks = list_temp
         self.index = index + 1
-        self.finished_tasks = []
+        self.finished_task_index = []
 
 
 # 定义工位类
@@ -90,18 +91,4 @@ class Problem:
         for i in self.tasks:
             for j in i.process_time:
                 self.pcstime += j
-
-        # # 任务预处理，形成一个分层级的任务列表
-        # max_index = tasks[-1].task_index
-        # high_task_list = []
-        # for j in range(max_index):
-        #     list_temp = []
-        #     for i in tasks:
-        #         if i.task_index == j + 1:
-        #             list_temp.append(i)
-        #     # 存储已完成任务的列表
-        #     finished_job = []
-        #     list_temp.append(finished_job)
-        #     high_task_list.append(list_temp)
-        # self.tasks_high_level = high_task_list
 

@@ -50,12 +50,12 @@ def evaluate(individual, problems_origin, test_index):
             # 路由规则
             # 遍历所有task，用于给每个station的job序列加入新Job
             available_tasks = []
-            for task_group in problem.task_groups:
+            for group in problem.task_groups:
                 # 先形成全部可执行的task列表
-                for task in task_group.tasks_group:
-                    if task.pre_process_constraint > task_group.finished_tasks[0]:
+                for task in group.tasks:
+                    if task.pre_process_constraint in group.finished_task_index:
                         available_tasks.append(task)
-                pass
+                    pass
 
             # 之后，遍历所有可用task
             for task in available_tasks:

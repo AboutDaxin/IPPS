@@ -31,9 +31,15 @@ def Instance():
         max_index = task_list[-1].task_index
         for j in range(max_index):
             list_temp = []
+            index = 1
             for i in task_list:
+                # 索引判断分组
                 if i.task_index == j + 1:
+                    # 工序串索引赋值
+                    i.task_string_index = index
                     list_temp.append(i)
+                    index += 1
+            # 实例化一个task group
             task_group_list.append(Task_Group(list_temp, j))
 
         # 实例化一个车间
