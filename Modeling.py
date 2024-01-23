@@ -30,7 +30,7 @@ class Task_Group:
     def __init__(self, list_temp, index):
         self.tasks = list_temp
         self.index = index + 1
-        self.finished_task_index = []
+        self.finished_task_index = [0]
 
 
 # 定义工位类
@@ -58,7 +58,6 @@ class Job:
         # 注意，此处的task为未执行的全部任务，执行过的部分将被删除
         self.task = task
         # 此处的task_group为该job所属的任务
-        self.task_group = 0
         self.station = station
         self.task_index = task.task_index
         # job剩余执行时间

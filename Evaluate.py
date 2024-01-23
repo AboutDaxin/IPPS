@@ -48,16 +48,20 @@ def evaluate(individual, problems_origin, test_index):
         true_time = 0
         while not have_finished:
             # 路由规则
-            # 遍历所有task，用于给每个station的job序列加入新Job
+            # 首先，遍历所有task，形成可执行task列表
             available_tasks = []
             for group in problem.task_groups:
-                # 先形成全部可执行的task列表
+                # 基于每个组，进行分析
                 for task in group.tasks:
-                    if task.pre_process_constraint in group.finished_task_index:
+                    # 判断本task是否能执行，前序约束是否已满足
+                    c = 0
+                    for a in task.pre_process_constraint:
+                        if a in group.finished_task_index:
+                            c += 1
+                    if c == len(task.pre_process_constraint):
                         available_tasks.append(task)
-                    pass
 
-            # 之后，遍历所有可用task
+            # 之后，遍历所有可用task，进行job分配
             for task in available_tasks:
                 # 到达一个判定点（task已到释放时间，还有未执行的工序，任务刚弹出需要重排）
                 if task.release <= true_time and task.process_time != [] and task.need_popped is True:
@@ -157,10 +161,12 @@ def evaluate(individual, problems_origin, test_index):
                         station.queue[0].task.process_num.pop(0)
                         # 删除该task的当前序执行时间
                         station.queue[0].task.process_time.pop(0)
-                        # 该task状态变为刚弹出
+                        # 该task状态变为需要重排
                         station.queue[0].task.need_popped = True
-                        # 状态改为未排完，需要重排
+                        # 该station状态改为未排完，需要重排
                         station.have_popped = False
+                        # 如果本task的所有job执行完毕，那么序号加入have_finished列表
+                        pass
                         # 在序列中删除该运行结束的job
                         station.queue.pop(0)
 
@@ -168,7 +174,7 @@ def evaluate(individual, problems_origin, test_index):
                     for job in station.queue:
                         # 如果遍历出有个job，已经超期，且还没执行完毕
                         if job.task.deadline != 0 and job.task.deadline < true_time and job.process_time > 0:
-                            # 如果是非周期任务则零星拖期参数+1
+                            # 如果是非周期任务则拖期参数+1
                             missed_deadlines += 1
             # 判断是否执行完毕
             true_time += 1
