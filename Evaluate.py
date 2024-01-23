@@ -173,7 +173,7 @@ def evaluate(individual, problems_origin, test_index):
                             # 搜索到该task
                             pending_task = problem.task_groups[coord[0]-1].tasks[coord[1]-1]
                             # task的string索引加入已完成列表
-                            problem.task_groups[coord[1]-1].finished_task_index.append(pending_task.task_index)
+                            problem.task_groups[coord[0]-1].finished_task_index.append(pending_task.task_string_index)
                         # 在序列中删除该运行结束的job
                         station.queue.pop(0)
                     # 对当前station的job序列进行遍历，计算拖期
