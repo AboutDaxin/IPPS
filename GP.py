@@ -314,7 +314,8 @@ class GP:
                            "Value": [decoding_array1, decoding_array2, decoding_array5, decoding_array3, decoding_array4]})
         df1 = df1.set_index("Type")
         df1.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\heuristic.xlsx')
-        # 生成调度表
+
+        # 输出调度表
         data_jobs = []
         for i in range(len(best.draw_value)):
             data_job = []
@@ -324,10 +325,12 @@ class GP:
                 data_job.append(j)
             data_jobs.append(data_job)
         df2 = pd.DataFrame(data_jobs)
-        df2.rename(columns={0: 'Job index', 1: 'Operation index', 2: 'Station index', 3: 'Start time', 4: 'Finish time',
-                            5: 'Process time', 6: 'Setup time'}, inplace=True)
-        df2 = df2.sort_values(by='Job index', ascending=True)
-        df2 = df2.set_index("Job index")
+        df2.rename(columns={0: 'Task Index', 1: 'Task String Index',
+                            2: 'Process Index', 3: 'Station index',
+                            4: 'Start time', 5: 'Finish time',
+                            6: 'Process time', 7: 'Setup time'}, inplace=True)
+        df2 = df2.sort_values(by='Task Index', ascending=True)
+        df2 = df2.set_index("Task Index")
         df2.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\schedule{0}.xlsx'.format(test_index))
 
         # 输出最优值的适应度和根字符

@@ -151,7 +151,8 @@ def evaluate(individual, problems_origin, test_index):
                     # 如果当前job执行完毕
                     if station.queue[0].process_time <= 0:
                         # 逐步生成draw_key中的元组(任务序号、工序序号、工作站序号)
-                        draw_key.append((station.queue[0].task_index, station.queue[0].task.process_num[0], station.station_index))
+                        draw_key.append((station.queue[0].task_index, station.queue[0].task.task_string_index,
+                                         station.queue[0].task.process_num[0], station.station_index))
                         # 逐步生成draw_value中的元组（开始时间、结束时间、持续时间、转换时间）
                         draw_value.append((true_time + 1 - station.queue[0].task.process_time[0],
                                            true_time + 1, station.queue[0].task.process_time[0],

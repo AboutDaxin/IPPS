@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="不知道怎么给group的have_finished加数">
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="理论上搞好了，后续先改gantt图标签，然后debug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -417,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705977971486</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="理论上搞好了，后续先改gantt图标签，然后debug">
+      <created>1705979729925</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1705979729925</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -444,7 +453,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="v1.0.2&#10;更改为外部数据输入&#10;增加更多terminal set" />
     <MESSAGE value="v1.0.3&#10;更改为外部数据输入&#10;增加更多terminal set" />
     <MESSAGE value="v1.0.4&#10;优化了树复杂度计算函数" />
     <MESSAGE value="GP参数优化；复杂度函数权重修改；勘误" />
@@ -469,20 +477,21 @@
     <MESSAGE value="evaluate中..." />
     <MESSAGE value="evaluate中...2" />
     <MESSAGE value="不知道怎么给group的have_finished加数" />
-    <option name="LAST_COMMIT_MESSAGE" value="不知道怎么给group的have_finished加数" />
+    <MESSAGE value="理论上搞好了，后续先改gantt图标签，然后debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="理论上搞好了，后续先改gantt图标签，然后debug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Evaluate.py</url>
-          <line>174</line>
-          <option name="timeStamp" value="15" />
+          <line>52</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Evaluate.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="16" />
+          <line>153</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
