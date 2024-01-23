@@ -166,16 +166,22 @@ def evaluate(individual, problems_origin, test_index):
                         # 该station状态改为未排完，需要重排
                         station.have_popped = False
                         # 如果本task的所有job执行完毕，那么序号加入have_finished列表
-                        pass
+                        if not station.queue[0].task.process_num:
+                            # task定位
+                            coord = [station.queue[0].task.task_index, station.queue[0].task.task_string_index]
+                            # 搜索到该task
+                            pending_task = problem.task_groups[coord[0]-1].tasks[coord[1]-1]
+                            # task的string索引加入已完成列表
+                            problem.task_groups[coord[1]-1].finished_task_index.append(pending_task.task_index)
                         # 在序列中删除该运行结束的job
                         station.queue.pop(0)
-
                     # 对当前station的job序列进行遍历，计算拖期
-                    for job in station.queue:
-                        # 如果遍历出有个job，已经超期，且还没执行完毕
-                        if job.task.deadline != 0 and job.task.deadline < true_time and job.process_time > 0:
-                            # 如果是非周期任务则拖期参数+1
-                            missed_deadlines += 1
+                    if station.queue:
+                        for job in station.queue:
+                            # 如果遍历出有个job，已经超期，且还没执行完毕
+                            if job.task.deadline != 0 and job.task.deadline < true_time and job.process_time > 0:
+                                # 如果是非周期任务则拖期参数+1
+                                missed_deadlines += 1
             # 判断是否执行完毕
             true_time += 1
             prcs_time_now = process_time
