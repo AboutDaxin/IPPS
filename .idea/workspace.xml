@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="理论上搞好了，输出结果少，需要debug">
-      <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="理论上搞好了!!很强">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -437,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705984243015</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="理论上搞好了!!很强">
+      <created>1705985187019</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1705985187019</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -464,7 +472,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="v1.0.4&#10;优化了树复杂度计算函数" />
     <MESSAGE value="GP参数优化；复杂度函数权重修改；勘误" />
     <MESSAGE value="修改部分参数；绘图坐标修正；文字勘误；增加了一问题模型" />
     <MESSAGE value="修改部分参数；绘图坐标修正；文字勘误；增加一问题模型" />
@@ -489,7 +496,8 @@
     <MESSAGE value="不知道怎么给group的have_finished加数" />
     <MESSAGE value="理论上搞好了，后续先改gantt图标签，然后debug" />
     <MESSAGE value="理论上搞好了，输出结果少，需要debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="理论上搞好了，输出结果少，需要debug" />
+    <MESSAGE value="理论上搞好了!!很强" />
+    <option name="LAST_COMMIT_MESSAGE" value="理论上搞好了!!很强" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

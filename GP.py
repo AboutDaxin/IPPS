@@ -329,7 +329,7 @@ class GP:
                             2: 'Process Index', 3: 'Station index',
                             4: 'Start time', 5: 'Finish time',
                             6: 'Process time', 7: 'Setup time'}, inplace=True)
-        df2 = df2.sort_values(by='Task Index', ascending=True)
+        df2 = df2.sort_values(by=['Task Index', 'Task String Index', 'Process Index'], ascending=True)
         df2 = df2.set_index("Task Index")
         df2.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\schedule{0}.xlsx'.format(test_index))
 
