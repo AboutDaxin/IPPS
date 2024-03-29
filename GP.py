@@ -13,7 +13,7 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 50
+MAX_EVALUATIONS = 100
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
@@ -36,25 +36,36 @@ class GP:
         self.data_complexity = None
         self.time_cost = None
 
-        # grow方法生成半个种群
-        # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
-        for _ in range(floor(population_size/2)):
-            # 实例化个体，使用Tree模块的Individual类
-            individual = Individual(parsimony)
-            # 使用grow方法形成个体，使用Tree模块的grow函数
-            individual.grow(4)
-            # 在种群列表中增加这个个体
-            self.population.append(individual)
+        if self.number in [0]:
+            # grow方法生成半个种群
+            # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
+            for _ in range(floor(population_size/2)):
+                # 实例化个体，使用Tree模块的Individual类
+                individual = Individual(parsimony)
+                # 使用grow方法形成个体，使用Tree模块的grow函数
+                individual.grow(4)
+                # 在种群列表中增加这个个体
+                self.population.append(individual)
 
-        # full方法生成剩下半个种群，并结合起来
-        # 设置一个用于生成种群的循环，为种群规模的一半，ceil表示向上取整
-        for _ in range(ceil(population_size/2)):
-            # 实例化个体，使用Tree模块的Individual类
-            individual = Individual(parsimony)
-            # 使用full方法形成个体，使用Tree模块的full函数
-            individual.full(4)
-            # 在种群列表中增加这个个体，完成整个种群的构建
-            self.population.append(individual)
+            # full方法生成剩下半个种群，并结合起来
+            # 设置一个用于生成种群的循环，为种群规模的一半，ceil表示向上取整
+            for _ in range(ceil(population_size/2)):
+                # 实例化个体，使用Tree模块的Individual类
+                individual = Individual(parsimony)
+                # 使用full方法形成个体，使用Tree模块的full函数
+                individual.full(4)
+                # 在种群列表中增加这个个体，完成整个种群的构建
+                self.population.append(individual)
+
+        # 使用现成heuristic
+        elif self.number in [1, 2, 3, 4, 5]:
+            for _ in range(ceil(population_size)):
+                # 实例化个体，使用Tree模块的Individual类
+                individual = Individual(parsimony)
+                # 使用full方法形成个体，使用Tree模块的full函数
+                individual.heuristic(self.number)
+                # 在种群列表中增加这个个体，完成整个种群的构建
+                self.population.append(individual)
 
         # 设置此实例的一些初始化变量
         # “父”，“子”为空列表

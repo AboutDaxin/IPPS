@@ -37,11 +37,11 @@ def evaluate(individual, problems_origin, test_index):
             task_release.append(i.release)
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
-        # 不使用
-        if test_index in [0, 1, 4, 5]:
+        # 不使用代理
+        if test_index in [0, 1, 2, 3, 4, 5]:
             end_time = 99999
-        # 使用
-        elif test_index in [2, 3, 6, 7]:
+        # 使用代理
+        elif test_index in [6, 7]:
             end_time = problem.pcstime * 0.6
 
         # 评估：遍历每个时刻，执行过程仿真

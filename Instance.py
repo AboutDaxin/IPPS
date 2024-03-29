@@ -13,7 +13,7 @@ def Instance():
     output_data_best = []
     output_time_cost = []
     # 对比试验组数设定
-    test_number = 2
+    test_number = 6
     # 执行两次，对比复杂度函数影响
     for n in range(test_number):
         print('==== ALGORITHM {} ===='.format(n))

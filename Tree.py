@@ -1,6 +1,7 @@
 from random import choice, random
 from copy import deepcopy
 from Operations import *
+import Using_heuristic
 
 
 # 定义Node类，包含该节点及其子节点的一系列属性和方法
@@ -76,7 +77,59 @@ class Node:
         if self.op == CONST:
             self.val = round(random(), 3)
 
-    # 实例化方法——生成解码索引
+    # 使用现有启发式
+    def heuristic(self, heu_index):
+        index_array = Using_heuristic.Coding_index(heu_index)
+        operations_array = Using_heuristic.Coding_operation(heu_index)
+        val_array = Using_heuristic.Coding_val(heu_index)
+
+        def generate_individual(node1, i, index):
+            node1.op = operations_array[0]
+            if len(index_array) != 1:
+                if index_array[i + 1] == 2 * index and operations_array[i + 1] not in LEAVES:
+                    node1.left = Node()
+                    node1.left.op = operations_array[i + 1]
+                    if node1.left.op == CONST:
+                        node1.left.val = val_array[i + 1]
+                    next_index = 2 * index
+                    index_array.pop(0)
+                    operations_array.pop(0)
+                    val_array.pop(0)
+                    generate_individual(node1.left, i, next_index)
+                if index_array[i + 1] == 2 * index and operations_array[i + 1] in LEAVES:
+                    node1.left = Node()
+                    node1.left.op = operations_array[i + 1]
+                    if node1.left.op == CONST:
+                        node1.left.val = val_array[i + 1]
+                    next_index = 2 * index
+                    index_array.pop(0)
+                    operations_array.pop(0)
+                    val_array.pop(0)
+                    generate_individual(node1.left, i, next_index)
+                if index_array[i + 1] == 2 * index + 1 and operations_array[i] not in LEAVES:
+                    node1.right = Node()
+                    node1.right.op = operations_array[i + 1]
+                    if node1.right.op == CONST:
+                        node1.right.val = val_array[i + 1]
+                    next_index = 2 * index + 1
+                    index_array.pop(0)
+                    operations_array.pop(0)
+                    val_array.pop(0)
+                    generate_individual(node1.right, i, next_index)
+                if index_array[i + 1] == 2 * index + 1 and operations_array[i] in LEAVES:
+                    node1.right = Node()
+                    node1.right.op = operations_array[i + 1]
+                    if node1.right.op == CONST:
+                        node1.right.val = val_array[i + 1]
+                    next_index = 2 * index + 1
+                    index_array.pop(0)
+                    operations_array.pop(0)
+                    val_array.pop(0)
+                    generate_individual(node1.right, i, next_index)
+                return node1
+        generate_individual(self, 0, 1)
+
+    # 实例化方法——生成位置索引值
     def decoding_index(self):
         # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
         def choose_r(tree_array1, node1, i):
@@ -101,9 +154,9 @@ class Node:
         tree_array = choose_r(tree_array, self, 1)
         return tree_array
 
-    # 实例化方法——生成解码算子
+    # 实例化方法——生成terminal值
     def decoding_operation(self):
-        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
+        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点的terminal（以层定位，根节点为1，左节点偶，右节点奇）
         def choose_r(tree_array1, node1, i):
             # 如果节点实例的左节点非空且不是叶节点执行以下操作
             if node1.left is not None and node1.op not in LEAVES:
@@ -126,9 +179,9 @@ class Node:
         tree_array = choose_r(tree_array, self, 1)
         return tree_array
 
-    # 实例化方法——生成解码node值
+    # 实例化方法——生成常数节点val值
     def decoding_val(self):
-        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点（以层定位，根节点为1，左节点偶，右节点奇）
+        # 总结：该方法返还一个树结构列表，列表中的索引数字代表了树结构特定位置节点的val（以层定位，根节点为1，左节点偶，右节点奇）
         def choose_r(tree_array1, node1, i):
             # 如果节点实例的左节点非空且不是叶节点执行以下操作
             if node1.left is not None and node1.op not in LEAVES:
@@ -403,6 +456,10 @@ class Individual:
     # 实例化方法——同上
     def full(self, depth):
         self.root.full(depth)
+
+    # 实例化方法——同上
+    def heuristic(self, index):
+        self.root.heuristic(index)
 
     # 实例化方法——调用Node类的重组方法
     def recombine(self, other):
