@@ -28,7 +28,7 @@ def plt_gantt(best, number):
     # 提取数据
     complete_data = dict(zip(best.draw_key, best.draw_value))
     # 绘图操作
-    plt.figure('A{0} Gantt'.format(number), (26, 12))
+    plt.figure('A{0} Gantt'.format(number+1), (26, 12))
     for k, v in complete_data.items():
         # 画job甘特图
         plt.barh(y=k[3], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])
@@ -136,10 +136,14 @@ def plt_violin(test_number, data_avg, data_best):
     key = [i + 1 for i in range(test_number)]
     value = ['A{0}'.format(i + 1) for i in range(test_number)]
     plt.xticks(key, value)
+    plt.xlabel('Algorithm', fontsize=12)
+    plt.ylabel('Average value', fontsize=12)
     plt.subplot(2, 1, 2)
     plt.violinplot(data_best_total, showmeans=True, showmedians=True)
     key = [i + 1 for i in range(test_number)]
     value = ['A{0}'.format(i + 1) for i in range(test_number)]
     plt.xticks(key, value)
+    plt.xlabel('Algorithm', fontsize=12)
+    plt.ylabel('Best value', fontsize=12)
 
     plt.show()

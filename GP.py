@@ -13,17 +13,17 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 50
+MAX_EVALUATIONS = 2700
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 1
+RUNS = 10
 
 
 # 定义GP类
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模XX，子代规模XX，变异率，复制率
-    def __init__(self, number, population_size=30, children_size=10, mutation=0.15, duplication=0.05, parsimony=0.5):
+    def __init__(self, number, population_size=200, children_size=100, mutation=0.15, duplication=0.05, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -36,7 +36,7 @@ class GP:
         self.data_complexity = None
         self.time_cost = None
 
-        if self.number in [0]:
+        if self.number in [0, 1, 2, 3, 4]:
             # grow方法生成半个种群
             # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
             for _ in range(floor(population_size/2)):
@@ -58,7 +58,7 @@ class GP:
                 self.population.append(individual)
 
         # 使用现成heuristic
-        elif self.number in [1, 2, 3, 4, 5, 6]:
+        elif self.number in [99]:
             for _ in range(ceil(population_size)):
                 # 实例化个体，使用Tree模块的Individual类
                 individual = Individual(parsimony)
@@ -120,7 +120,7 @@ class GP:
             # 执行交叉操作
             else:
                 # TTGP
-                if self.number == 0 or 2:
+                if self.number == 1 or 2:
                     # 让第i个个体跟一个个体进行交叉
                     parent_copy = deepcopy(self.parents[i]).recombine(self.parents[randrange(0, self.children_size, 1)])
                     # 设置取出个体的stats属性是一个空列表
@@ -128,7 +128,7 @@ class GP:
                     # 在children列表中添加该个体
                     self.children.append(parent_copy)
                 # CCGP
-                elif self.number == 1 or 3:
+                elif self.number == 3 or 4:
                     # 让第i个个体左右分别跟随机一个进行交叉
                     parent_copy = deepcopy(self.parents[i]).left_recombine(
                         self.parents[randrange(0, self.children_size, 1)])
@@ -324,7 +324,7 @@ class GP:
         df1 = pd.DataFrame({"Type": ['Index array', 'Operations array', 'Val', 'Routing heuristic', 'Sequencing heuristic'],
                            "Value": [decoding_array1, decoding_array2, decoding_array5, decoding_array3, decoding_array4]})
         df1 = df1.set_index("Type")
-        df1.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\heuristic.xlsx')
+        df1.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\heuristic{0}.xlsx'.format(test_index))
 
         # 输出调度表
         data_jobs = []

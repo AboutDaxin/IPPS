@@ -33,7 +33,7 @@ NOOS = 23  # Task中可执行工序串的工序数量
 # 使用列表对上列被赋值的参数进行分类，分为算子、非静态、叶节点(包含非静态)
 OPERATORS = [PLUS, MINUS, TIMES, DIVIDED_BY, MOD, MAX, MIN]
 NONSTATIC = [TIS, NOR, NIQ, WIQ, WR]
-LEAVES = [CONST, WIQ, rJ, NPT, DD, PT, TIS, NOR, NIQ, WR, NCC, WRJ, RT, NOCR]
+LEAVES = [CONST, WIQ, NPT, DD, PT, TIS, NOR, NIQ, WR, NCC, WRJ, RT, NOCR]
 
 # 定义OPSUM为算子和叶节点合列表
 OPSUM = OPERATORS + LEAVES
