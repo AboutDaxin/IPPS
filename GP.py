@@ -58,7 +58,7 @@ class GP:
                 self.population.append(individual)
 
         # 使用现成heuristic
-        elif self.number in [99]:
+        elif self.number in [98]:
             for _ in range(ceil(population_size)):
                 # 实例化个体，使用Tree模块的Individual类
                 individual = Individual(parsimony)
@@ -213,7 +213,7 @@ class GP:
             objective_portion_data[0] = temp_population[0:len(temp_population):5]
             for i in objective_portion_data[0]:
                 # 执行全面评估
-                Evaluate.evaluate(i, problems, 0)
+                Evaluate.evaluate(i, problems, 99)
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
@@ -256,7 +256,7 @@ class GP:
                 objective_portion_data[generation] = temp_population[0:len(temp_population):5]
                 for i in objective_portion_data[generation]:
                     # 执行全面评估，用于评价
-                    Evaluate.evaluate(i, problems, 0)
+                    Evaluate.evaluate(i, problems, 99)
 
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值

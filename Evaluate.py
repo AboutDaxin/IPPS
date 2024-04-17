@@ -38,7 +38,7 @@ def evaluate(individual, problems_origin, test_index):
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
         # 不使用代理
-        if test_index in [1, 2, 3, 4, 5, 6, 7]:
+        if test_index in [1, 2, 3, 4, 5, 6, 7, 99]:
             end_time = 99999
         # 使用代理
         elif test_index in [0]:
@@ -209,3 +209,4 @@ def evaluate(individual, problems_origin, test_index):
     individual.fitness = individual.fitnesses[-1]
     # 个体目标函数值列表最后一个
     individual.objective = individual.objectives[-1]
+
