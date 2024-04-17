@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="修改复杂度简化参数">
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="输出过程表">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Instance.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -496,7 +495,35 @@
       <option name="project" value="LOCAL" />
       <updated>1712398230406</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="增加进化过程时间图">
+      <created>1713329377932</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1713329377932</updated>
+    </task>
+    <task id="LOCAL-00047" summary="输出过程表">
+      <created>1713330978237</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1713330978237</updated>
+    </task>
+    <task id="LOCAL-00048" summary="输出过程表">
+      <created>1713331095830</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1713331095830</updated>
+    </task>
+    <task id="LOCAL-00049" summary="输出过程表">
+      <created>1713331706447</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1713331706447</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -523,8 +550,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="v1.1.3&#10;添加了提琴图" />
-    <MESSAGE value="v1.1.4&#10;添加了目标平均值的输出功能；&#10;hyper_period参数应设定大一些，否则会出错" />
     <MESSAGE value="新的输入格式已经形成" />
     <MESSAGE value="暂存" />
     <MESSAGE value="能运行" />
@@ -548,16 +573,12 @@
     <MESSAGE value="进行启发式对比试验" />
     <MESSAGE value="提琴图加标签" />
     <MESSAGE value="修改复杂度简化参数" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改复杂度简化参数" />
+    <MESSAGE value="增加进化过程时间图" />
+    <MESSAGE value="输出过程表" />
+    <option name="LAST_COMMIT_MESSAGE" value="输出过程表" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Plot.py</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-defaults>
         <breakpoint type="python-line" />
       </breakpoints-defaults>
@@ -569,13 +590,5 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="problem.task_groups[0].tasks[1]" />
-        <watch expression="problem.tasks" />
-        <watch expression="problem.tasks" />
-        <watch expression="station.queue[0].task" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
