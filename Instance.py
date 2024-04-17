@@ -11,6 +11,7 @@ def Instance():
     output_generations = []
     output_data_avg = []
     output_data_best = []
+    output_data_time = []
     output_time_cost = []
     # 对比试验组数设定
     test_number = 5
@@ -57,11 +58,13 @@ def Instance():
         output_generations.append(gp.generations)
         output_data_avg.append(gp.data_avg)
         output_data_best.append(gp.data_best)
+        output_data_time.append(gp.data_time)
         output_time_cost.append(gp.time_cost)
 
     # 绘图对比收敛速度
     Plot.plt_compare1(test_number, output_gp, output_generations, output_data_avg)
     Plot.plt_compare2(test_number, output_gp, output_generations, output_data_best)
+    Plot.plt_compare3(test_number, output_gp, output_generations, output_data_time)
 
     # 绘图对比计算时间
     Plot.plt_process_time(test_number, output_time_cost)

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from statistics import mean
 import numpy as np
+import copy
 
 
 # 生成gantt图
@@ -74,11 +75,11 @@ def plt_compare1(test_number, GP, generations, data_avg):
         # 取相反数，绘图用
         data_avg0 = [-i for i in data_avg0]
         # 生成画图x轴
-        x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
+        x0 = range(0, generations0)
         # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
         plt.plot(x0, data_avg0, label='A{0} Average'.format(n+1))
     plt.legend(fontsize=12)
-    plt.xlabel('Evaluations', fontsize=12)
+    plt.xlabel('Generations', fontsize=12)
     plt.ylabel('Objectives', fontsize=12)
 
 
@@ -95,12 +96,31 @@ def plt_compare2(test_number, GP, generations, data_best):
         # 取相反数，绘图用
         data_best0 = [-i for i in data_best0]
         # 生成画图x轴
-        x0 = np.arange(GP0.population_size, GP0.population_size + GP0.children_size * generations0, GP0.children_size)
+        x0 = range(0, generations0)
         # 输出代数与平均值和最优值的图像，横轴为评估次数，纵轴为适应度
         plt.plot(x0, data_best0, label='A{0} Best'.format(n+1))
     plt.legend(fontsize=12)
-    plt.xlabel('Evaluations', fontsize=12)
+    plt.xlabel('Generations', fontsize=12)
     plt.ylabel('Objectives', fontsize=12)
+
+
+# 生成演化时间比较图
+def plt_compare3(test_number, GP, generations, data_time):
+    plt.figure('time cost comparison ')
+    for n in range(test_number):
+        GP0 = GP[n]
+        generations0 = generations[n]
+        data_time0 = data_time[n]
+        data_time0 = [i for i in map(mean, data_time0)]
+        # 去掉第一个元素，0
+        temp_data_time0 = copy.deepcopy(data_time0)
+        temp_data_time0.pop(0)
+        # x轴
+        x0 = range(1, generations0)
+        plt.plot(x0, temp_data_time0, label='A{0} Best'.format(n+1))
+        plt.legend(fontsize=12)
+        plt.xlabel('Evaluations', fontsize=12)
+        plt.ylabel('Time', fontsize=12)
 
 
 # 生成运算时间比较图
@@ -118,7 +138,7 @@ def plt_process_time(test_number, time):
 
 # 生成提琴图
 def plt_violin(test_number, data_avg, data_best):
-    plt.figure('Violin_Objective')
+    plt.figure('Violin_Objective', (8, 6))
     data_avg_total = []
     data_best_total = []
     for n in range(test_number):
