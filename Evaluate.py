@@ -3,7 +3,7 @@ from Modeling import Job
 
 
 # 实例化方法——适应度评估（包括两次试验不同的方法）
-def evaluate(individual, problems_origin, test_index):
+def evaluate(individual, problems_origin, test_index, generation):
     # 复制源问题
     problems = copy.deepcopy(problems_origin)
     # 用于存储画gantt图用字典的key和value
@@ -13,6 +13,8 @@ def evaluate(individual, problems_origin, test_index):
     end_time = 0
     # 第几个算法
     test_index = test_index
+    # 识别代数
+    generation = generation
 
     # 遍历problems中的每一项元素，执行评估（目前只有1个problem）
     for problem in problems:
@@ -41,8 +43,14 @@ def evaluate(individual, problems_origin, test_index):
         if test_index in [1, 2, 3, 4, 5, 6, 7, 99]:
             end_time = 99999
         # 使用代理
-        elif test_index in [0]:
-            end_time = problem.pcstime * 0.6
+        elif test_index in [0] and generation < 5:
+            end_time = problem.pcstime * 2
+        elif test_index in [0] and generation < 10:
+            end_time = problem.pcstime * 2
+        elif test_index in [0] and generation <= 20:
+            end_time = 99999
+        else:
+            print("no test index! ", generation, test_index)
 
         # 评估：遍历每个时刻，执行过程仿真
         true_time = 0
@@ -186,14 +194,20 @@ def evaluate(individual, problems_origin, test_index):
             # 判断是否执行完毕
             true_time += 1
             prcs_time_now = process_time
-            if prcs_time_now > end_time or (prcs_time_last == prcs_time_now and true_time > release_max):
+            # 结束：超出了代理时间
+            if prcs_time_now > end_time:
                 makespan = true_time
                 have_finished = True
+            # 结束：所有任务都已释放，且工序时间不再变化（已全部完成）
+            elif prcs_time_last == prcs_time_now and true_time > release_max:
+                makespan = true_time
+                have_finished = True
+            # 继续
             else:
                 prcs_time_last = prcs_time_now
 
         individual.fitnesses.append(-makespan -
-                                    ((makespan*0.01*individual.tree_complexity()) if (test_index in [0, 2, 4]) else 0))
+                                    ((makespan*0.01*individual.tree_complexity()) if (test_index in [0, 2, 4, 99]) else 0))
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
         individual.objectives.append(-makespan)
         # 添加各项目标函数值
@@ -209,4 +223,3 @@ def evaluate(individual, problems_origin, test_index):
     individual.fitness = individual.fitnesses[-1]
     # 个体目标函数值列表最后一个
     individual.objective = individual.objectives[-1]
-

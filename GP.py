@@ -120,7 +120,7 @@ class GP:
             # 执行交叉操作
             else:
                 # TTGP
-                if self.number == 1 or 2:
+                if self.number == 0 or 1 or 2:
                     # 让第i个个体跟一个个体进行交叉
                     parent_copy = deepcopy(self.parents[i]).recombine(self.parents[randrange(0, self.children_size, 1)])
                     # 设置取出个体的stats属性是一个空列表
@@ -162,12 +162,13 @@ class GP:
         self.population = new_pop
 
     # 定义实例化方法——问题的适应度评估(GP类)
-    def evaluate(self, problems, test_index):
+    def evaluate(self, problems, test_index, generation):
         test_index = test_index
+        generation = generation
         # 对子代中的个体进行遍历
         for individual in self.children:
             # 对每个个体执行核心evaluate(Individual类)方法
-            Evaluate.evaluate(individual, problems, test_index)
+            Evaluate.evaluate(individual, problems, test_index, generation)
             # 执行一次循环，评估次数参数+1
             self.evaluations += 1
 
@@ -195,12 +196,14 @@ class GP:
         # 执行RUN次循环
         for run in range(RUNS):
             start_time1 = time.process_time()
+            # 设置代数变量
+            generation = 0
             # 执行初始化操作
             self.__init__(number=self.number)
             # 初次评估，因为evaluate方法是针对children属性执行的，所以将population暂时转移了一下
             self.children = self.population
             # 执行适应度评估（GP类）
-            self.evaluate(problems, test_index)
+            self.evaluate(problems, test_index, generation)
             self.population = self.children
             # 用于存储每代部分个体，只用于统计展示
             objective_portion_data = [[] for _ in range(generations)]
@@ -213,7 +216,7 @@ class GP:
             objective_portion_data[0] = temp_population[0:len(temp_population):5]
             for i in objective_portion_data[0]:
                 # 执行全面评估
-                Evaluate.evaluate(i, problems, 99)
+                Evaluate.evaluate(i, problems, 99, generation)
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
@@ -228,7 +231,7 @@ class GP:
             # data_complexity[0].append(mean(complexity_data))
 
             # 正式执行进化操作
-            # 先设置一个新变量
+            # 更新代数变量
             generation = 1
             # 完成演化，判断not_finished方法的bool值，若评估次数evaluations<=设定值则继续执行
             while self.not_finished():
@@ -240,7 +243,7 @@ class GP:
                 # 执行子代生成方法
                 self.childGeneration()
                 # 更新适应度评估（GP类，此方法执行一次，evaluations值会+20）
-                self.evaluate(problems, test_index)
+                self.evaluate(problems, test_index, generation)
                 # 执行再引入方法
                 self.reintroduction()
                 # 执行生存选择方法
@@ -256,7 +259,7 @@ class GP:
                 objective_portion_data[generation] = temp_population[0:len(temp_population):5]
                 for i in objective_portion_data[generation]:
                     # 执行全面评估，用于评价
-                    Evaluate.evaluate(i, problems, 99)
+                    Evaluate.evaluate(i, problems, 99, generation)
 
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值
