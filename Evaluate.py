@@ -47,7 +47,7 @@ def evaluate(individual, problems_origin, test_index, generation):
             end_time = problem.pcstime * 2
         elif test_index in [0] and generation < 10:
             end_time = problem.pcstime * 2
-        elif test_index in [0] and generation <= 20:
+        elif test_index in [0] and generation <= 21:
             end_time = 99999
         else:
             print("no test index! ", generation, test_index)
