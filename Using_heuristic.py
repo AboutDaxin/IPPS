@@ -4,7 +4,7 @@ import os
 
 def Coding_index(heu_index):
     # 文件名
-    filename = os.path.dirname(os.getcwd()) + r'/IPPS-Instance-Generator/heuristic{0}.xlsx'.format(heu_index)
+    filename = os.path.dirname(os.getcwd()) + r'/output/heuristic{0}.xlsx'.format(heu_index)
     # 读取excel的task
     data_task = pd.read_excel(filename, sheet_name='Sheet1')
     # 用于存储格式化后的总数据
@@ -15,7 +15,7 @@ def Coding_index(heu_index):
 
 def Coding_operation(heu_index):
     # 文件名
-    filename = os.path.dirname(os.getcwd()) + r'/IPPS-Instance-Generator/heuristic{0}.xlsx'.format(heu_index)
+    filename = os.path.dirname(os.getcwd()) + r'/output/heuristic{0}.xlsx'.format(heu_index)
     # 读取excel的task
     data_task = pd.read_excel(filename, sheet_name='Sheet1')
     # 用于存储格式化后的总数据
@@ -27,7 +27,7 @@ def Coding_operation(heu_index):
 
 def Coding_val(heu_index):
     # 文件名
-    filename = os.path.dirname(os.getcwd()) + r'/IPPS-Instance-Generator/heuristic{0}.xlsx'.format(heu_index)
+    filename = os.path.dirname(os.getcwd()) + r'/output/heuristic{0}.xlsx'.format(heu_index)
     # 读取excel的task
     data_task = pd.read_excel(filename, sheet_name='Sheet1')
     # 用于存储格式化后的总数据

@@ -4,12 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="改为变保真度代理">
-      <change beforePath="$PROJECT_DIR$/.idea/IPPS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/IPPS.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="终版">
+      <change afterPath="$PROJECT_DIR$/Dynamic scheduling.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Realtime_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/IPPS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/maincode.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/GP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Input.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Input00.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Input01.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Input02.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Input_outside.py" beforeDir="false" afterPath="$PROJECT_DIR$/Input_outside.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Instance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/Operations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/Plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Using_heuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/Using_heuristic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,34 +62,13 @@
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/PCTemp/IPPS&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/PCTemp/29-dynamic-scheduling/maincode&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.main">
-    <configuration name="Input_outside (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IPPS" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Input_outside.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.Realtime_data">
     <configuration name="Instance" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IPPS" />
+      <module name="maincode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -97,8 +88,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Realtime_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="maincode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="D:\PCTemp\29-dynamic-scheduling\maincode\Realtime_data.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Tree" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IPPS" />
+      <module name="maincode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -119,7 +131,7 @@
       <method v="2" />
     </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IPPS" />
+      <module name="maincode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -140,7 +152,7 @@
       <method v="2" />
     </configuration>
     <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IPPS" />
+      <module name="maincode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -162,11 +174,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Realtime_data" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.Tree" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.Instance" />
-        <item itemvalue="Python.Input_outside (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -181,13 +193,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661333320014</updated>
-    </task>
-    <task id="LOCAL-00007" summary="v1.0.2&#10;更改为外部数据输入">
-      <created>1661489359254</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1661489359255</updated>
     </task>
     <task id="LOCAL-00008" summary="v1.0.2&#10;更改为外部数据输入">
       <created>1661494698900</created>
@@ -525,7 +530,14 @@
       <option name="project" value="LOCAL" />
       <updated>1713576792374</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="终版">
+      <created>1715313749577</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1715313749577</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -552,7 +564,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="能运行" />
     <MESSAGE value="改plot" />
     <MESSAGE value="改成代理的那种" />
     <MESSAGE value="有bug，代理辅助的甘特图不对" />
@@ -577,7 +588,8 @@
     <MESSAGE value="输出过程表" />
     <MESSAGE value="debug，全面评估对了" />
     <MESSAGE value="改为变保真度代理" />
-    <option name="LAST_COMMIT_MESSAGE" value="改为变保真度代理" />
+    <MESSAGE value="终版" />
+    <option name="LAST_COMMIT_MESSAGE" value="终版" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -588,9 +600,9 @@
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Evaluate.py</url>
-          <line>42</line>
-          <option name="timeStamp" value="32" />
+          <url>file://$PROJECT_DIR$/Plot.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-defaults>

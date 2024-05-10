@@ -85,12 +85,12 @@ def plt_compare1(test_number, generations, data_avg):
     plt.xlabel('Generations', fontsize=12)
     plt.ylabel('Objectives', fontsize=12)
     # 输出时间进化数据表格
-    df = pd.DataFrame({"generations": x0,
-                       "A1": temp_data_avg[0], "A2": temp_data_avg[1],
-                       "A3": temp_data_avg[2], "A4": temp_data_avg[3],
-                       "A5": temp_data_avg[4]})
-    df = df.set_index('generations')
-    df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Avg process.xlsx')
+    # df = pd.DataFrame({"generations": x0,
+    #                    "A1": temp_data_avg[0], "A2": temp_data_avg[1],
+    #                    "A3": temp_data_avg[2], "A4": temp_data_avg[3],
+    #                    "A5": temp_data_avg[4]})
+    # df = df.set_index('generations')
+    # df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Avg process.xlsx')
 
 
 # 生成最优目标比较图
@@ -115,12 +115,12 @@ def plt_compare2(test_number, generations, data_best):
     plt.xlabel('Generations', fontsize=12)
     plt.ylabel('Objectives', fontsize=12)
     # 输出时间进化数据表格
-    df = pd.DataFrame({"generations": x0,
-                       "A1": temp_data_best[0], "A2": temp_data_best[1],
-                       "A3": temp_data_best[2], "A4": temp_data_best[3],
-                       "A5": temp_data_best[4]})
-    df = df.set_index('generations')
-    df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Best process.xlsx')
+    # df = pd.DataFrame({"generations": x0,
+    #                    "A1": temp_data_best[0], "A2": temp_data_best[1],
+    #                    "A3": temp_data_best[2], "A4": temp_data_best[3],
+    #                    "A5": temp_data_best[4]})
+    # df = df.set_index('generations')
+    # df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Best process.xlsx')
 
 
 # 生成演化时间比较图
@@ -144,12 +144,12 @@ def plt_compare3(test_number, generations, data_time):
     plt.xlabel('Generations', fontsize=12)
     plt.ylabel('Time', fontsize=12)
     # 输出时间进化数据表格
-    df = pd.DataFrame({"generations": x0,
-                       "A1": temp_data_time[0], "A2": temp_data_time[1],
-                       "A3": temp_data_time[2], "A4": temp_data_time[3],
-                       "A5": temp_data_time[4]})
-    df = df.set_index('generations')
-    df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Time process.xlsx')
+    # df = pd.DataFrame({"generations": x0,
+    #                    "A1": temp_data_time[0], "A2": temp_data_time[1],
+    #                    "A3": temp_data_time[2], "A4": temp_data_time[3],
+    #                    "A5": temp_data_time[4]})
+    # df = df.set_index('generations')
+    # df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Time process.xlsx')
 
 
 # 生成运算时间比较图

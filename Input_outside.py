@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # 文件名
-filename = os.path.dirname(os.getcwd()) + r'/IPPS-Instance-Generator/Instance.xlsx'
+filename = os.path.dirname(os.getcwd()) + r'/input/Instance.xlsx'
 
 # 读取excel的task
 data_task = pd.read_excel(filename, sheet_name=0)

@@ -335,37 +335,37 @@ class Node:
         elif self.op == MIN:
             return min(self.left.interpret(job, station, current_time),
                        self.right.interpret(job, station, current_time))
-        # 返还当前时间（输入的参数）
-        elif self.op == TIS:
-            return current_time
-        # 剩余工序数量
-        elif self.op == NOR:
-            return len(job.task.process_path)
+        # # 返还当前时间（输入的参数）
+        # elif self.op == TIS:
+        #     return current_time
+        # # 剩余工序数量
+        # elif self.op == NOR:
+        #     return len(job.task.process_path)
         # station剩余job数量
         elif self.op == NIQ:
             return len(station.queue)
-        # task剩余的工时
-        elif self.op == WR:
-            _sum = 0
-            for ele in job.task.process_time:
-                _sum += ele
-            return _sum
-        # station的能力数量
-        elif self.op == NCC:
-            return len(station.capability)
-        # station当前能力是否符合该job
-        elif self.op == WRJ:
-            return 1 if job.task.process_path[0] == station.current_capability else 0
-        # station的转换时间
-        elif self.op == RT:
-            return station.configuration_time
-        # station的序列中，符合该station当前能力的operation数量
-        elif self.op == NOCR:
-            n = 0
-            for i in station.queue:
-                if i.task.process_path[0] == station.current_capability:
-                    n += 1
-            return n
+        # # task剩余的工时
+        # elif self.op == WR:
+        #     _sum = 0
+        #     for ele in job.task.process_time:
+        #         _sum += ele
+        #     return _sum
+        # # station的能力数量
+        # elif self.op == NCC:
+        #     return len(station.capability)
+        # # station当前能力是否符合该job
+        # elif self.op == WRJ:
+        #     return 1 if job.task.process_path[0] == station.current_capability else 0
+        # # station的转换时间
+        # elif self.op == RT:
+        #     return station.configuration_time
+        # # station的序列中，符合该station当前能力的operation数量
+        # elif self.op == NOCR:
+        #     n = 0
+        #     for i in station.queue:
+        #         if i.task.process_path[0] == station.current_capability:
+        #             n += 1
+        #     return n
         else:
             print('HELP')
 

@@ -13,7 +13,7 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 50
+MAX_EVALUATIONS = 1
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
@@ -23,7 +23,8 @@ RUNS = 1
 # 定义GP类
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模XX，子代规模XX，变异率，复制率
-    def __init__(self, number, population_size=10, children_size=5, mutation=0.15, duplication=0.05, parsimony=0.5):
+    def __init__(self, number, population_size=1, children_size=1, mutation=0, duplication=1, parsimony=0.5):
+    # def __init__(self, number, population_size=20, children_size=10, mutation=0.15, duplication=0.05, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -36,7 +37,7 @@ class GP:
         self.data_complexity = None
         self.time_cost = None
 
-        if self.number in [0, 1, 2, 3, 4]:
+        if self.number in [1, 2, 3, 4]:
             # grow方法生成半个种群
             # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
             for _ in range(floor(population_size/2)):
@@ -58,7 +59,7 @@ class GP:
                 self.population.append(individual)
 
         # 使用现成heuristic
-        elif self.number in [98]:
+        elif self.number in [0]:
             for _ in range(ceil(population_size)):
                 # 实例化个体，使用Tree模块的Individual类
                 individual = Individual(parsimony)
@@ -327,7 +328,7 @@ class GP:
         df1 = pd.DataFrame({"Type": ['Index array', 'Operations array', 'Val', 'Routing heuristic', 'Sequencing heuristic'],
                            "Value": [decoding_array1, decoding_array2, decoding_array5, decoding_array3, decoding_array4]})
         df1 = df1.set_index("Type")
-        df1.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\heuristic{0}.xlsx'.format(test_index))
+        df1.to_excel(os.path.dirname(os.getcwd()) + r'\\output\heuristic{0}.xlsx'.format(test_index))
 
         # 输出调度表
         data_jobs = []
@@ -345,7 +346,7 @@ class GP:
                             6: 'Process time', 7: 'Setup time'}, inplace=True)
         df2 = df2.sort_values(by=['Task Index', 'Task String Index', 'Process Index'], ascending=True)
         df2 = df2.set_index("Task Index")
-        df2.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\schedule{0}.xlsx'.format(test_index))
+        df2.to_excel(os.path.dirname(os.getcwd()) + r'\output\schedule{0}.xlsx'.format(test_index))
 
         # 输出最优值的适应度和根字符
         print('best fitness: {}\nbest objective: {}'

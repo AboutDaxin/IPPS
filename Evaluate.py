@@ -40,7 +40,7 @@ def evaluate(individual, problems_origin, test_index, generation):
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
         # 不使用代理
-        if test_index in [1, 2, 3, 4, 5, 6, 7, 99]:
+        if test_index in [0, 1, 2, 3, 4, 5, 6, 7, 99]:
             end_time = 99999
         # 使用代理
         elif test_index in [0] and generation < 5:
@@ -207,7 +207,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                 prcs_time_last = prcs_time_now
 
         individual.fitnesses.append(-makespan -
-                                    ((makespan*0.01*individual.tree_complexity()) if (test_index in [0, 2, 4, 99]) else 0))
+                                    ((makespan*0.01*individual.tree_complexity()) if (test_index in [0, 1, 2, 3, 4, 99]) else 0))
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
         individual.objectives.append(-makespan)
         # 添加各项目标函数值
