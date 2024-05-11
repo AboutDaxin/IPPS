@@ -41,7 +41,7 @@ def Instance():
                     list_temp.append(i)
                     index += 1
             # 实例化一个task group
-            task_group_list.append(Task_Group(list_temp, j))
+            task_group_list.append(Task_Group(list_temp, j, [0]))
 
         # 实例化一个车间
         station_list = []
