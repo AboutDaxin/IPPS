@@ -40,19 +40,12 @@ def evaluate(individual, problems_origin, test_index, generation):
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
         # 不使用代理
-        if test_index in [0, 1, 2, 3, 4, 5, 6, 7, 99, 666]:
-            end_time = 99999
-        # 使用代理
-        elif test_index in [0] and generation < 5:
-            end_time = problem.pcstime * 2
-        elif test_index in [0] and generation < 10:
-            end_time = problem.pcstime * 2
-        elif test_index in [0] and generation <= 21:
+        if test_index in [666]:
             end_time = 99999
         else:
             print("no test index! ", generation, test_index)
 
-        # 评估：遍历每个时刻，执行过程仿真
+        # 执行过程仿真
         true_time = 0
         while not have_finished:
             # 路由规则

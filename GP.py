@@ -9,7 +9,6 @@ import time
 import pandas as pd
 import os
 
-
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
@@ -24,7 +23,6 @@ RUNS = 1
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模XX，子代规模XX，变异率，复制率
     def __init__(self, number, population_size=1, children_size=1, mutation=0, duplication=1, parsimony=0.5):
-    # def __init__(self, number, population_size=20, children_size=10, mutation=0.15, duplication=0.05, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -40,7 +38,7 @@ class GP:
         if self.number in [1, 2, 3, 4]:
             # grow方法生成半个种群
             # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
-            for _ in range(floor(population_size/2)):
+            for _ in range(floor(population_size / 2)):
                 # 实例化个体，使用Tree模块的Individual类
                 individual = Individual(parsimony)
                 # 使用grow方法形成个体，使用Tree模块的grow函数
@@ -50,7 +48,7 @@ class GP:
 
             # full方法生成剩下半个种群，并结合起来
             # 设置一个用于生成种群的循环，为种群规模的一半，ceil表示向上取整
-            for _ in range(ceil(population_size/2)):
+            for _ in range(ceil(population_size / 2)):
                 # 实例化个体，使用Tree模块的Individual类
                 individual = Individual(parsimony)
                 # 使用full方法形成个体，使用Tree模块的full函数
@@ -180,7 +178,7 @@ class GP:
 
     # 定义实例化方法——运行
     def run(self, problems, test_index):
-        print('start:'+str(test_index))
+        print('start:' + str(test_index))
         # 记录代码运行时间
         start_time = time.process_time()
         # 设置bests为一个空列表，用于存储最优结果
@@ -236,7 +234,7 @@ class GP:
             generation = 1
             # 完成演化，判断not_finished方法的bool值，若评估次数evaluations<=设定值则继续执行
             while self.not_finished():
-                print('evaluation'+str(generation))
+                print('evaluation' + str(generation))
                 # 记录每代演化时间
                 time1 = time.process_time()
                 # 执行父代选择方法
@@ -325,8 +323,9 @@ class GP:
 
         # 输出heuristic数据表格
         # 初始化一个excel
-        df1 = pd.DataFrame({"Type": ['Index array', 'Operations array', 'Val', 'Routing heuristic', 'Sequencing heuristic'],
-                           "Value": [decoding_array1, decoding_array2, decoding_array5, decoding_array3, decoding_array4]})
+        df1 = pd.DataFrame(
+            {"Type": ['Index array', 'Operations array', 'Val', 'Routing heuristic', 'Sequencing heuristic'],
+             "Value": [decoding_array1, decoding_array2, decoding_array5, decoding_array3, decoding_array4]})
         df1 = df1.set_index("Type")
         df1.to_excel(os.path.dirname(os.getcwd()) + r'\\output\heuristic{0}.xlsx'.format(test_index))
 
@@ -358,7 +357,7 @@ class GP:
               format(best.total_process_time, best.total_due_time, best.makespan))
         # 输出最优值的stats
         print('stats: {{{}, total set time: {}, time cost: {}}}'.
-              format(best.stats, best.total_transtime, round(end_time-start_time, 5)))
+              format(best.stats, best.total_transtime, round(end_time - start_time, 5)))
 
         # 传参用
         self.generations = generations
@@ -366,6 +365,6 @@ class GP:
         self.data_best = data_best
         self.data_time = data_time
         self.data_complexity = data_complexity
-        self.time_cost = round((end_time-start_time)/RUNS, 4)
+        self.time_cost = round((end_time - start_time) / RUNS, 4)
         # 输出最优方案的甘特图
         Plot.plt_gantt(best, self.number)

@@ -16,7 +16,7 @@ for i in range(data_task.shape[0]):
     # 在每行中按列遍历
     for j in range(data_task.shape[1]):
         # 将数组的字符串数据表格化
-        if j == 2 or j == 3 or j == 4 or j == 9:
+        if j == 2 or j == 3 or j == 4:
             # 以‘,’为分隔符，将字符串列表化
             lst1 = data_task.values[i, j][1:-1]
             lst2 = str(lst1).split(',')
