@@ -9,7 +9,6 @@ def Dynamic_instance(solve):
     test_number = 1
     # 执行n次，对比复杂度函数影响
     for n in range(test_number):
-        print('==== ALGORITHM {} ===='.format(n))
         # 是否考虑复杂度参数(是0考虑，是1不考虑)
         test_index = n
         # 创建一个存储实例问题的列表

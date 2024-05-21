@@ -110,10 +110,6 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
             final_task.need_popped = False
 
             # # 排序规则
-            # # 判断是否要执行重排
-            # for station in stations:
-            #     # 如果该station需要进行重排
-            #     if not station.have_popped:
             station = station_best
             # 对该station的job序列执行遍历，重排
             for job in station.queue:

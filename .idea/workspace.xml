@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="下一步解决station.queue的问题">
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="初成">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dynamic_Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dynamic_Evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dynamic_GP.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dynamic_GP.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dynamic_instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dynamic_instance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dynamic_realtime_input.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dynamic_realtime_input.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modeling.py" beforeDir="false" afterPath="$PROJECT_DIR$/Modeling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mainDynamic.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainDynamic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -188,20 +184,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661333320014</updated>
-    </task>
-    <task id="LOCAL-00013" summary="修改部分参数；绘图坐标修正；文字勘误">
-      <created>1662459630863</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1662459630863</updated>
-    </task>
-    <task id="LOCAL-00014" summary="v1.1.0&#10;设置了3组时间数据；GP参数修改&#10;objective值有bug，待修复">
-      <created>1662545737051</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1662545737051</updated>
     </task>
     <task id="LOCAL-00015" summary="v1.1.1&#10;objective进行了标准化（除以3了）">
       <created>1665986143948</created>
@@ -532,7 +514,21 @@
       <option name="project" value="LOCAL" />
       <updated>1716181606831</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="初成">
+      <created>1716284672131</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1716284672131</updated>
+    </task>
+    <task id="LOCAL-00063" summary="初成">
+      <created>1716284824233</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1716284824233</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -559,7 +555,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="合并了部分evaluation的代码，但是全评估的合并就有bug，不知为何" />
     <MESSAGE value="搞定了，因为endtime小了" />
     <MESSAGE value="删除了fullevaluate，现在模拟功能就一段代码" />
     <MESSAGE value="修复了gantt图bug；完成了IPPS的operation建立；建立了task的高层级列表" />
@@ -584,7 +579,8 @@
     <MESSAGE value="大改，重建结构" />
     <MESSAGE value="1" />
     <MESSAGE value="下一步解决station.queue的问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="下一步解决station.queue的问题" />
+    <MESSAGE value="初成" />
+    <option name="LAST_COMMIT_MESSAGE" value="初成" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -601,8 +597,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Dynamic_Evaluate.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="133" />
+          <line>121</line>
+          <option name="timeStamp" value="134" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-defaults>
