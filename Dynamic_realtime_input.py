@@ -43,13 +43,16 @@ for i in range(data_station.shape[0]):
     # 在每行中按列遍历
     for j in range(data_station.shape[1]):
         # 字符串表格化
-        if j == 1:
+        if j == 1 or j == 4 or j == 5:
             # 以‘,’为分隔符，将字符串列表化
             lst1 = data_station.values[i, j][1:-1]
-            lst2 = str(lst1).split(',')
-            # 将列表元素转为int
-            lst3 = list(map(int, lst2))
-            format_data.append(lst3)
+            if lst1 != "":
+                lst2 = str(lst1).split(',')
+                # 将列表元素转为int
+                lst3 = list(map(int, lst2))
+                format_data.append(lst3)
+            else:
+                format_data.append([])
         # 整型数据正常处理
         else:
             format_data.append(data_station.values[i, j])

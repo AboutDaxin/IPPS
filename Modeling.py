@@ -39,12 +39,15 @@ class Task_Group:
 
 # 定义工位类
 class Station:
-    def __init__(self, station_index=0, capability=None, configuration_time=0):
+    def __init__(self, station_index=0, capability=None, configuration_time=0, whether_rigid=0, queue_task=None, queue_task_process=None):
         self.station_index = station_index
         self.capability = capability
         self.current_capability = 0
         self.configuration_time = configuration_time
         self.current_trans_time = 0
+        self.whether_rigid = whether_rigid
+        self.queue_task = queue_task
+        self.queue_task_process = queue_task_process
         self.have_trans = False
         self.queue = []
         self.priority = None

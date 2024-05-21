@@ -33,17 +33,14 @@ class Dynamic_GP:
                 self.population.append(individual)
 
     # 定义实例化方法——问题的适应度评估(GP类)
-    def evaluate(self, problems, test_index, generation):
-        test_index = test_index
-        generation = generation
+    def evaluate(self, problems, test_index, generation, solve_task):
         # 对子代中的个体进行遍历
         for individual in self.children:
             # 对每个个体执行核心evaluate(Individual类)方法
-            Dynamic_Evaluate.evaluate(individual, problems, test_index, generation)
+            Dynamic_Evaluate.evaluate(individual, problems, test_index, generation, solve_task)
 
     # 定义实例化方法——运行
-    def run(self, problems, test_index):
-        print('start:'+str(test_index))
+    def run(self, problems, solve_task):
 
         # 执行RUN次循环
         for run in range(RUNS):
@@ -55,6 +52,6 @@ class Dynamic_GP:
             # 因为evaluate方法是针对children属性执行的，所以将population暂时转移了一下
             self.children = self.population
             # 执行适应度评估（GP类）
-            print("开始仿真")
-            self.evaluate(problems, 666, generation)
-            print("仿真结束")
+            print("开始实时调度")
+            self.evaluate(problems, 666, generation, solve_task)
+            print("结束")

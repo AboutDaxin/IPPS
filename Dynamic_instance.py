@@ -4,7 +4,7 @@ from Modeling import Task, Task_Group, Station
 import Dynamic_realtime_input
 
 
-def Dynamic_instance():
+def Dynamic_instance(solve):
     # 对比试验组数设定
     test_number = 1
     # 执行n次，对比复杂度函数影响
@@ -27,7 +27,7 @@ def Dynamic_instance():
             # 用于存储组内的所有工序串
             list_temp = []
             # 用于存储该组内已完工的工序串
-            finished_task_index = None
+            finished_task_index = []
             # 定义组内的工序串索引
             index = 1
             # i是全局的每个工序串
@@ -38,17 +38,17 @@ def Dynamic_instance():
                     i.task_string_index = index
                     list_temp.append(i)
                     index += 1
-                    finished_task_index = i.have_finished
+                    finished_task_index.append(i.have_finished)
             # 实例化一个task group
             task_group_list.append(Task_Group(list_temp, j, finished_task_index))
 
         # 实例化一个车间
         station_list = []
         for s in Dynamic_realtime_input.STATION:
-            station_list.append(Station(s[0], s[1], s[2]))
+            station_list.append(Station(s[0], s[1], s[2], s[3], s[4], s[5]))
         # 将该实例加入problems列表（第三个参数为限定时间）
         problems.append(Problem(task_list, task_group_list, station_list, 99999))
         # 实例化一个gp
         gp = Dynamic_GP()
         # 执行该问题
-        gp.run(problems, test_index)
+        gp.run(problems, solve)
