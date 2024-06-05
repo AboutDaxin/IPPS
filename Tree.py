@@ -305,7 +305,8 @@ class Node:
             return job.task.process_time[1] if len(job.task.process_time) > 1 else 0
         # 当前序的执行时间
         elif self.op == PT:
-            return job.task.process_time[0]
+            if job.task.process_time[0]:
+                return job.task.process_time[0]
         # 单项任务的交货期
         elif self.op == DD:
             return job.task.deadline if job.task.deadline != 0 else float('Inf')

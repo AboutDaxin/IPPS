@@ -4,10 +4,12 @@ class Task:
     # 任务索引，工序串索引，串内工艺路径，对应工时，前序约束工序串索引，是否刚性线，到达时间，交货期，权重
     def __init__(self, task_index=0, process_string_index=0, process_path=None,
                  process_time=None, pre_process_constraint=None, whether_rigid=0, release=0, deadline=0, weight=0,
-                 have_finished=None):
+                 have_finished=None, isrunning=None):
         # 固有属性
         if have_finished is None:
             have_finished = [0]
+        if isrunning is None:
+            isrunning = [0]
         self.task_index = task_index
         self.process_string_index = process_string_index
         self.process_path = process_path
@@ -18,6 +20,7 @@ class Task:
         self.deadline = deadline
         self.weight = weight
         self.have_finished = have_finished
+        self.isrunning = isrunning
         self.task_string_index = None
         # 衍生属性
         self.process_num = [i + 1 for i in range(len(process_path))]
