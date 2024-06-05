@@ -2,7 +2,7 @@ from Dynamic_GP import Dynamic_GP
 from Modeling import Problem
 from Modeling import Task, Task_Group, Station
 import Dynamic_realtime_input
-
+import logging
 
 def Dynamic_instance(solve):
     # 对比试验组数设定
@@ -14,6 +14,7 @@ def Dynamic_instance(solve):
         # 创建一个存储实例问题的列表
         problems = []
 
+        logging.info("Task instance generate")
         # 实例化一个任务
         task_list = []
         task_group_list = []

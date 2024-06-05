@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="初成2">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+    <list default="true" id="dbd775fa-243f-4e0d-b893-78557db74d6d" name="Changes" comment="初成3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dynamic_Evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dynamic_Evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mainDynamic.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainDynamic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,13 +182,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661333320014</updated>
-    </task>
-    <task id="LOCAL-00017" summary="v1.1.4&#10;添加了目标平均值的输出功能；&#10;hyper_period参数应设定大一些，否则会出错">
-      <created>1666171751444</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1666171751444</updated>
     </task>
     <task id="LOCAL-00018" summary="新的输入格式已经形成">
       <created>1695435971506</created>
@@ -529,7 +519,14 @@
       <option name="project" value="LOCAL" />
       <updated>1716287631112</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="初成3">
+      <created>1716360918568</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1716360918568</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -556,7 +553,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="修复了gantt图bug；完成了IPPS的operation建立；建立了task的高层级列表" />
     <MESSAGE value="可以改Evaluate了" />
     <MESSAGE value="evaluate中..." />
     <MESSAGE value="evaluate中...2" />
@@ -581,7 +577,8 @@
     <MESSAGE value="初成" />
     <MESSAGE value="初成1" />
     <MESSAGE value="初成2" />
-    <option name="LAST_COMMIT_MESSAGE" value="初成2" />
+    <MESSAGE value="初成3" />
+    <option name="LAST_COMMIT_MESSAGE" value="初成3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
