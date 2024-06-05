@@ -34,8 +34,11 @@ class Task:
 
 # 定义任务组类
 class Task_Group:
-    def __init__(self, list_temp, index, finished_task_index):
+    def __init__(self, list_temp, index, finished_task_index, isrunning=None):
+        if isrunning is None:
+            isrunning = [0]
         self.tasks = list_temp
+        self.isrunning = isrunning
         self.index = index + 1
         self.finished_task_index = finished_task_index
 

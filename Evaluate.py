@@ -63,7 +63,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                 # 基于每个组，进行分析
                 for task in group.tasks:
                     # 判断本task是否能执行，是否是未完成工序
-                    if task.have_finished == [0] and task.isrunning == [0]:
+                    if task.have_finished == [0] and group.isrunning == [0]:
                         temp_available_tasks.append(task)
                 for task in temp_available_tasks:
                     # 判断本task是否能执行，前序约束是否已满足
@@ -116,6 +116,8 @@ def evaluate(individual, problems_origin, test_index, generation):
                         final_task = available_tasks[temp_task_index3[0]]
                         station_best = min(stations_best)
                         station_best.queue.append(Job(final_task, station_best, true_time))
+                        # 把该任务组的状态改为1
+                        problem.task_groups[final_task.task_index-1].isrunning = [1]
                         final_task.isrunning = [1]
                         # 该station排序状态改为“需要重排”
                         station_best.need_popped = False
@@ -203,6 +205,8 @@ def evaluate(individual, problems_origin, test_index, generation):
                             problem.task_groups[coord[0]-1].finished_task_index.append(pending_task.task_string_index)
                         # 在序列中删除该运行结束的job
                         station.queue[0].task.have_finished = [1]
+                        # 任务组运行状态改为[0]
+                        problem.task_groups[station.queue[0].task_index-1].isrunning = [0]
                         station.queue.pop(0)
                     # 对当前station的job序列进行遍历，计算拖期
                     if station.queue:
