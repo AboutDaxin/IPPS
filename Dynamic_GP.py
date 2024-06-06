@@ -1,6 +1,7 @@
 from math import ceil
 import Dynamic_Evaluate
 from Tree import Individual
+from logset import logging
 
 
 # 设置一个常数K，用于后边锦标赛法选择子代
@@ -23,12 +24,14 @@ class Dynamic_GP:
         self.population = []
 
         # 使用现成heuristic
+        logging.info("Using current heuristics")
         if self.number in [0]:
             for _ in range(ceil(population_size)):
                 # 实例化个体，使用Tree模块的Individual类
                 individual = Individual(parsimony)
                 # 使用full方法形成个体，使用Tree模块的full函数
                 individual.heuristic(self.number)
+                logging.info("Heuristic analysis complete")
                 # 在种群列表中增加这个个体，完成整个种群的构建
                 self.population.append(individual)
 
@@ -37,11 +40,11 @@ class Dynamic_GP:
         # 对子代中的个体进行遍历
         for individual in self.children:
             # 对每个个体执行核心evaluate(Individual类)方法
+            logging.info("Evaluation begin, number of individual is {0}".format(len(self.children)))
             Dynamic_Evaluate.evaluate(individual, problems, test_index, generation, solve_task)
 
     # 定义实例化方法——运行
     def run(self, problems, solve_task):
-
         # 执行RUN次循环
         for run in range(RUNS):
             # start_time1 = time.process_time()

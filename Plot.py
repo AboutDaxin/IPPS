@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from statistics import mean
 import os
+
+import numpy as np
 import pandas as pd
 import copy
 
@@ -35,11 +37,7 @@ def plt_gantt(best, number):
         # 画job甘特图
         plt.barh(y=k[3], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])
         # 画job标注
-        # plt.text(v[0] + 0.1, k[2]-0.14, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
-        #          fontdict=fontdict_task)
-        # plt.text(v[0] + 0.5, k[2], "Start:\n " + str(v[0]), fontdict=fontdict_time)
-        # plt.text(v[0] + 0.5, k[2] - 0.35, "End:\n " + str(v[1]), fontdict=fontdict_time)
-        plt.text(v[0], k[3]-0.33, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + "," + str(k[2]) + ")",
+        plt.text(v[0], k[3]-0.33, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
                  fontdict=fontdict_task)
 
         # 画transtime甘特图
@@ -48,7 +46,7 @@ def plt_gantt(best, number):
         plt.text(v[0]-v[3], k[3]-0.33, "Time:\n " + str(v[3]) if v[3] != 0 else '', fontdict=fontdict_time)
 
     # 生成x轴刻度
-    plt.xticks(range(best.makespan+2))
+    plt.xticks(np.arange(0, best.makespan+2, 1))
     # 生成y轴label
     ylabels = []
     m = []
@@ -56,18 +54,18 @@ def plt_gantt(best, number):
         m.append(i[3])
     for i in range(max(m)):
         ylabels.append("Station" + str(i + 1))
-    plt.yticks(range(1, max(m)+1), ylabels, rotation=45)
+    plt.yticks(np.arange(1, max(m)+1), ylabels, rotation=45)
     # 生成title
     plt.title("A{0} Gantt".format(number+1))
     plt.xlabel("process_time /h")
     plt.ylabel("stations")
+    plt.show()
 
 
 # 生成平均目标比较图
 def plt_compare1(test_number, generations, data_avg):
     plt.figure('Average_Objective')
     temp_data_avg = []
-    x0 = 0
     for n in range(test_number):
         generations0 = generations[n]
         data_avg0 = data_avg[n]

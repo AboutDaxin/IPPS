@@ -2,19 +2,17 @@ from Dynamic_GP import Dynamic_GP
 from Modeling import Problem
 from Modeling import Task, Task_Group, Station
 import Dynamic_realtime_input
-import logging
+from logset import logging
+
 
 def Dynamic_instance(solve):
     # 对比试验组数设定
     test_number = 1
     # 执行n次，对比复杂度函数影响
     for n in range(test_number):
-        # 是否考虑复杂度参数(是0考虑，是1不考虑)
-        test_index = n
         # 创建一个存储实例问题的列表
         problems = []
-
-        logging.info("Task instance generate")
+        logging.info("Tasks instance generation begin")
         # 实例化一个任务
         task_list = []
         task_group_list = []
@@ -44,11 +42,14 @@ def Dynamic_instance(solve):
 
         # 实例化一个车间
         station_list = []
+        logging.info("Stations instance generation begin")
         for s in Dynamic_realtime_input.STATION:
             station_list.append(Station(s[0], s[1], s[2], s[3], s[4], s[5]))
         # 将该实例加入problems列表（第三个参数为限定时间）
         problems.append(Problem(task_list, task_group_list, station_list, 99999))
         # 实例化一个gp
+        logging.info("GP instance generation begin")
         gp = Dynamic_GP()
         # 执行该问题
+        logging.info("GP runs")
         gp.run(problems, solve)

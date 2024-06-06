@@ -1,5 +1,6 @@
 import copy
 from Modeling import Job
+from logset import logging
 
 
 # 实例化方法——适应度评估（包括两次试验不同的方法）
@@ -29,6 +30,7 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
             task_release.append(i.release)
         # 定义结束时间，决定是否使用代理
         # 不使用代理
+        logging.info("Surrogate not used")
         if test_index in [666]:
             pass
         else:
@@ -43,6 +45,7 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
             available_tasks = []
             group = problem.task_groups[solve_task-1]
             # 先转换一下finished_task_index格式
+            logging.info("Finished tasks data reading")
             finished = [0]
             n = 1
             for i in group.finished_task_index:
@@ -50,6 +53,8 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                     finished.append(n)
                     n += 1
             group.finished_task_index = finished
+            # 确认可选任务工序
+            logging.info("Identify available processes")
             for task in group.tasks:
                 # 判断本task是否能执行，是否是未完成工序
                 if task.have_finished == 0:
@@ -62,8 +67,11 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                         c += 1
                 if c == len(task.pre_process_constraint):
                     available_tasks.append(task)
-
+            # 读取可选任务索引
+            available_tasks_index = [[i.task_index, i.task_string_index] for i in available_tasks]
+            logging.info("Available processes are " + str(available_tasks_index))
             # 接着，把queue里的内容JOB化加入station里
+            logging.info("Current jobs sequencing data reading")
             for station in problem.stations:
                 if station.queue_task:
                     for i in range(len(station.queue_task)):
@@ -73,6 +81,7 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                         station.queue.append(Job(station_task, station, true_time))
 
             # 之后，遍历所有可用task，进行job分配
+            logging.info("Identify available stations")
             if available_tasks:
                 stations_best = []
                 for task in available_tasks:
@@ -100,11 +109,18 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                                 station.priority = station.station_index/100
                     # 确定被选中的station（优先值最小为最高级别）
                     stations_best.append(min(stations_temp)) if stations_temp else print("no!")
-                # 在job序列对应的station中加入一个Job
+                # 识别最优可用单元
+                available_stations_index = [[i.station_index] for i in stations_best]
+                logging.info("Available stations are" + str(available_stations_index))
+
+                # 在job决定选择的station中加入该Job
                 temp_task_index3 = [i for i, x in enumerate(stations_best) if x == min(stations_best)]
                 final_task = available_tasks[temp_task_index3[0]]
                 station_best = min(stations_best)
                 print("建议分配任务{0}的工序{1}至单元{2}。".format(final_task.task_index, final_task.process_string_index, station_best.station_index))
+                station_best.queue.append(Job(final_task, station_best, true_time))
+                logging.info("Task{0} process{1} to station{2}".format(final_task.task_index, final_task.process_string_index, station_best.station_index))
+                # 加入该job
                 station_best.queue.append(Job(final_task, station_best, true_time))
                 # 该station排序状态改为“需要重排”
                 station_best.need_popped = False
@@ -122,8 +138,10 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                 # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
                 station.queue.sort()
                 print("建议单元{0}上的任务排序如下：".format(station.station_index))
+                logging.info("Sequencing in station{0} is: ".format(station.station_index))
                 for i in range(len(station.queue)):
                     print(str(i+1) + ":任务{}的工序{}。".format(station.queue[i].task.task_index, station.queue[i].task.task_string_index))
+                    logging.info(str(i+1) + ":Task{} process{}".format(station.queue[i].task.task_index, station.queue[i].task.task_string_index))
                 # 对station进行能力变更
                 if station.current_capability == 0:
                     # 初始情况
@@ -132,11 +150,13 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                     station.current_trans_time = station.configuration_time
                     total_transtime += station.configuration_time
                     print("单元能力需要转换，消耗{0}小时。".format(station.configuration_time))
+                    logging.info("Capability reconfiguration time is {0}".format(station.configuration_time))
                 elif station.current_capability == station.queue[0].task.process_path[0] if station.queue else 0:
                     # 不需要转变
                     station.have_trans = False
                     station.current_trans_time = 0
                     print("单元能力不需要转换。")
+                    logging.info("No need to reconfiguration")
                 else:
                     # 需要转变
                     station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
@@ -144,9 +164,11 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                     station.current_trans_time = station.configuration_time
                     total_transtime += station.configuration_time
                     print("单元能力需要转换，消耗{0}小时。".format(station.configuration_time))
+                    logging.info("Capability reconfiguration time is {0}".format(station.configuration_time))
                 # 排序状态变为已排完，不需要重排
                 station.have_popped = True
                 have_finished = True
             else:
                 print("任务{}已完成所有工序。".format(task.task_index))
+                logging.warning("Task{} has done".format(task.task_index))
                 have_finished = True
