@@ -45,7 +45,7 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
             available_tasks = []
             group = problem.task_groups[solve_task-1]
             # 先转换一下finished_task_index格式
-            logging.info("Finished tasks data reading")
+            logging.info("Finished tasks data reading...")
             finished = [0]
             n = 1
             for i in group.finished_task_index:
@@ -54,7 +54,7 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                     n += 1
             group.finished_task_index = finished
             # 确认可选任务工序
-            logging.info("Identify available processes")
+            logging.info("Identify available processes...")
             for task in group.tasks:
                 # 判断本task是否能执行，是否是未完成工序
                 if task.have_finished == 0:
@@ -70,18 +70,26 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
             # 读取可选任务索引
             available_tasks_index = [[i.task_index, i.task_string_index] for i in available_tasks]
             logging.info("Available processes are " + str(available_tasks_index))
-            # 接着，把queue里的内容JOB化加入station里
-            logging.info("Current jobs sequencing data reading")
+
+            # 把输入表queue里的内容JOB化加入station里
+            logging.info("Current jobs sequencing data reading...")
             for station in problem.stations:
                 if station.queue_task:
+                    # 获取station当前正在进行的任务并删除
+                    logging.info("Current job of station{0} is: task{1}".format(station.station_index, station.queue_task[0]))
+                    station.queue_task.pop(0)
+                    station.queue_task_process.pop(0)
                     for i in range(len(station.queue_task)):
                         temp_task_index1 = station.queue_task[i]
                         temp_task_index2 = station.queue_task_process[i]
                         station_task = problem.task_groups[temp_task_index1-1].tasks[temp_task_index2-1]
                         station.queue.append(Job(station_task, station, true_time))
+                    # 获取station当前能力
+                    station.current_capability = station.queue[0].task.process_path[0]
+                    logging.info("Current capability of station{0} is: {1}".format(station.station_index, station.current_capability))
 
             # 之后，遍历所有可用task，进行job分配
-            logging.info("Identify available stations")
+            logging.info("Identify available stations...")
             if available_tasks:
                 stations_best = []
                 for task in available_tasks:
@@ -111,14 +119,13 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                     stations_best.append(min(stations_temp)) if stations_temp else print("no!")
                 # 识别最优可用单元
                 available_stations_index = [[i.station_index] for i in stations_best]
-                logging.info("Available stations are" + str(available_stations_index))
+                logging.info("Available stations are " + str(available_stations_index))
 
                 # 在job决定选择的station中加入该Job
                 temp_task_index3 = [i for i, x in enumerate(stations_best) if x == min(stations_best)]
                 final_task = available_tasks[temp_task_index3[0]]
                 station_best = min(stations_best)
                 print("建议分配任务{0}的工序{1}至单元{2}。".format(final_task.task_index, final_task.process_string_index, station_best.station_index))
-                station_best.queue.append(Job(final_task, station_best, true_time))
                 logging.info("Task{0} process{1} to station{2}".format(final_task.task_index, final_task.process_string_index, station_best.station_index))
                 # 加入该job
                 station_best.queue.append(Job(final_task, station_best, true_time))
@@ -140,7 +147,7 @@ def evaluate(individual, problems_origin, test_index, generation, solve_task):
                 print("建议单元{0}上的任务排序如下：".format(station.station_index))
                 logging.info("Sequencing in station{0} is: ".format(station.station_index))
                 for i in range(len(station.queue)):
-                    print(str(i+1) + ":任务{}的工序{}。".format(station.queue[i].task.task_index, station.queue[i].task.task_string_index))
+                    print(str(i+1) + " :任务{}的工序{}。".format(station.queue[i].task.task_index, station.queue[i].task.task_string_index))
                     logging.info(str(i+1) + ":Task{} process{}".format(station.queue[i].task.task_index, station.queue[i].task.task_string_index))
                 # 对station进行能力变更
                 if station.current_capability == 0:

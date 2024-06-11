@@ -2,12 +2,12 @@ from GP import GP
 from Modeling import Problem
 from Modeling import Task, Task_Group, Station
 import Input_outside
-import Plot
+# import Plot
 
 
 def Instance():
     # 用于存储两次对比运行的关键数据
-    output_gp = []
+    # output_gp = []
     output_generations = []
     output_data_avg = []
     output_data_best = []
