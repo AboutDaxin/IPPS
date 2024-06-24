@@ -64,14 +64,39 @@ class Station:
         return self.priority < other.priority
 
 
+# 定义人员类
+class Worker:
+    def __init__(self, worker_index=0, capability=None):
+        self.worker_index = worker_index
+        self.capability = capability
+        self.priority = None
+        self.worktime = 0
+
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+
+# 定义资源类
+class Instrument:
+    def __init__(self, instrument_index=0, capability=None):
+        self.instrument_index = instrument_index
+        self.capability = capability
+        self.priority = None
+        self.worktime = 0
+
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+
 # 定义作业类（一个task在station执行时作为一个job）
 class Job:
     # 初始化方法，定义作业层的一些属性（Task为声明task的类型）
-    def __init__(self, task: Task, station: Station, time):
+    def __init__(self, task: Task, station: Station, worker: Worker, instrument: Instrument, time):
         # 注意，此处的task为未执行的全部任务，执行过的部分将被删除
         self.task = task
-        # 此处的task_group为该job所属的任务
         self.station = station
+        self.worker = worker
+        self.instrument = instrument
         self.task_index = task.task_index
         # job剩余执行时间
         self.process_time = task.process_time[0] if len(task.process_time) != 0 else 0
@@ -92,11 +117,13 @@ class Job:
 
 # 定义问题类
 class Problem:
-    def __init__(self, tasks, task_groups,stations, hyper_period=0):
+    def __init__(self, tasks, task_groups, stations, workers, instrument, hyper_period=0):
         # 实例化时时，tasks是个列表
         self.tasks = tasks
         self.task_groups = task_groups
         self.stations = stations
+        self.workers = workers
+        self.instrument = instrument
         self.hyper_period = hyper_period
         # 计算总工时
         self.pcstime = 0

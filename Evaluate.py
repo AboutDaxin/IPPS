@@ -74,7 +74,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                     if c == len(task.pre_process_constraint):
                         available_tasks.append(task)
 
-                # 之后，遍历所有可用task，进行job分配
+                # 之后，遍历所有符合执行条件的task，在station上进行job分配
                 if available_tasks:
                     stations_best = []
                     for task in available_tasks:
@@ -104,18 +104,20 @@ def evaluate(individual, problems_origin, test_index, generation):
                                     # 如果该station序列中没有任务，则优先值跟num相关
                                     else:
                                         station.priority = station.station_index/100
+                            # 记录每个task的对应最佳station
                             stations_best.append(min(stations_temp)) if stations_temp else print("no!")
                             if len(stations_best) == 0:
                                 pass
-                            # # 确定被选中的station（优先值最小为最高级别）
-                            # station_best = min(stations_temp) if stations_temp else print("no!")
-                            # 在job序列对应的station中加入一个Job
-                            # 在job序列对应的station中加入一个Job
+                    # 对所有备选task对应的最佳station进行进一步决策
                     if stations_best:
+                        # 最终task决策
+                        # 选出station优先级最高的所有序号（优先级一样可能有多个）
                         temp_task_index3 = [i for i, x in enumerate(stations_best) if x == min(stations_best)]
+                        # 选备选列表里的第一个（随意）任务为最终决策
                         final_task = available_tasks[temp_task_index3[0]]
+                        # 最终station决策
                         station_best = min(stations_best)
-                        station_best.queue.append(Job(final_task, station_best, true_time))
+                        station_best.queue.append(Job(final_task, station_best, None, None, true_time))
                         # 把该任务组的状态改为1
                         problem.task_groups[final_task.task_index-1].isrunning = [1]
                         final_task.isrunning = [1]
@@ -138,6 +140,11 @@ def evaluate(individual, problems_origin, test_index, generation):
                         # shuffle(station.queue)
                         # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
                         station.queue.sort()
+
+                        # 分配人员与资源
+                        station.queue[0].worker = problem.workers[0]
+                        station.queue[0].instrument = problem.instrument[0]
+
                         # 对station进行能力变更
                         if station.current_capability == 0:
                             # 初始情况
@@ -158,7 +165,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                         # 排序状态变为已排完，不需要重排
                         station.have_popped = True
 
-            # 对每个station的job执行一系列操作
+            # 车间仿真运行
             # 按每个station分别进行判断
             for station in stations:
                 # 如果该station还存在job则执行
