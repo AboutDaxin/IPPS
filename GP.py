@@ -16,7 +16,7 @@ MAX_EVALUATIONS = 30
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 3
+RUNS = 1
 
 
 # 定义GP类
@@ -342,7 +342,8 @@ class GP:
         df2.rename(columns={0: 'Task Index', 1: 'Task String Index',
                             2: 'Process Index', 3: 'Station index',
                             4: 'Start time', 5: 'Finish time',
-                            6: 'Process time', 7: 'Setup time'}, inplace=True)
+                            6: 'Process time', 7: 'Setup time', 8: 'Instrument', 9: 'Worker'}, inplace=True)
+        # 排个序
         df2 = df2.sort_values(by=['Task Index', 'Task String Index', 'Process Index'], ascending=True)
         df2 = df2.set_index("Task Index")
         df2.to_excel(os.path.dirname(os.getcwd()) + r'\output\schedule{0}.xlsx'.format(test_index))

@@ -103,7 +103,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                                         station.priority = priority_temp
                                     # 如果该station序列中没有任务，则优先值跟num相关
                                     else:
-                                        station.priority = station.station_index/100
+                                        station.priority = station.station_index / 100
                             # 记录每个task的对应最佳station
                             stations_best.append(min(stations_temp)) if stations_temp else print("no!")
                             if len(stations_best) == 0:
@@ -117,9 +117,9 @@ def evaluate(individual, problems_origin, test_index, generation):
                         final_task = available_tasks[temp_task_index3[0]]
                         # 最终station决策
                         station_best = min(stations_best)
-                        station_best.queue.append(Job(final_task, station_best, None, None, true_time))
+                        station_best.queue.append(Job(final_task, station_best, true_time))
                         # 把该任务组的状态改为1
-                        problem.task_groups[final_task.task_index-1].isrunning = [1]
+                        problem.task_groups[final_task.task_index - 1].isrunning = [1]
                         final_task.isrunning = [1]
                         # 该station排序状态改为“需要重排”
                         station_best.need_popped = False
@@ -133,7 +133,28 @@ def evaluate(individual, problems_origin, test_index, generation):
                 if not station.have_popped:
                     # 对该station的job序列执行遍历，重排
                     if station.queue:
+                        # 用于存储能开工的job
+                        job_ok = []
                         for job in station.queue:
+                            # 识别每个job的可用仪器和人员
+                            ins_temp = []
+                            worker_temp = []
+                            for ins in problem.instrument:
+                                if ins.capability == job.task.process_path and ins.using is False:
+                                    ins_temp.append(ins)
+                            job.available_instrument = ins_temp
+                            for worker in problem.workers:
+                                if worker.capability == job.task.process_path and worker.using is False:
+                                    worker_temp.append(worker)
+                            job.available_workers = worker_temp
+                            # 检查该job的仪器是否够用
+                            if not ins_temp or not worker_temp:
+                                print("task {0} {1} resource not enough!".format(job.task.task_index, job.task.task_string_index))
+                            else:
+                                # 保存符合开工条件的job（有仪器、人员可用）
+                                job_ok.append(job)
+
+                        for job in job_ok:
                             # 计算该job的优先级数值
                             job.priority = individual.root.right.interpret(job, station, true_time)
                         # 随机排列该station的job序列
@@ -142,8 +163,10 @@ def evaluate(individual, problems_origin, test_index, generation):
                         station.queue.sort()
 
                         # 分配人员与资源
-                        station.queue[0].worker = problem.workers[0]
-                        station.queue[0].instrument = problem.instrument[0]
+                        station.queue[0].instrument = station.queue[0].available_instrument[0]
+                        station.queue[0].worker = station.queue[0].available_workers[0]
+                        station.queue[0].instrument.using = True
+                        station.queue[0].worker.using = True
 
                         # 对station进行能力变更
                         if station.current_capability == 0:
@@ -186,13 +209,14 @@ def evaluate(individual, problems_origin, test_index, generation):
 
                     # 如果当前job执行完毕
                     if station.queue[0].process_time <= 0:
-                        # 逐步生成draw_key中的元组(任务序号、工序序号、工作站序号)
+                        # 逐步生成draw_key中的元组(任务序号、工序串序号、工序序号、工作站序号)
                         draw_key.append((station.queue[0].task_index, station.queue[0].task.task_string_index,
                                          station.queue[0].task.process_num[0], station.station_index))
-                        # 逐步生成draw_value中的元组（开始时间、结束时间、持续时间、转换时间）
+                        # 逐步生成draw_value中的元组（开始时间、结束时间、持续时间、转换时间、仪器序号、工人序号）
                         draw_value.append((true_time + 1 - station.queue[0].task.process_time[0],
                                            true_time + 1, station.queue[0].task.process_time[0],
-                                           station.configuration_time if station.have_trans else 0))
+                                           station.configuration_time if station.have_trans else 0,
+                                           station.queue[0].instrument.instrument_index, station.queue[0].worker.worker_index))
                         # 删除该task的当前序工艺类型
                         station.queue[0].task.process_path.pop(0)
                         station.queue[0].task.process_num.pop(0)
@@ -200,6 +224,9 @@ def evaluate(individual, problems_origin, test_index, generation):
                         station.queue[0].task.process_time.pop(0)
                         # 该task状态变为需要重排
                         station.queue[0].task.need_popped = True
+                        # 该job的仪器及人员占用解除
+                        station.queue[0].instrument.using = False
+                        station.queue[0].worker.using = False
                         # 该station状态改为未排完，需要重排
                         station.have_popped = False
                         # 如果本task的所有job执行完毕，那么序号加入have_finished列表
@@ -207,13 +234,13 @@ def evaluate(individual, problems_origin, test_index, generation):
                             # task定位
                             coord = [station.queue[0].task.task_index, station.queue[0].task.task_string_index]
                             # 搜索到该task
-                            pending_task = problem.task_groups[coord[0]-1].tasks[coord[1]-1]
+                            pending_task = problem.task_groups[coord[0] - 1].tasks[coord[1] - 1]
                             # task的string索引加入已完成列表
-                            problem.task_groups[coord[0]-1].finished_task_index.append(pending_task.task_string_index)
+                            problem.task_groups[coord[0] - 1].finished_task_index.append(pending_task.task_string_index)
                         # 在序列中删除该运行结束的job
                         station.queue[0].task.have_finished = [1]
                         # 任务组运行状态改为[0]
-                        problem.task_groups[station.queue[0].task_index-1].isrunning = [0]
+                        problem.task_groups[station.queue[0].task_index - 1].isrunning = [0]
                         station.queue.pop(0)
                     # 对当前station的job序列进行遍历，计算拖期
                     if station.queue:
@@ -238,7 +265,8 @@ def evaluate(individual, problems_origin, test_index, generation):
                 prcs_time_last = prcs_time_now
 
         individual.fitnesses.append(-makespan -
-                                    ((makespan*0.01*individual.tree_complexity()) if (test_index in [0, 1, 2, 3, 4, 99]) else 0))
+                                    ((makespan * 0.01 * individual.tree_complexity()) if (
+                                                test_index in [0, 1, 2, 3, 4, 99]) else 0))
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
         individual.objectives.append(-makespan)
         # 添加各项目标函数值

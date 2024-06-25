@@ -71,6 +71,7 @@ class Worker:
         self.capability = capability
         self.priority = None
         self.worktime = 0
+        self.using = False
 
     def __lt__(self, other):
         return self.priority < other.priority
@@ -83,6 +84,7 @@ class Instrument:
         self.capability = capability
         self.priority = None
         self.worktime = 0
+        self.using = False
 
     def __lt__(self, other):
         return self.priority < other.priority
@@ -91,12 +93,14 @@ class Instrument:
 # 定义作业类（一个task在station执行时作为一个job）
 class Job:
     # 初始化方法，定义作业层的一些属性（Task为声明task的类型）
-    def __init__(self, task: Task, station: Station, worker: Worker, instrument: Instrument, time):
+    def __init__(self, task: Task, station: Station, time):
         # 注意，此处的task为未执行的全部任务，执行过的部分将被删除
         self.task = task
         self.station = station
-        self.worker = worker
-        self.instrument = instrument
+        self.available_workers = None
+        self.available_instrument = None
+        self.worker = None
+        self.instrument = None
         self.task_index = task.task_index
         # job剩余执行时间
         self.process_time = task.process_time[0] if len(task.process_time) != 0 else 0
