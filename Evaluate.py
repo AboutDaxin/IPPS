@@ -202,6 +202,9 @@ def evaluate(individual, problems_origin, test_index, generation):
                     else:
                         # 序列中第一个job执行时间-1
                         station.queue[0].process_time -= 1
+                    # 人员与资源占用时间+1
+                    station.queue[0].worker.worktime += 1
+                    station.queue[0].instrument.worktime += 1
                     # 总工时+1
                     process_time += 1
                     # 状态改为“正在运行”
@@ -247,7 +250,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                         for job in station.queue:
                             # 如果遍历出有个job，已经超期，且还没执行完毕
                             if job.task.deadline != 0 and job.task.deadline < true_time and job.process_time > 0:
-                                # 如果是非周期任务则拖期参数+1
+                                # 则拖期参数+1
                                 missed_deadlines += 1
             # 判断是否执行完毕
             true_time += 1
@@ -264,11 +267,14 @@ def evaluate(individual, problems_origin, test_index, generation):
             else:
                 prcs_time_last = prcs_time_now
 
-        individual.fitnesses.append(-makespan -
-                                    ((makespan * 0.01 * individual.tree_complexity()) if (
+        # 制定优化目标
+        objective = makespan + missed_deadlines + process_time
+
+        individual.fitnesses.append(-objective -
+                                    ((objective * 0.01 * individual.tree_complexity()) if (
                                                 test_index in [0, 1, 2, 3, 4, 99]) else 0))
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
-        individual.objectives.append(-makespan)
+        individual.objectives.append(-objective)
         # 添加各项目标函数值
         individual.total_due_time = missed_deadlines
         individual.total_process_time = process_time

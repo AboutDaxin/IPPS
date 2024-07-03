@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from statistics import mean
 import os
-
 import numpy as np
 import pandas as pd
 import copy
@@ -31,8 +30,9 @@ def plt_gantt(best, number):
 
     # 提取数据
     complete_data = dict(zip(best.draw_key, best.draw_value))
-    # 绘图操作
-    plt.figure('A{0} Gantt'.format(number+1), (26, 12))
+
+    # 绘制单元甘特图
+    plt.figure('A{0} Cells Gantt'.format(number+1), (26, 12))
     for k, v in complete_data.items():
         # 画job甘特图
         plt.barh(y=k[3], width=v[2], left=v[0], edgecolor="black", color=color[k[0] % 7])
@@ -44,7 +44,6 @@ def plt_gantt(best, number):
         plt.barh(y=k[3], width=v[3], left=v[0]-v[3], edgecolor="black", color='black', alpha=0.1)
         # 画transtime标注
         plt.text(v[0]-v[3], k[3]-0.33, "Time:\n " + str(v[3]) if v[3] != 0 else '', fontdict=fontdict_time)
-
     # 生成x轴刻度
     plt.xticks(np.arange(0, best.makespan+2, 1))
     # 生成y轴label
@@ -59,7 +58,30 @@ def plt_gantt(best, number):
     plt.title("A{0} Gantt".format(number+1))
     plt.xlabel("process_time /h")
     plt.ylabel("stations")
-    # plt.show()
+
+    # 绘制工人甘特图
+    plt.figure('A{0} Worker Gantt'.format(number+1), (26, 12))
+    for k, v in complete_data.items():
+        # 画job甘特图
+        plt.barh(y=v[5], width=v[2]+v[3], left=v[0]-v[3], edgecolor="black", color=color[k[0] % 7])
+        # 画job标注
+        plt.text(v[0]-v[3], v[5]-0.33, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
+                 fontdict=fontdict_task)
+
+    # 生成x轴刻度
+    plt.xticks(np.arange(0, best.makespan+2, 1))
+    # 生成y轴label
+    ylabels = []
+    m = []
+    for i in complete_data.values():
+        m.append(i[5])
+    for i in range(max(m)):
+        ylabels.append("Worker" + str(i + 1))
+    plt.yticks(np.arange(1, max(m)+1), ylabels, rotation=45)
+    # 生成title
+    plt.title("A{0} Gantt".format(number+1))
+    plt.xlabel("process_time /h")
+    plt.ylabel("stations")
 
 
 # 生成平均目标比较图
