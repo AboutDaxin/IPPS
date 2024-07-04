@@ -163,8 +163,15 @@ def evaluate(individual, problems_origin, test_index, generation):
                         station.queue.sort()
 
                         # 分配人员与资源
-                        station.queue[0].instrument = station.queue[0].available_instrument[0]
-                        station.queue[0].worker = station.queue[0].available_workers[0]
+                        # 计算优先级
+                        for i in station.queue[0].available_instrument:
+                            i.priority = i.worktime
+                        for j in station.queue[0].available_workers:
+                            j.priority = j.worktime
+                        # 分配
+                        station.queue[0].instrument = min(station.queue[0].available_instrument)
+                        station.queue[0].worker = min(station.queue[0].available_workers)
+                        # 更改已分配人员资源的状态
                         station.queue[0].instrument.using = True
                         station.queue[0].worker.using = True
 
@@ -267,8 +274,23 @@ def evaluate(individual, problems_origin, test_index, generation):
             else:
                 prcs_time_last = prcs_time_now
 
+        # 计算均衡率
+        # process_time就是总工艺时间，包括重构时间
+        avg_worktime = process_time/len(problem.workers)
+        # 记录标准差
+        sd_worker = 0
+        sd_instrument = 0
+        # 计算人员工时标准差
+        for i in problem.workers:
+            sd_worker += abs(i.worktime-avg_worktime)
+        sd_worker = sd_worker/len(problem.workers)
+        # 计算仪器工时标准差
+        for i in problem.instrument:
+            sd_instrument += abs(i.worktime - avg_worktime)
+        sd_instrument = sd_instrument / len(problem.instrument)
+
         # 制定优化目标
-        objective = makespan + missed_deadlines + process_time
+        objective = makespan + missed_deadlines + process_time + sd_worker + sd_instrument
 
         individual.fitnesses.append(-objective -
                                     ((objective * 0.01 * individual.tree_complexity()) if (
