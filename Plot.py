@@ -52,12 +52,12 @@ def plt_gantt(best, number):
     for i in complete_data:
         m.append(i[3])
     for i in range(max(m)):
-        ylabels.append("Station" + str(i + 1))
+        ylabels.append("Cell" + str(i + 1))
     plt.yticks(np.arange(1, max(m)+1), ylabels, rotation=45)
     # 生成title
-    plt.title("A{0} Gantt".format(number+1))
-    plt.xlabel("process_time /h")
-    plt.ylabel("stations")
+    plt.title("A{0} Cell Gantt".format(number+1))
+    plt.xlabel("Time")
+    plt.ylabel("Cells")
 
     # 绘制工人甘特图
     plt.figure('A{0} Worker Gantt'.format(number+1), (26, 12))
@@ -67,7 +67,6 @@ def plt_gantt(best, number):
         # 画job标注
         plt.text(v[0]-v[3], v[5]-0.33, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
                  fontdict=fontdict_task)
-
     # 生成x轴刻度
     plt.xticks(np.arange(0, best.makespan+2, 1))
     # 生成y轴label
@@ -79,9 +78,32 @@ def plt_gantt(best, number):
         ylabels.append("Worker" + str(i + 1))
     plt.yticks(np.arange(1, max(m)+1), ylabels, rotation=45)
     # 生成title
-    plt.title("A{0} Gantt".format(number+1))
-    plt.xlabel("process_time /h")
-    plt.ylabel("stations")
+    plt.title("A{0} Worker Gantt".format(number+1))
+    plt.xlabel("Time")
+    plt.ylabel("Workers")
+
+    # 绘制仪器甘特图
+    plt.figure('A{0} Instrument Gantt'.format(number+1), (26, 12))
+    for k, v in complete_data.items():
+        # 画job甘特图
+        plt.barh(y=v[4], width=v[2]+v[3], left=v[0]-v[3], edgecolor="black", color=color[k[0] % 7])
+        # 画job标注
+        plt.text(v[0]-v[3], v[4]-0.33, "Task:\n" + "(" + str(k[0]) + "," + str(k[1]) + ")",
+                 fontdict=fontdict_task)
+    # 生成x轴刻度
+    plt.xticks(np.arange(0, best.makespan+2, 1))
+    # 生成y轴label
+    ylabels = []
+    m = []
+    for i in complete_data.values():
+        m.append(i[4])
+    for i in range(max(m)):
+        ylabels.append("Instrument" + str(i + 1))
+    plt.yticks(np.arange(1, max(m)+1), ylabels, rotation=45)
+    # 生成title
+    plt.title("A{0} Instrument Gantt".format(number+1))
+    plt.xlabel("Time")
+    plt.ylabel("Instrument")
 
 
 # 生成平均目标比较图
@@ -178,7 +200,7 @@ def plt_process_time(test_number, time):
     for n in range(test_number):
         time0 = time[n]
         plt.bar(n+1, time0, width=0.3, edgecolor='white')
-        plt.text(n+1, time0+0.05, '%.5f' % time0, ha='center', va='bottom')
+        plt.text(n+1, time0, '%.5f' % time0, ha='center', va='bottom')
         # x刻度赋值
         key = [i+1 for i in range(test_number)]
         value = ['A{0}'.format(i+1) for i in range(test_number)]

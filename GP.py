@@ -12,7 +12,7 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 30
+MAX_EVALUATIONS = 1050
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
@@ -22,7 +22,7 @@ RUNS = 1
 # 定义GP类
 class GP:
     # 初始化方法：在GP类进行实例化时执行。参数为：种群规模XX，子代规模XX，变异率，复制率
-    def __init__(self, number, population_size=10, children_size=5, mutation=0, duplication=1, parsimony=0.5):
+    def __init__(self, number, population_size=50, children_size=50, mutation=0, duplication=1, parsimony=0.5):
         # 生成此实例的一个种群
         # 类属性：定义实例的种群(population)为一个列表
         self.number = number
@@ -368,4 +368,4 @@ class GP:
         self.data_complexity = data_complexity
         self.time_cost = round((end_time - start_time) / RUNS, 4)
         # 输出最优方案的甘特图
-        Plot.plt_gantt(best, self.number)
+        # Plot.plt_gantt(best, self.number)
