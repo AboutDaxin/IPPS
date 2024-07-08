@@ -149,73 +149,101 @@ def evaluate(individual, problems_origin, test_index, generation):
                             job.available_workers = worker_temp
                             # 检查该job的仪器是否够用
                             if not ins_temp or not worker_temp:
-                                print("task {0} {1} resource not enough!".format(job.task.task_index, job.task.task_string_index))
+                                # print("task {0} {1} resource not enough!".format(job.task.task_index,
+                                #                                                  job.task.task_string_index))
+                                pass
                             else:
                                 # 保存符合开工条件的job（有仪器、人员可用）
                                 job_ok.append(job)
+                        # 如果station里有ok的job
+                        if job_ok:
+                            for job in job_ok:
+                                # 计算该job的优先级数值
+                                job.priority = individual.root.right.interpret(job, station, true_time)
+                            # 随机排列该station的job序列
+                            # shuffle(station.queue)
+                            # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
+                            try:
+                                station.queue.sort()
+                            # 因为队列里有空优先级，所以容错处理
+                            except:
+                                pass
+                            # 筛选排序
+                            ok = []
+                            not_ok = []
+                            for i in range(len(station.queue)):
+                                if station.queue[i].available_instrument and station.queue[i].available_workers:
+                                    ok.append(station.queue[i])
+                                else:
+                                    not_ok.append(station.queue[i])
+                            station.queue = ok + not_ok
 
-                        for job in job_ok:
-                            # 计算该job的优先级数值
-                            job.priority = individual.root.right.interpret(job, station, true_time)
-                        # 随机排列该station的job序列
-                        # shuffle(station.queue)
-                        # 将该station的job序列按优先级从小到大排序（根据Job的富比较方法）
-                        station.queue.sort()
+                            # 分配人员与资源
+                            # 计算优先级
+                            for i in station.queue[0].available_instrument:
+                                i.priority = i.worktime
+                            for j in station.queue[0].available_workers:
+                                j.priority = j.worktime
+                            # 分配资源
+                            try:
+                                station.queue[0].instrument = min(station.queue[0].available_instrument)
+                            except:
+                                print("error")
+                                for i in range(len(station.queue)):
+                                    print(station.queue[i])
+                                    print(station.queue[i].available_instrument)
+                            station.queue[0].worker = min(station.queue[0].available_workers)
+                            # 更改已分配人员资源的状态
+                            station.queue[0].ok = True
+                            station.queue[0].instrument.using = True
+                            station.queue[0].worker.using = True
 
-                        # 分配人员与资源
-                        # 计算优先级
-                        for i in station.queue[0].available_instrument:
-                            i.priority = i.worktime
-                        for j in station.queue[0].available_workers:
-                            j.priority = j.worktime
-                        # 分配
-                        station.queue[0].instrument = min(station.queue[0].available_instrument)
-                        station.queue[0].worker = min(station.queue[0].available_workers)
-                        # 更改已分配人员资源的状态
-                        station.queue[0].instrument.using = True
-                        station.queue[0].worker.using = True
-
-                        # 对station进行能力变更
-                        if station.current_capability == 0:
-                            # 初始情况
-                            station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
-                            station.have_trans = True
-                            station.current_trans_time = station.configuration_time
-                            total_transtime += station.configuration_time
-                        elif station.current_capability == station.queue[0].task.process_path[0] if station.queue else 0:
-                            # 不需要转变
-                            station.have_trans = False
-                            station.current_trans_time = 0
-                        else:
-                            # 需要转变
-                            station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
-                            station.have_trans = True
-                            station.current_trans_time = station.configuration_time
-                            total_transtime += station.configuration_time
-                        # 排序状态变为已排完，不需要重排
-                        station.have_popped = True
+                            # 对station进行能力变更
+                            if station.current_capability == 0:
+                                # 初始情况
+                                station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
+                                station.have_trans = True
+                                station.current_trans_time = station.configuration_time
+                                total_transtime += station.configuration_time
+                            elif station.current_capability == station.queue[0].task.process_path[
+                                0] if station.queue else 0:
+                                # 不需要转变
+                                station.have_trans = False
+                                station.current_trans_time = 0
+                            else:
+                                # 需要转变
+                                station.current_capability = station.queue[0].task.process_path[0] if station.queue else 0
+                                station.have_trans = True
+                                station.current_trans_time = station.configuration_time
+                                total_transtime += station.configuration_time
+                            # 排序状态变为已排完，不需要重排
+                            station.have_popped = True
 
             # 车间仿真运行
             # 按每个station分别进行判断
             for station in stations:
                 # 如果该station还存在job则执行
                 if len(station.queue) > 0:
-                    # station正在发生转变
-                    if station.have_trans and 0 < station.current_trans_time <= station.configuration_time:
-                        # 转换消耗时间赋值
-                        station.current_trans_time -= 1
-                        station.have_trans = True
-                    # station已经完成转变
+                    # 如果job资源齐套
+                    if station.queue[0].ok is True:
+                        # station正在发生转变
+                        if station.have_trans and 0 < station.current_trans_time <= station.configuration_time:
+                            # 转换消耗时间赋值
+                            station.current_trans_time -= 1
+                            station.have_trans = True
+                        # station已经完成转变
+                        else:
+                            # 序列中第一个job执行时间-1
+                            station.queue[0].process_time -= 1
+                        # 人员与资源占用时间+1
+                        station.queue[0].worker.worktime += 1
+                        station.queue[0].instrument.worktime += 1
+                        # 总工时+1
+                        process_time += 1
+                        # 状态改为“正在运行”
+                        station.queue[0].has_run = True
                     else:
-                        # 序列中第一个job执行时间-1
-                        station.queue[0].process_time -= 1
-                    # 人员与资源占用时间+1
-                    station.queue[0].worker.worktime += 1
-                    station.queue[0].instrument.worktime += 1
-                    # 总工时+1
-                    process_time += 1
-                    # 状态改为“正在运行”
-                    station.queue[0].has_run = True
+                        pass
 
                     # 如果当前job执行完毕
                     if station.queue[0].process_time <= 0:
@@ -226,7 +254,8 @@ def evaluate(individual, problems_origin, test_index, generation):
                         draw_value.append((true_time + 1 - station.queue[0].task.process_time[0],
                                            true_time + 1, station.queue[0].task.process_time[0],
                                            station.configuration_time if station.have_trans else 0,
-                                           station.queue[0].instrument.instrument_index, station.queue[0].worker.worker_index))
+                                           station.queue[0].instrument.instrument_index,
+                                           station.queue[0].worker.worker_index))
                         # 删除该task的当前序工艺类型
                         station.queue[0].task.process_path.pop(0)
                         station.queue[0].task.process_num.pop(0)
@@ -252,6 +281,10 @@ def evaluate(individual, problems_origin, test_index, generation):
                         # 任务组运行状态改为[0]
                         problem.task_groups[station.queue[0].task_index - 1].isrunning = [0]
                         station.queue.pop(0)
+                    # 如果没job完成，也要把缺资源的job设为需要重排
+                    elif station.queue[0].instrument == [] or station.queue[0].worker == []:
+                        station.have_popped = False
+
                     # 对当前station的job序列进行遍历，计算拖期
                     if station.queue:
                         for job in station.queue:
@@ -276,14 +309,14 @@ def evaluate(individual, problems_origin, test_index, generation):
 
         # 计算均衡率
         # process_time就是总工艺时间，包括重构时间
-        avg_worktime = process_time/len(problem.workers)
+        avg_worktime = process_time / len(problem.workers)
         # 记录标准差
         sd_worker = 0
         sd_instrument = 0
         # 计算人员工时标准差
         for i in problem.workers:
-            sd_worker += abs(i.worktime-avg_worktime)
-        sd_worker = sd_worker/len(problem.workers)
+            sd_worker += abs(i.worktime - avg_worktime)
+        sd_worker = sd_worker / len(problem.workers)
         # 计算仪器工时标准差
         for i in problem.instrument:
             sd_instrument += abs(i.worktime - avg_worktime)
@@ -294,7 +327,7 @@ def evaluate(individual, problems_origin, test_index, generation):
 
         individual.fitnesses.append(-objective -
                                     ((objective * 0.01 * individual.tree_complexity()) if (
-                                                test_index in [0, 1, 2, 3, 4, 99]) else 0))
+                                            test_index in [0, 1, 2, 3, 4, 99]) else 0))
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
         individual.objectives.append(-objective)
         # 添加各项目标函数值

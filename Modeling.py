@@ -107,7 +107,10 @@ class Job:
         # job释放时间是当前时间
         self.release = time
         self.priority = None
+        # job是否已开工
         self.has_run = False
+        # job的资源是否齐套
+        self.ok = False
 
     # 富比较方法
     def __lt__(self, other):
