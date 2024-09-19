@@ -194,6 +194,35 @@ def plt_compare3(test_number, generations, data_time):
     df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Time process.xlsx')
 
 
+# 画个复杂度比较图
+def plt_compare4(test_number, generations, data_complexity):
+    plt.figure('complexity comparison ')
+    temp_data_complexity = []
+    x0 = 0
+    for n in range(test_number):
+        generations0 = generations[n]
+        data_complexity0 = data_complexity[n]
+        data_complexity0 = [i for i in map(mean, data_complexity0)]
+        # 去掉第一个元素，0
+        temp_data_complexity0 = copy.deepcopy(data_complexity0)
+        temp_data_complexity0.pop(0)
+        temp_data_complexity.append(temp_data_complexity0)
+        # x轴
+        x0 = range(1, generations0)
+        # 绘图
+        plt.plot(x0, temp_data_complexity0, label='A{0}'.format(n + 1))
+    plt.legend(fontsize=12)
+    plt.xlabel('Generations', fontsize=12)
+    plt.ylabel('Complexity', fontsize=12)
+    # 输出时间进化数据表格
+    df = pd.DataFrame({"generations": x0,
+                       "A1": temp_data_complexity[0], "A2": temp_data_complexity[1],
+                       "A3": temp_data_complexity[2], "A4": temp_data_complexity[3],
+                       "A5": temp_data_complexity[4]})
+    df = df.set_index('generations')
+    df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Complexity process.xlsx')
+
+
 # 生成运算时间比较图
 def plt_process_time(test_number, time):
     plt.figure('time_cost')

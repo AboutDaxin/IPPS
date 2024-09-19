@@ -12,7 +12,7 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 110
+MAX_EVALUATIONS = 20
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
@@ -220,14 +220,14 @@ class GP:
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
             # 同上，生成复杂度列表
-            # complexity_data = [i.size for i in self.population]
+            complexity_data = [i.size for i in self.population]
             # 在data_best的第一个列表中添加最大的适应度值
             data_best[0].append(max(objective_data))
             # 在data_avg的第一个列表中添加平均适应度值
             data_avg[0].append(mean(objective_data))
             # 同上
             data_time[0].append(0)
-            # data_complexity[0].append(mean(complexity_data))
+            data_complexity[0].append(mean(complexity_data))
 
             # 正式执行进化操作
             # 更新代数变量
@@ -271,7 +271,7 @@ class GP:
                 # 记录一代的时间消耗
                 data_time[generation].append(time2 - time1)
                 # 记录每代平均复杂度
-                # data_complexity[generation].append(mean(complexity_data))
+                data_complexity[generation].append(mean(complexity_data))
                 # 执行上述操作后，代数generation加1。跳出时填满data列表
                 generation += 1
             end_time1 = time.process_time()

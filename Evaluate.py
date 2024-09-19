@@ -325,8 +325,9 @@ def evaluate(individual, problems_origin, test_index, generation):
         # 制定优化目标
         objective = makespan + missed_deadlines + process_time + sd_worker + sd_instrument
 
+        complexity = individual.tree_complexity()
         individual.fitnesses.append(-objective -
-                                    ((objective * 0.01 * individual.tree_complexity()) if (
+                                    ((objective * 0.01 * complexity) if (
                                             test_index in [0, 1, 2, 3, 4, 99]) else 0))
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
         individual.objectives.append(-objective)

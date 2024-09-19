@@ -13,6 +13,7 @@ def Instance():
     output_data_best = []
     output_data_time = []
     output_time_cost = []
+    output_data_complexity = []
     # 对比试验组数设定
     test_number = 5
     # 执行n次，对比复杂度函数影响
@@ -71,11 +72,13 @@ def Instance():
         output_data_best.append(gp.data_best)
         output_data_time.append(gp.data_time)
         output_time_cost.append(gp.time_cost)
+        output_data_complexity.append(gp.data_complexity)
 
     # 绘图对比收敛速度
     Plot.plt_compare1(test_number, output_generations, output_data_avg)
     Plot.plt_compare2(test_number, output_generations, output_data_best)
     Plot.plt_compare3(test_number, output_generations, output_data_time)
+    Plot.plt_compare4(test_number, output_generations, output_data_complexity)
 
     # 绘图对比计算时间
     Plot.plt_process_time(test_number, output_time_cost)
