@@ -3,6 +3,7 @@ from Modeling import Problem
 from Modeling import Task, Task_Group, Station, Worker, Instrument
 import Input_outside
 import Plot
+from GP import RUNS
 
 
 def Instance():
@@ -15,7 +16,7 @@ def Instance():
     output_time_cost = []
     output_data_complexity = []
     # 对比试验组数设定
-    test_number = 5
+    test_number = 6
     # 执行n次，对比复杂度函数影响
     for n in range(test_number):
         print('==== ALGORITHM {} ===='.format(n))
@@ -74,11 +75,11 @@ def Instance():
         output_time_cost.append(gp.time_cost)
         output_data_complexity.append(gp.data_complexity)
 
-    # 绘图对比收敛速度
-    Plot.plt_compare1(test_number, output_generations, output_data_avg)
-    Plot.plt_compare2(test_number, output_generations, output_data_best)
-    Plot.plt_compare3(test_number, output_generations, output_data_time)
-    Plot.plt_compare4(test_number, output_generations, output_data_complexity)
+    # 绘图对比
+    Plot.plt_compare1(test_number, output_generations, output_data_avg, RUNS)
+    Plot.plt_compare2(test_number, output_generations, output_data_best, RUNS)
+    Plot.plt_compare3(test_number, output_generations, output_data_time, RUNS)
+    Plot.plt_compare4(test_number, output_generations, output_data_complexity, RUNS)
 
     # 绘图对比计算时间
     Plot.plt_process_time(test_number, output_time_cost)

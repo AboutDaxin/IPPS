@@ -107,7 +107,14 @@ def plt_gantt(best, number):
 
 
 # 生成平均目标比较图
-def plt_compare1(test_number, generations, data_avg):
+def plt_compare1(test_number, generations, data_avg, runs):
+    # 输出runs进化数据表格
+    df = pd.DataFrame({"runs": range(0, runs),
+                       "A1": data_avg[0][-1], "A2": data_avg[1][-1],
+                       "A3": data_avg[2][-1], "A4": data_avg[3][-1],
+                       "A5": data_avg[4][-1], "A6": data_avg[5][-1]})
+    df = df.set_index('runs')
+    df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Runs-Avg.xlsx')
     plt.figure('Average_Objective')
     temp_data_avg = []
     for n in range(test_number):
@@ -126,17 +133,25 @@ def plt_compare1(test_number, generations, data_avg):
     plt.legend(fontsize=12)
     plt.xlabel('Generations', fontsize=12)
     plt.ylabel('Objectives', fontsize=12)
-    # 输出时间进化数据表格
-    # df = pd.DataFrame({"generations": x0,
-    #                    "A1": temp_data_avg[0], "A2": temp_data_avg[1],
-    #                    "A3": temp_data_avg[2], "A4": temp_data_avg[3],
-    #                    "A5": temp_data_avg[4]})
-    # df = df.set_index('generations')
-    # df.to_excel(os.path.dirname(os.getcwd()) + '\\IPPS_output_file\\Avg process.xlsx')
+    # 输出结果进化数据表格
+    df = pd.DataFrame({"generations": x0,
+                       "A1": temp_data_avg[0], "A2": temp_data_avg[1],
+                       "A3": temp_data_avg[2], "A4": temp_data_avg[3],
+                       "A5": temp_data_avg[4], "A6": temp_data_avg[5]})
+    df = df.set_index('generations')
+    df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Avg process.xlsx')
 
 
 # 生成最优目标比较图
-def plt_compare2(test_number, generations, data_best):
+def plt_compare2(test_number, generations, data_best, runs):
+    # 输出runs进化数据表格
+    df = pd.DataFrame({"runs": range(0, runs),
+                       "A1": data_best[0][-1], "A2": data_best[1][-1],
+                       "A3": data_best[2][-1], "A4": data_best[3][-1],
+                       "A5": data_best[4][-1], "A6": data_best[5][-1]})
+    df = df.set_index('runs')
+    df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Runs-Best.xlsx')
+    plt.figure('Average_Objective')
     plt.figure('Best_Objective')
     temp_data_best = []
     x0 = 0
@@ -160,13 +175,20 @@ def plt_compare2(test_number, generations, data_best):
     df = pd.DataFrame({"generations": x0,
                        "A1": temp_data_best[0], "A2": temp_data_best[1],
                        "A3": temp_data_best[2], "A4": temp_data_best[3],
-                       "A5": temp_data_best[4]})
+                       "A5": temp_data_best[4], "A6": temp_data_best[5]})
     df = df.set_index('generations')
     df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Best process.xlsx')
 
 
 # 生成演化时间比较图
-def plt_compare3(test_number, generations, data_time):
+def plt_compare3(test_number, generations, data_time, runs):
+    # 输出runs进化数据表格
+    df = pd.DataFrame({"runs": range(0, runs),
+                       "A1": data_time[0][-1], "A2": data_time[1][-1],
+                       "A3": data_time[2][-1], "A4": data_time[3][-1],
+                       "A5": data_time[4][-1], "A6": data_time[5][-1]})
+    df = df.set_index('runs')
+    df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Runs-Time.xlsx')
     plt.figure('time cost comparison ')
     temp_data_time = []
     x0 = 0
@@ -189,13 +211,20 @@ def plt_compare3(test_number, generations, data_time):
     df = pd.DataFrame({"generations": x0,
                        "A1": temp_data_time[0], "A2": temp_data_time[1],
                        "A3": temp_data_time[2], "A4": temp_data_time[3],
-                       "A5": temp_data_time[4]})
+                       "A5": temp_data_time[4], "A6": temp_data_time[5]})
     df = df.set_index('generations')
     df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Time process.xlsx')
 
 
 # 画个复杂度比较图
-def plt_compare4(test_number, generations, data_complexity):
+def plt_compare4(test_number, generations, data_complexity, runs):
+    # 输出runs进化数据表格
+    df = pd.DataFrame({"runs": range(0, runs),
+                       "A1": data_complexity[0][-1], "A2": data_complexity[1][-1],
+                       "A3": data_complexity[2][-1], "A4": data_complexity[3][-1],
+                       "A5": data_complexity[4][-1], "A6": data_complexity[5][-1]})
+    df = df.set_index('runs')
+    df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Runs-Complexity.xlsx')
     plt.figure('complexity comparison ')
     temp_data_complexity = []
     x0 = 0
@@ -218,7 +247,7 @@ def plt_compare4(test_number, generations, data_complexity):
     df = pd.DataFrame({"generations": x0,
                        "A1": temp_data_complexity[0], "A2": temp_data_complexity[1],
                        "A3": temp_data_complexity[2], "A4": temp_data_complexity[3],
-                       "A5": temp_data_complexity[4]})
+                       "A5": temp_data_complexity[4], "A6": temp_data_complexity[5]})
     df = df.set_index('generations')
     df.to_excel(os.path.dirname(os.getcwd()) + '\\output\\Complexity process.xlsx')
 

@@ -12,7 +12,7 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 20
+MAX_EVALUATIONS = 60
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
@@ -35,7 +35,7 @@ class GP:
         self.data_complexity = None
         self.time_cost = None
 
-        if self.number in [0, 1, 2, 3, 4]:
+        if self.number in [0, 1, 2, 3, 4, 5]:
             # grow方法生成半个种群
             # 设置一个用于生成种群的循环，为种群规模的一半，floor表示向下取整
             for _ in range(floor(population_size / 2)):
@@ -215,7 +215,7 @@ class GP:
             objective_portion_data[0] = temp_population[5:len(temp_population):1]
             for i in objective_portion_data[0]:
                 # 执行全面评估
-                Evaluate.evaluate(i, problems, 99, generation)
+                Evaluate.evaluate(i, problems, test_index+10, generation)
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
@@ -258,12 +258,13 @@ class GP:
                 objective_portion_data[generation] = temp_population[0:len(temp_population):5]
                 for i in objective_portion_data[generation]:
                     # 执行全面评估，用于评价
-                    Evaluate.evaluate(i, problems, 99, generation)
+                    Evaluate.evaluate(i, problems, test_index+10, generation)
 
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值
                 objective_data = [i.objective for i in objective_portion_data[generation]]
-                # complexity_data = [i.size for i in self.population]
+                # 更新复杂度数据
+                complexity_data = [i.size for i in self.population]
                 # 在data_best的第generation（2-**）个列表中添加最大目标值
                 data_best[generation].append(max(max(objective_data), data_best[generation - 1][run]))
                 # 在data_avg的后续列表中添加平均适应度值

@@ -40,14 +40,16 @@ def evaluate(individual, problems_origin, test_index, generation):
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
         # 不使用代理
-        if test_index in [0, 1, 2, 3, 4, 5, 6, 7, 99, 666]:
+        if test_index in [0, 10, 11, 12, 13, 14, 15, 666]:
             end_time = 99999
         # 使用代理
-        elif test_index in [0] and generation < 5:
-            end_time = problem.pcstime * 2
-        elif test_index in [0] and generation < 10:
-            end_time = problem.pcstime * 2
-        elif test_index in [0] and generation <= 21:
+        elif test_index in [1, 2, 3, 4, 5] and generation < 5:
+            end_time = problem.pcstime * 0.8
+        elif test_index in [1, 2, 3, 4, 5] and generation < 10:
+            end_time = problem.pcstime * 1.0
+        elif test_index in [1, 2, 3, 4, 5] and generation < 20:
+            end_time = problem.pcstime * 1.2
+        elif test_index in [1, 2, 3, 4, 5] and generation >= 20:
             end_time = 99999
         else:
             print("no test index! ", generation, test_index)
@@ -205,8 +207,7 @@ def evaluate(individual, problems_origin, test_index, generation):
                                 station.have_trans = True
                                 station.current_trans_time = station.configuration_time
                                 total_transtime += station.configuration_time
-                            elif station.current_capability == station.queue[0].task.process_path[
-                                0] if station.queue else 0:
+                            elif station.current_capability == station.queue[0].task.process_path[0] if station.queue else 0:
                                 # 不需要转变
                                 station.have_trans = False
                                 station.current_trans_time = 0
@@ -324,11 +325,17 @@ def evaluate(individual, problems_origin, test_index, generation):
 
         # 制定优化目标
         objective = makespan + missed_deadlines + process_time + sd_worker + sd_instrument
-
+        # 计算最终适应度
         complexity = individual.tree_complexity()
-        individual.fitnesses.append(-objective -
-                                    ((objective * 0.01 * complexity) if (
-                                            test_index in [0, 1, 2, 3, 4, 99]) else 0))
+        punishment = objective * 0.01 * complexity
+        if test_index in [2, 3, 12, 13]:
+            individual.fitnesses.append(-objective - punishment)
+        elif test_index in [4, 5, 14, 15]:
+            individual.fitnesses.append(-objective - 3 * punishment)
+        elif test_index in [0, 1, 10, 11]:
+            individual.fitnesses.append(-objective)
+        else:
+            print("no objective index")
         # 记录个体对本问题的优化目标值（不考虑其他策略影响，当前版本与适应度一致）
         individual.objectives.append(-objective)
         # 添加各项目标函数值
