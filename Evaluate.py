@@ -40,7 +40,7 @@ def evaluate(individual, problems_origin, test_index, generation):
         release_max = max(task_release)
         # 定义结束时间，决定是否使用代理
         # 不使用代理
-        if test_index in [0, 10, 11, 12, 13, 14, 15, 666]:
+        if test_index in [0, 1, 2, 3, 4, 5, 666]:
             end_time = 99999
         # 使用代理
         elif test_index in [1, 2, 3, 4, 5] and generation < 5:
@@ -328,11 +328,11 @@ def evaluate(individual, problems_origin, test_index, generation):
         # 计算最终适应度
         complexity = individual.tree_complexity()
         punishment = objective * 0.01 * complexity
-        if test_index in [2, 3, 12, 13]:
+        if test_index in [2, 3]:
             individual.fitnesses.append(-objective - punishment)
-        elif test_index in [4, 5, 14, 15]:
+        elif test_index in [4, 5]:
             individual.fitnesses.append(-objective - 3 * punishment)
-        elif test_index in [0, 1, 10, 11]:
+        elif test_index in [0, 1]:
             individual.fitnesses.append(-objective)
         else:
             print("no objective index")

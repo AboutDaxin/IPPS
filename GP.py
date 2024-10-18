@@ -12,11 +12,11 @@ import os
 # 设置一个常数K，用于后边锦标赛法选择子代
 K_CONST = 5
 # 最大个体评估次数
-MAX_EVALUATIONS = 60
+MAX_EVALUATIONS = 260
 # 最小步长(弃用)
 MIN_DELTA = 0.001
 # 运行多少次
-RUNS = 2
+RUNS = 3
 
 
 # 定义GP类
@@ -119,7 +119,7 @@ class GP:
             # 执行交叉操作
             else:
                 # TTGP
-                if self.number == 0 or 1 or 2:
+                if self.number == 0 or 2 or 4:
                     # 让第i个个体跟一个个体进行交叉
                     parent_copy = deepcopy(self.parents[i]).recombine(self.parents[randrange(0, self.children_size, 1)])
                     # 设置取出个体的stats属性是一个空列表
@@ -127,7 +127,7 @@ class GP:
                     # 在children列表中添加该个体
                     self.children.append(parent_copy)
                 # CCGP
-                elif self.number == 3 or 4:
+                elif self.number == 1 or 3 or 5:
                     # 让第i个个体左右分别跟随机一个进行交叉
                     parent_copy = deepcopy(self.parents[i]).left_recombine(
                         self.parents[randrange(0, self.children_size, 1)])
@@ -213,9 +213,9 @@ class GP:
             # 按大小均匀选出样例
             temp_population.sort(reverse=True)
             objective_portion_data[0] = temp_population[5:len(temp_population):1]
-            for i in objective_portion_data[0]:
-                # 执行全面评估
-                Evaluate.evaluate(i, problems, test_index+10, generation)
+            # for i in objective_portion_data[0]:
+            #     # 执行全面评估
+            #     Evaluate.evaluate(i, problems, test_index+10, generation)
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
@@ -256,9 +256,9 @@ class GP:
                 # 按大小均匀选出10个样例
                 temp_population.sort(reverse=True)
                 objective_portion_data[generation] = temp_population[0:len(temp_population):5]
-                for i in objective_portion_data[generation]:
-                    # 执行全面评估，用于评价
-                    Evaluate.evaluate(i, problems, test_index+10, generation)
+                # for i in objective_portion_data[generation]:
+                #     # 执行全面评估，用于评价
+                #     Evaluate.evaluate(i, problems, test_index+10, generation)
 
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值
