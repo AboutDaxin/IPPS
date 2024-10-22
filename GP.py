@@ -203,6 +203,19 @@ class GP:
             self.children = self.population
             # 执行适应度评估（GP类）
             self.evaluate(problems, test_index, generation)
+            # 生成复杂度列表
+            complexity_data = [i.size for i in self.population]
+            # 在data_complexity中添加第一个平均复杂度值
+            data_complexity[0].append(mean(complexity_data))
+            # 更新膨胀控制策略下的适应度值
+            if test_index in [4, 5]:
+                for i in self.population:
+                    if i.size > data_complexity[0][run]:
+                        i.fitness -= 1
+                        i.fitnesses[-1] = i.fitness
+                    else:
+                        pass
+            # 后处理
             self.population = self.children
             # 用于存储每代部分个体，只用于统计展示
             objective_portion_data = [[] for _ in range(generations)]
@@ -219,15 +232,12 @@ class GP:
 
             # 列表生成式，遍历population中每个元素的objective（Tree模块中生成），生成目标值列表
             objective_data = [i.objective for i in objective_portion_data[0]]
-            # 同上，生成复杂度列表
-            complexity_data = [i.size for i in self.population]
             # 在data_best的第一个列表中添加最大的适应度值
             data_best[0].append(max(objective_data))
             # 在data_avg的第一个列表中添加平均适应度值
             data_avg[0].append(mean(objective_data))
             # 同上
             data_time[0].append(0)
-            data_complexity[0].append(mean(complexity_data))
 
             # 正式执行进化操作
             # 更新代数变量
@@ -243,6 +253,18 @@ class GP:
                 self.childGeneration()
                 # 更新适应度评估（GP类，此方法执行一次，evaluations值会+20）
                 self.evaluate(problems, test_index, generation)
+                # 更新复杂度数据
+                complexity_data = [i.size for i in self.population]
+                # 在data_complexity的后续列表中添加平均适应度值
+                data_complexity[generation].append(mean(complexity_data))
+                # 更新膨胀控制策略下的适应度值
+                if test_index in [4, 5]:
+                    for i in self.population:
+                        if i.size > data_complexity[generation][run]:
+                            i.fitness -= 1
+                            i.fitnesses[-1] = i.fitness
+                        else:
+                            pass
                 # 执行再引入方法
                 self.reintroduction()
                 # 执行生存选择方法
@@ -253,7 +275,7 @@ class GP:
                 # 提取出部分个体，作全评估，为了作标准化的对比试验
                 # 设置一个临时列表，便于筛选
                 temp_population = deepcopy(self.population)
-                # 按大小均匀选出10个样例
+                # 按大小均匀选出XX个样例
                 temp_population.sort(reverse=True)
                 objective_portion_data[generation] = temp_population[0:len(temp_population):5]
                 # for i in objective_portion_data[generation]:
@@ -263,16 +285,12 @@ class GP:
                 # 记录进化过程数据
                 # 列表生成式，遍历population中每个Individual的目标值
                 objective_data = [i.objective for i in objective_portion_data[generation]]
-                # 更新复杂度数据
-                complexity_data = [i.size for i in self.population]
                 # 在data_best的第generation（2-**）个列表中添加最大目标值
                 data_best[generation].append(max(max(objective_data), data_best[generation - 1][run]))
                 # 在data_avg的后续列表中添加平均适应度值
                 data_avg[generation].append(max(mean(objective_data), data_avg[generation - 1][run]))
                 # 记录一代的时间消耗
                 data_time[generation].append(time2 - time1)
-                # 记录每代平均复杂度
-                data_complexity[generation].append(mean(complexity_data))
                 # 执行上述操作后，代数generation加1。跳出时填满data列表
                 generation += 1
             end_time1 = time.process_time()
