@@ -327,11 +327,11 @@ def evaluate(individual, problems_origin, test_index, generation):
         objective = makespan + missed_deadlines + process_time + sd_worker + sd_instrument
         # 计算最终适应度
         complexity = individual.tree_complexity()
-        punishment = objective * 0.01 * complexity
+        punishment = objective * 0.003 * complexity
         if test_index in [2, 3]:
             individual.fitnesses.append(-objective - punishment)
-        # 在外部的GP中进行了处理
         elif test_index in [4, 5]:
+            # 在外部的GP中进行了处理
             individual.fitnesses.append(-objective - 0)
         elif test_index in [0, 1]:
             individual.fitnesses.append(-objective)
